@@ -33,7 +33,8 @@ module.exports = {
   output: {
     path: __dirname + "/dist",
     publicPath: "/",
-    filename: "bundle.js",
+    // filename: "bundle.js",
+    filename: "index-web-widgets.js",
   },
   devServer: {
     static: {
