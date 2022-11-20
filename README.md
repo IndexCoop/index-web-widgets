@@ -4,10 +4,34 @@ A bunch of widgets that can be embedded into other website (ie. Webflow).
 
 ## Infrastructure
 
-The JS code needs to be publicly available. At the momentm this is hosted with AWS S3.
-The main application can then consume these widgets by incorporating the JS code.
+Webflow does not host JavaScript files. While we can directly embed JS code, there are character limits so this is only feasible for small snippets.
 
-Deployment relies on AWS ClI.
+Hosting widgets with iframes is one option but requires the application to be hosted somewhere. Unless we already have the infrastructure set up for this, this option is probably not worth it.
+
+My proposed option at the moment, is to develop our widgets in React. The main reason for this is because React is a dependency for the charting library we will likely use. The Webflow app can then incorporate our externally host JS code with <script/>. For this option, the JS code needs to be publicly available.
+
+### JS Hosting Options
+
+**Private S3**
+
+We could host our code with AWS S3. The current deployment relies on AWS CLI ran locally but this could be enhanced to run in some future CI/CD pipeline.
+
+- ✓ self-hosted means greater control
+- x self-hosted means we bear to cost of maintenance (fiat and time)
+
+**jsDelivr (CDN)**
+
+- ✓ Free
+- ✓ No set up
+- ✓ Supports versioning
+- ? Availability, to be confirmed but should be high
+- X Relying on a third party service provider
+
+Determine CDN link with their online tool here:
+https://www.jsdelivr.com/github
+
+https://github.com/TheodoreChuang/index-web-widgets/blob/main/dist/index-web-widgets.js
+-> https://cdn.jsdelivr.net/gh/TheodoreChuang/index-web-widgets@main/dist/index-web-widgets.js
 
 ## Development
 
@@ -26,7 +50,10 @@ A. For each page that will be consuming these widgets, you will first need to ad
 3. In the `Before </body> tag` subsection insert the previous build and deploy JS
 
 ```
+<!-- S3 hosting -->
 <script src="https://<bucket>.s3.<region>.amazonaws.com/bundle.js"></script>
+<!-- jsDelivr hosting -->
+<script src="https://cdn.jsdelivr.net/gh/TheodoreChuang/index-web-widgets@main/dist/index-web-widgets.js"></script>
 ```
 
 B. Inserting a widget
