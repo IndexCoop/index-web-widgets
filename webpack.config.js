@@ -1,9 +1,14 @@
 const path = require("path");
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: "./src/index.tsx",
   module: {
     rules: [
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        loader: "ts-loader",
+      },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
@@ -13,27 +18,14 @@ module.exports = {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
-      {
-        test: /\.(pdf|jpg|png|gif|svg|ico)$/,
-        use: [
-          {
-            loader: "url-loader",
-          },
-        ],
-      },
-      {
-        test: /\.(woff|woff2|eot|ttf|otf)$/,
-        loader: "file-loader",
-      },
     ],
   },
   resolve: {
-    extensions: ["*", ".js", ".jsx"],
+    extensions: ["*", ".js", ".jsx", ".tsx", ".ts"],
   },
   output: {
     path: __dirname + "/dist",
     publicPath: "/",
-    // filename: "bundle.js",
     filename: "index-web-widgets.js",
   },
   devServer: {

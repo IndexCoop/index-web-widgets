@@ -8,7 +8,7 @@ const data = [
   { name: "Group D", value: 200 },
 ];
 
-const renderActiveShape = props => {
+const renderActiveShape = (props: any) => {
   const RADIAN = Math.PI / 180;
   const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill, payload, percent, value } = props;
   const sin = Math.sin(-RADIAN * midAngle);
@@ -59,7 +59,7 @@ export default class Example extends PureComponent {
     activeIndex: 0,
   };
 
-  onPieEnter = (_, index) => {
+  onPieEnter = (_: any, index: number) => {
     this.setState({
       activeIndex: index,
     });

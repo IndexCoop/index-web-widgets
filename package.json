@@ -2,12 +2,12 @@
   "name": "index-web-widgets",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index-web-widgets.js",
   "scripts": {
     "start": "webpack-dev-server --config ./webpack.config.js --mode development --progress --color --port 3000",
     "build-deploy": "npm run build && npm run deploy",
     "build": "webpack",
-    "deploy": "aws s3 cp ./dist/bundle.js s3://teddy-test-public/ --acl public-read"
+    "deploy": "aws s3 cp ./dist/index-web-widgets.js s3://teddy-test-public/ --acl public-read"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +22,12 @@
     "@babel/plugin-proposal-class-properties": "^7.18.6",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.18.6",
+    "@types/node": "^18.11.9",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.9",
     "babel-loader": "^9.1.0",
+    "ts-loader": "^9.4.1",
+    "typescript": "^4.9.3",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.0",
     "webpack-dev-server": "^4.11.1"
