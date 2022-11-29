@@ -54,7 +54,7 @@ const renderActiveShape = (props: any) => {
   );
 };
 
-export default class Example extends PureComponent {
+export default class PieChartExample extends PureComponent {
   state = {
     activeIndex: 0,
   };

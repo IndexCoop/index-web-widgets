@@ -46,9 +46,7 @@ const data = [
   },
 ];
 
-// TODO data from external source
-
-export default function Chart() {
+export default function LineChartExample() {
   return (
     <LineChart
       width={500}
