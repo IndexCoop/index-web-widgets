@@ -9,11 +9,12 @@ import { SetComponent, useTokenComponents } from "../../hooks/useTokenComponents
 import TokenAllocationsChart, { Position } from "./TokenAllocationsChart";
 
 const TokenComponentsTable = ({ tokenSymbol }: { tokenSymbol: keyof typeof productTokensBySymbol }) => {
+  const defaultAmountToDisplay = 4
   const token = productTokensBySymbol[tokenSymbol]
   const { components } = useTokenComponents(token);
-  const [amountToDisplay, setAmountToDisplay] = useState<number>(7);
+  const [amountToDisplay, setAmountToDisplay] = useState<number>(defaultAmountToDisplay);
   const showAllComponents = () => setAmountToDisplay(components?.length || amountToDisplay);
-  const showDefaultComponents = () => setAmountToDisplay(7);
+  const showDefaultComponents = () => setAmountToDisplay(defaultAmountToDisplay);
 
   const mapSetComponentToPosition = (component: SetComponent, index: number) => {
     // const sliceColor = pieChartColors[index]
@@ -28,7 +29,7 @@ const TokenComponentsTable = ({ tokenSymbol }: { tokenSymbol: keyof typeof produ
   };
 
   const renderTableDisplayControls = () => {
-    if (components && components.length > 7)
+    if (components && components.length > defaultAmountToDisplay)
       return (
         <Box my="20px">
           {amountToDisplay < components.length ? (
