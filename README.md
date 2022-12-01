@@ -62,7 +62,7 @@ B. Inserting a widget
 2. Add custom code for whichever widget you would like
 
 ```
-<div class="chart_widget" data-chart-type="line"></div>
+<div class="index_web_widget" data-widget-type="chart-line"></div>
 ```
 
 C. Publish Site To Review Changes

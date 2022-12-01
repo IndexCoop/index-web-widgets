@@ -4,20 +4,23 @@ import { productTokensBySymbol } from "./constants/tokens";
 import LineChartExample from "./widgets/LineChartExample";
 import PieChartExample from "./widgets/PieChartExample";
 import TokenAllocations from "./widgets/token-allocations/TokenAllocations";
+import TokenLineCharts from "./widgets/token-line-charts/TokenLineCharts";
 
 const App = ({ domElement }: { domElement: Element }) => {
-  const chartType = domElement.getAttribute("data-chart-type");
+  const widgetType = domElement.getAttribute("data-widget-type");
   const tokenSymbol = domElement.getAttribute("data-token-symbol") as keyof typeof productTokensBySymbol;
 
-  switch (chartType) {
-    case "line":
+  switch (widgetType) {
+    case "chart-line":
       return <LineChartExample />;
-    case "pie":
+    case "chart-pie":
       return <PieChartExample />;
-    case "token-allocation":
+    case "chart-token-allocation":
       return <TokenAllocations tokenSymbol={tokenSymbol} />;
+    case "chart-token-line":
+      return <TokenLineCharts tokenSymbol={tokenSymbol} />;
     default:
-      return <div>Unknown</div>;
+      console.warn(`[Index Web Widgets]: Unknown widget of type ${widgetType}`)
   }
 };
 
