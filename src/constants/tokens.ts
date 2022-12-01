@@ -57,6 +57,7 @@ export const DefiPulseIndex: Token = {
   url: "dpi",
   coingeckoId: "defipulse-index",
   tokensetsId: "dpi",
+  tokenContextKey: "dpi",
   fees: {
     streamingFee: "0.95%",
   },
@@ -76,6 +77,7 @@ export const MetaverseIndex: Token = {
   image: "https://set-core.s3.amazonaws.com/img/portfolios/mvi.svg",
   coingeckoId: "metaverse-index",
   tokensetsId: "mvi",
+  tokenContextKey: "mvi",
   fees: {
     streamingFee: "0.95%",
   },
@@ -95,6 +97,7 @@ export const BedIndex: Token = {
   image: "https://assets.website-files.com/60f6894ff98ed9aeca219e0e/62bdb61688a3657cf9b4ff29_BED_Logo-1.svg",
   coingeckoId: "bankless-bed-index",
   tokensetsId: "bed",
+  tokenContextKey: "bed",
   fees: {
     streamingFee: "0.25%",
   },

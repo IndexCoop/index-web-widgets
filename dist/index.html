@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Index Web Widgets</title>
+    <style>
+      .index_web_widget {
+        border: 1px #bfb5b2 dashed;
+        margin: 20px;
+      }
+    </style>
   </head>
   <body>
     <!-- Load every widget for local development -->
@@ -17,6 +23,10 @@
     <div class="index_web_widget" data-widget-type="chart-token-allocation" data-token-symbol="BED"></div>
 
     <div class="index_web_widget" data-widget-type="chart-token-line" data-token-symbol="DPI"></div>
+    <div class="index_web_widget" data-widget-type="chart-token-line" data-token-symbol="MVI"></div>
+    <div class="index_web_widget" data-widget-type="chart-token-line" data-token-symbol="BED"></div>
+
+    <div class="index_web_widget" data-widget-type="unknown-type"></div>
 
     <script src="index-web-widgets.js"></script>
   </body>
