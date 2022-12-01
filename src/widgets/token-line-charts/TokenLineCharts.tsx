@@ -1,16 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 
 import { productTokensBySymbol } from "../../constants/tokens";
-import { MarketDataProvider } from "../../providers/MarketData";
+import { fetchMarketData, TokenMarketDataValues } from "../../providers/MarketData";
 
-import TokenPrice from './token-price/TokenPrice'
+import TokenPrice from "./token-price/TokenPrice";
 
 const TokenLineCharts = ({ tokenSymbol }: { tokenSymbol: keyof typeof productTokensBySymbol }) => {
-    const token = productTokensBySymbol[tokenSymbol]
-    return (
-        <MarketDataProvider>
-            <TokenPrice token={token} />
-        </MarketDataProvider>)
-}
+    const [marketData, setMarketData] = useState<TokenMarketDataValues>({});
+    const token = productTokensBySymbol[tokenSymbol];
 
-export default TokenLineCharts
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await fetchMarketData(token.coingeckoId);
+            setMarketData(data);
+        };
+        fetchData();
+    }, []);
+
+    return <TokenPrice marketData={marketData} />;
+};
+
+export default TokenLineCharts;

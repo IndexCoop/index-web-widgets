@@ -1,10 +1,14 @@
 import { ETH } from "../../constants/tokens";
+import { TokenMarketDataValues } from "../../providers/MarketData";
 import { IndexApi } from "../../utils/api/indexApi";
 
 const baseURL = "/coingecko";
 const indexApi = new IndexApi();
 
-export const fetchHistoricalTokenMarketData = async (id: string, baseCurrency = "usd") => {
+export const fetchHistoricalTokenMarketData = async (
+  id: string,
+  baseCurrency = "usd"
+): Promise<TokenMarketDataValues> => {
   const coingeckoMaxTokenDataUrl =
     baseURL + `/coins/${id}/market_chart?vs_currency=${baseCurrency}&days=max&interval=daily`;
   const coingeckoHourlyTokenDataUrl = baseURL + `/coins/${id}/market_chart?vs_currency=${baseCurrency}&days=90`;
