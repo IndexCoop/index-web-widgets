@@ -5,6 +5,7 @@
   "main": "index-web-widgets.js",
   "scripts": {
     "start": "webpack-dev-server --config ./webpack.config.js --mode development --progress --color --port 3000",
+    "lint:fix": "yarn prettier --write . && yarn eslint ./src --fix",
     "build-deploy": "npm run build && npm run deploy",
     "build": "webpack",
     "deploy": "aws s3 cp ./dist/index-web-widgets.js s3://teddy-test-public/ --acl public-read"
@@ -30,6 +31,8 @@
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
     "babel-loader": "^9.1.0",
+    "eslint": "^8.29.0",
+    "prettier": "^2.8.0",
     "ts-loader": "^9.4.1",
     "typescript": "^4.9.3",
     "webpack": "^5.75.0",

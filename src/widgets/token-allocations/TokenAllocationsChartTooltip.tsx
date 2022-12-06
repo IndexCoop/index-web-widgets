@@ -1,5 +1,5 @@
-import React from 'react'
-import { Box, Flex, Text } from '@chakra-ui/react'
+import React from 'react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 
 // import { colors, useICColorMode } from 'styles/colors'
 
@@ -8,9 +8,9 @@ const DataRow = ({
   value,
   textColor,
 }: {
-  title: string
-  value: string
-  textColor: string
+  title: string;
+  value: string;
+  textColor: string;
 }) => {
   return (
     <Flex direction='column'>
@@ -21,19 +21,20 @@ const DataRow = ({
         {value}
       </Text>
     </Flex>
-  )
-}
+  );
+};
 
 const Dot = ({ color }: { color: string }) => {
-  return <Box backgroundColor={color} borderRadius='8px' w='16px' h='16px' />
-}
+  return <Box backgroundColor={color} borderRadius='8px' w='16px' h='16px' />;
+};
 
 const PieChartTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
-    const tooltipBgColor = "#FFF"
-    const textColor = "#000"
+    const tooltipBgColor = '#EEE'; // FIXME WIP
+    // const tooltipBgColor = "#FFF"
+    const textColor = '#000';
 
-    const { backgroundColor, title, percent, valueDisplay } = payload[0].payload
+    const { backgroundColor, title, percent } = payload[0].payload;
     return (
       <Flex
         background={tooltipBgColor}
@@ -51,18 +52,11 @@ const PieChartTooltip = ({ active, payload }: any) => {
         <Box my='8px'>
           <DataRow title='Allocation' value={percent} textColor={textColor} />
         </Box>
-        {valueDisplay && (
-          <DataRow
-            title='Quantity Per Token'
-            value={valueDisplay ?? ''}
-            textColor={textColor}
-          />
-        )}
       </Flex>
-    )
+    );
   }
 
-  return null
-}
+  return null;
+};
 
-export default PieChartTooltip
+export default PieChartTooltip;

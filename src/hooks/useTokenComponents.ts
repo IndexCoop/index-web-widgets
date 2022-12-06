@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { MAINNET } from "../constants/chains";
-import { Token } from "../constants/tokens";
-import { IndexApi } from "../utils/api/indexApi";
-import { getAddressForToken } from "../utils/tokens";
+import { MAINNET } from '../constants/chains';
+import { Token } from '../constants/tokens';
+import { IndexApi } from '../utils/api/indexApi';
+import { getAddressForToken } from '../utils/tokens';
 
 export interface SetComponent {
   /**
@@ -81,7 +81,7 @@ export const useTokenComponents = (token: Token, isPerpToken = false) => {
       setComponents(components);
       setVAssets(vAssets);
     } catch (err) {
-      console.log("Error fetching components:", err);
+      console.log('Error fetching components:', err);
     }
   }, [token, isPerpToken]);
 
@@ -100,7 +100,7 @@ export const useTokenComponents = (token: Token, isPerpToken = false) => {
 const getNetAssetValue = (components: SetComponent[]): number => {
   let totalValue: number = 0;
   if (components.length > 0)
-    components.forEach(c => {
+    components.forEach((c) => {
       totalValue += parseFloat(c.totalPriceUsd);
     });
   return totalValue;

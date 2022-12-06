@@ -1,4 +1,4 @@
-import { theme, useColorMode } from '@chakra-ui/react'
+import { theme, useColorMode } from '@chakra-ui/react';
 
 export const colors = {
   ...theme.colors,
@@ -26,7 +26,7 @@ export const colors = {
   // not verified with designer (will be replaced soon)
   icGrayLightMode: '#aaa',
   icGrayDarkMode: '#777',
-}
+};
 
 export const colorStyles = (isDarkMode: boolean) => {
   return {
@@ -40,19 +40,19 @@ export const colorStyles = (isDarkMode: boolean) => {
     text2: isDarkMode ? colors.icGray2 : colors.icGray4,
     text3: colors.icGray3,
     textInverted: isDarkMode ? colors.icBlack : colors.icWhite,
-  }
-}
+  };
+};
 
 export const useColorStyles = () => {
-  const { isDarkMode } = useICColorMode()
-  return { isDarkMode, styles: colorStyles(isDarkMode) }
-}
+  const { isDarkMode } = useICColorMode();
+  return { isDarkMode, styles: colorStyles(isDarkMode) };
+};
 
 export const useICColorMode = () => {
-  const { colorMode } = useColorMode()
-  const isDarkMode = colorMode === 'dark'
-  return { isDarkMode }
-}
+  const { colorMode } = useColorMode();
+  const isDarkMode = colorMode === 'dark';
+  return { isDarkMode };
+};
 
 export const pieChartColors = [
   '#2328cd',
@@ -105,4 +105,4 @@ export const pieChartColors = [
   '#9c9bf8',
   '#bb8002',
   '#68a0ce',
-]
+];

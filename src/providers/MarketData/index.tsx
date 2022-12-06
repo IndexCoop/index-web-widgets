@@ -1,5 +1,5 @@
-import { Token } from "../../constants/tokens";
-import { fetchHistoricalTokenMarketData } from "../../utils/api/coingeckoApi";
+import { Token } from '../../constants/tokens';
+import { fetchHistoricalTokenMarketData } from '../../utils/api/coingeckoApi';
 
 export interface TokenMarketDataValues {
   hourlyPrices?: number[][];
@@ -7,7 +7,10 @@ export interface TokenMarketDataValues {
   volumes?: number[][];
 }
 
-export const fetchMarketData = (tokenCoingeckoId: Token["coingeckoId"]): Promise<TokenMarketDataValues> =>
+export const fetchMarketData = (
+  tokenCoingeckoId: Token['coingeckoId']
+): Promise<TokenMarketDataValues> =>
   fetchHistoricalTokenMarketData(tokenCoingeckoId);
 
-export const selectLatestMarketData = (marketData?: number[][]) => marketData?.[marketData.length - 1]?.[1] || 0;
+export const selectLatestMarketData = (marketData?: number[][]) =>
+  marketData?.[marketData.length - 1]?.[1] || 0;

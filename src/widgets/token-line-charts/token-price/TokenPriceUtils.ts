@@ -1,6 +1,6 @@
-import { TokenMarketDataValues } from "../../../providers/MarketData";
+import { TokenMarketDataValues } from '../../../providers/MarketData';
 
-import { PriceChartData, PriceChartRangeOption } from "./TokenPriceChart";
+import { PriceChartData, PriceChartRangeOption } from './TokenPriceChart';
 
 interface PriceChange {
   abs: number;
@@ -8,7 +8,10 @@ interface PriceChange {
   isPositive: boolean;
 }
 
-function getChartData(range: PriceChartRangeOption, prices: number[][][]): PriceChartData[] {
+function getChartData(
+  range: PriceChartRangeOption,
+  prices: number[][][]
+): PriceChartData[] {
   const hourlyDataInterval = 24;
   const pricesFromRange: any[] = prices.map((priceData: number[][]) => {
     return priceData.slice(-range * hourlyDataInterval) ?? [];
@@ -23,7 +26,8 @@ function getChartData(range: PriceChartRangeOption, prices: number[][][]): Price
     const y: number[] = [];
 
     for (let k = 0; k < pricesFromRange.length; k += 1) {
-      const price: number = pricesFromRange[k][i] === undefined ? 0 : pricesFromRange[k][i][1];
+      const price: number =
+        pricesFromRange[k][i] === undefined ? 0 : pricesFromRange[k][i][1];
       y.push(price);
     }
 
@@ -52,8 +56,8 @@ export function getPriceChartData(marketData: TokenMarketDataValues[]) {
   ];
 
   const marketChartData: PriceChartData[][] = [];
-  ranges.forEach(range => {
-    const prices = marketData.map(data => data.hourlyPrices ?? []);
+  ranges.forEach((range) => {
+    const prices = marketData.map((data) => data.hourlyPrices ?? []);
     const chartData = getChartData(range, prices);
     marketChartData.push(chartData);
   });
@@ -87,10 +91,12 @@ function getChangeInPrice(priceData: number[][]): PriceChange {
 
 export function getFormattedChartPriceChanges(priceChanges: PriceChange[]) {
   // ['+10.53 ( +5.89% )', '+6.53 ( +2.89% )', ...]
-  const priceChangesFormatted = priceChanges.map(change => {
-    const plusOrMinus = change.isPositive ? "+" : "-";
+  const priceChangesFormatted = priceChanges.map((change) => {
+    const plusOrMinus = change.isPositive ? '+' : '-';
     return {
-      label: `${plusOrMinus}$${change.abs.toFixed(2)} ( ${plusOrMinus} ${change.rel.toFixed(2)}% )`,
+      label: `${plusOrMinus}$${change.abs.toFixed(
+        2
+      )} ( ${plusOrMinus} ${change.rel.toFixed(2)}% )`,
       isPositive: change.isPositive,
     };
   });
@@ -108,7 +114,7 @@ export function getPricesChanges(priceData: number[][]): PriceChange[] {
   ];
 
   const changes: PriceChange[] = [];
-  ranges.forEach(range => {
+  ranges.forEach((range) => {
     const prices = priceData.slice(-range * hourlyDataInterval);
     const change = getChangeInPrice(prices);
     changes.push(change);

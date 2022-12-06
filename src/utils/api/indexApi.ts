@@ -1,4 +1,4 @@
-import { getApiKey, IndexApiBaseUrl } from "../../constants/server";
+import { getApiKey, IndexApiBaseUrl } from '../../constants/server';
 
 export class IndexApi {
   /**
@@ -10,12 +10,12 @@ export class IndexApi {
       const key = getApiKey();
       const resp = await fetch(`${IndexApiBaseUrl}${path}`, {
         headers: {
-          "X-INDEXCOOP-API-KEY": key,
+          'X-INDEXCOOP-API-KEY': key,
         },
       });
       return resp.json();
     } catch (error) {
-      console.log("Error fetching Index API for path", path);
+      console.log('Error fetching Index API for path', path);
       console.log(error);
       throw error;
     }

@@ -1,29 +1,58 @@
-import React, { useState } from "react";
-import { Box, Flex, Image, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import React, { useState } from 'react';
+import {
+  Box,
+  Button,
+  Flex,
+  Image,
+  Spinner,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react';
 
-// import { pieChartColors } from 'styles/colors'
+import { productTokensBySymbol } from '../../constants/tokens';
+import {
+  SetComponent,
+  useTokenComponents,
+} from '../../hooks/useTokenComponents';
+import { colors, pieChartColors } from '../../styles/colors';
 
-import { productTokensBySymbol } from "../../constants/tokens";
-import { SetComponent, useTokenComponents } from "../../hooks/useTokenComponents";
+import TokenAllocationsChart, { Position } from './TokenAllocationsChart';
 
-import TokenAllocationsChart, { Position } from "./TokenAllocationsChart";
+const formatPercentOfSetNumber = (percentOfSetNumber: number) =>
+  `${percentOfSetNumber.toFixed(1)}%` ?? '';
 
-const TokenComponentsTable = ({ tokenSymbol }: { tokenSymbol: keyof typeof productTokensBySymbol }) => {
-  const defaultAmountToDisplay = 4
-  const token = productTokensBySymbol[tokenSymbol]
+const TokenComponentsTable = ({
+  tokenSymbol,
+}: {
+  tokenSymbol: keyof typeof productTokensBySymbol;
+}) => {
+  const defaultAmountToDisplay = 4;
+  const token = productTokensBySymbol[tokenSymbol];
   const { components } = useTokenComponents(token);
-  const [amountToDisplay, setAmountToDisplay] = useState<number>(defaultAmountToDisplay);
-  const showAllComponents = () => setAmountToDisplay(components?.length || amountToDisplay);
-  const showDefaultComponents = () => setAmountToDisplay(defaultAmountToDisplay);
+  const [amountToDisplay, setAmountToDisplay] = useState<number>(
+    defaultAmountToDisplay
+  );
+  const showAllComponents = () =>
+    setAmountToDisplay(components?.length || amountToDisplay);
+  const showDefaultComponents = () =>
+    setAmountToDisplay(defaultAmountToDisplay);
 
-  const mapSetComponentToPosition = (component: SetComponent, index: number) => {
-    // const sliceColor = pieChartColors[index]
+  const mapSetComponentToPosition = (
+    component: SetComponent,
+    index: number
+  ) => {
+    const sliceColor = pieChartColors[index];
     const position: Position = {
       title: component.symbol,
       value: component.percentOfSetNumber,
-      percent: `${component.percentOfSetNumber.toFixed(1)}%` ?? "",
-      // color: sliceColor,
-      // backgroundColor: sliceColor,
+      percent: formatPercentOfSetNumber(component.percentOfSetNumber),
+      color: sliceColor,
+      backgroundColor: sliceColor,
     };
     return position;
   };
@@ -31,15 +60,15 @@ const TokenComponentsTable = ({ tokenSymbol }: { tokenSymbol: keyof typeof produ
   const renderTableDisplayControls = () => {
     if (components && components.length > defaultAmountToDisplay)
       return (
-        <Box my="20px">
+        <Box my='20px'>
           {amountToDisplay < components.length ? (
-            <Text cursor="pointer" onClick={showAllComponents}>
+            <Button cursor='pointer' onClick={showAllComponents}>
               Show Complete List
-            </Text>
+            </Button>
           ) : (
-            <Text cursor="pointer" onClick={showDefaultComponents}>
+            <Button cursor='pointer' onClick={showDefaultComponents}>
               Show Less
-            </Text>
+            </Button>
           )}
         </Box>
       );
@@ -48,29 +77,41 @@ const TokenComponentsTable = ({ tokenSymbol }: { tokenSymbol: keyof typeof produ
 
   if (components === undefined || components.length === 0) {
     return (
-      <Flex w={"100%"} justifyContent={"center"}>
+      <Flex w={'100%'} justifyContent={'center'}>
         <Spinner />
       </Flex>
     );
   }
 
   return (
-    <Flex direction={["column", "column", "row"]} alignItems="start">
-      <Box margin={["0 auto", "0 auto", "0 64px 0 0"]}>
-        <TokenAllocationsChart data={components.map(mapSetComponentToPosition)} />
+    // height 612px, width 1152px
+    <Flex
+      direction={['column', 'column', 'row']}
+      alignItems='start'
+      justifyContent='space-around'
+      w='100%'
+      maxWidth={1150}
+      padding={['inherit', '45px']}
+    >
+      <Box margin={['0 auto', '0 auto', '0 64px 0 0']}>
+        <TokenAllocationsChart
+          data={components.map(mapSetComponentToPosition)}
+        />
       </Box>
-      <Flex direction="column" alignItems="center" mt={["32px", "32px", "0"]}>
-        <Table variant="simple">
+      <Flex direction='column' alignItems='center' mt={['32px', '32px', '0']}>
+        <Table variant='simple'>
           <Thead>
-            <Tr borderBottom="1px">
-              <Th p={["8px 8px", "8px 8px", "12px 24px"]}>Token</Th>
-              <Th isNumeric p={["8px 8px", "8px 8px", "12px 24px"]}>
+            <Tr>
+              <Th p={['8px 8px', '8px 8px', '12px 24px']} border='none'>
+                Token
+              </Th>
+              <Th p={['8px 8px', '8px 8px', '12px 24px']} border='none'>
                 Allocation
               </Th>
             </Tr>
           </Thead>
           <Tbody>
-            {components?.slice(0, amountToDisplay).map(data => (
+            {components?.slice(0, amountToDisplay).map((data) => (
               <ComponentRow key={data.name} component={data} />
             ))}
           </Tbody>
@@ -86,27 +127,31 @@ const TokenComponentsTable = ({ tokenSymbol }: { tokenSymbol: keyof typeof produ
  * @param component a SetComponent object to display
  * @returns a component row JSX element
  */
-const ComponentRow = (props: { component: SetComponent; disablePercentage?: boolean }) => {
+const ComponentRow = (props: { component: SetComponent }) => {
   return (
-    <Tr borderBottom="1px">
-      <Td p={["16px 8px", "16px 8px", "16px 24px"]}>
-        <Flex alignItems="center">
+    <Tr>
+      <Td p={['16px 8px', '16px 8px', '16px 24px']} border='none'>
+        <Flex alignItems='center'>
           <Image
-            borderRadius="full"
-            boxSize="30px"
+            borderRadius='full'
+            boxSize='30px'
             src={props.component.image}
             alt={props.component.name}
-            marginRight="10px"
+            marginRight='10px'
           />
-          <Text fontWeight="500">{props.component.name}</Text>
+          <Text fontWeight='500'>{props.component.name}</Text>
         </Flex>
       </Td>
       <Td
         isNumeric
-        // color={black}
-        p={["16px 8px", "16px 8px", "16px 24px"]}
+        color={colors.black}
+        // TODO: weight 300 or 700 on hover
+        fontWeight={300}
+        fontSize='xs'
+        p={['16px 8px', '16px 8px', '16px 24px']}
+        border='none'
       >
-        {props.component.percentOfSet}
+        {formatPercentOfSetNumber(props.component.percentOfSetNumber)}
       </Td>
     </Tr>
   );
