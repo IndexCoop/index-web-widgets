@@ -27,6 +27,42 @@ import TokenAllocationsChart, { Position } from './TokenAllocationsChart';
 const formatPercentOfSetNumber = (percentOfSetNumber: number) =>
   `${percentOfSetNumber.toFixed(1)}%` ?? '';
 
+/**
+ *
+ * @param component a SetComponent object to display
+ * @returns a component row JSX element
+ */
+const ComponentRow = (props: { component: SetComponent }) => {
+  return (
+    <Tr>
+      <Td p={['16px 8px', '16px 8px', '16px 24px']} border='none'>
+        <Flex alignItems='center'>
+          <Image
+            borderRadius='full'
+            boxSize='30px'
+            src={props.component.image}
+            alt={props.component.name}
+            marginRight='10px'
+          />
+          {/* TODO? <Dot color={props.component.} /> */}
+          <Text fontWeight='500'>{props.component.name}</Text>
+        </Flex>
+      </Td>
+      <Td
+        isNumeric
+        color={colors.black}
+        // TODO: weight 300 or 700 on hover
+        fontWeight={300}
+        fontSize='xs'
+        p={['16px 8px', '16px 8px', '16px 24px']}
+        border='none'
+      >
+        {formatPercentOfSetNumber(props.component.percentOfSetNumber)}
+      </Td>
+    </Tr>
+  );
+};
+
 const TokenAllocations = ({
   tokenSymbol,
 }: {
@@ -126,6 +162,7 @@ const TokenAllocations = ({
         direction='column'
         alignItems='flex-start'
         mt={['32px', '32px', '0']}
+        mx={'auto'}
       >
         <Table variant='simple'>
           <Thead>
@@ -178,42 +215,6 @@ const TokenAllocations = ({
         </Table>
       </Flex>
     </Flex>
-  );
-};
-
-/**
- *
- * @param component a SetComponent object to display
- * @returns a component row JSX element
- */
-const ComponentRow = (props: { component: SetComponent }) => {
-  return (
-    <Tr>
-      <Td p={['16px 8px', '16px 8px', '16px 24px']} border='none'>
-        <Flex alignItems='center'>
-          <Image
-            borderRadius='full'
-            boxSize='30px'
-            src={props.component.image}
-            alt={props.component.name}
-            marginRight='10px'
-          />
-          {/* TODO? <Dot color={props.component.} /> */}
-          <Text fontWeight='500'>{props.component.name}</Text>
-        </Flex>
-      </Td>
-      <Td
-        isNumeric
-        color={colors.black}
-        // TODO: weight 300 or 700 on hover
-        fontWeight={300}
-        fontSize='xs'
-        p={['16px 8px', '16px 8px', '16px 24px']}
-        border='none'
-      >
-        {formatPercentOfSetNumber(props.component.percentOfSetNumber)}
-      </Td>
-    </Tr>
   );
 };
 
