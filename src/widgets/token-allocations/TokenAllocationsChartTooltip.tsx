@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Flex, Text } from '@chakra-ui/react';
 
 // import { colors, useICColorMode } from 'styles/colors'
+import Dot from '../../components/Dot';
 
 const DataRow = ({
   title,
@@ -24,11 +25,7 @@ const DataRow = ({
   );
 };
 
-const Dot = ({ color }: { color: string }) => {
-  return <Box backgroundColor={color} borderRadius='8px' w='16px' h='16px' />;
-};
-
-const PieChartTooltip = ({ active, payload }: any) => {
+const TokenAllocationsChartTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     const tooltipBgColor = '#EEE'; // FIXME WIP
     // const tooltipBgColor = "#FFF"
@@ -59,4 +56,4 @@ const PieChartTooltip = ({ active, payload }: any) => {
   return null;
 };
 
-export default PieChartTooltip;
+export default TokenAllocationsChartTooltip;

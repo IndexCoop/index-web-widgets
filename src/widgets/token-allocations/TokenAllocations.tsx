@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 
 import { productTokensBySymbol } from '../../constants/tokens';
+// import Dot from '../../components/Dot';
 import {
   SetComponent,
   useTokenComponents,
@@ -26,7 +27,7 @@ import TokenAllocationsChart, { Position } from './TokenAllocationsChart';
 const formatPercentOfSetNumber = (percentOfSetNumber: number) =>
   `${percentOfSetNumber.toFixed(1)}%` ?? '';
 
-const TokenComponentsTable = ({
+const TokenAllocations = ({
   tokenSymbol,
 }: {
   tokenSymbol: keyof typeof productTokensBySymbol;
@@ -60,13 +61,25 @@ const TokenComponentsTable = ({
   const renderTableDisplayControls = () => {
     if (components && components.length > defaultAmountToDisplay)
       return (
-        <Box my='20px'>
+        <Box>
           {amountToDisplay < components.length ? (
-            <Button cursor='pointer' onClick={showAllComponents}>
+            <Button
+              cursor='pointer'
+              size={'xs'}
+              background={colors.gray[100]}
+              boxShadow='md'
+              onClick={showAllComponents}
+            >
               Show Complete List
             </Button>
           ) : (
-            <Button cursor='pointer' onClick={showDefaultComponents}>
+            <Button
+              cursor='pointer'
+              size={'xs'}
+              background={colors.gray[100]}
+              boxShadow='md'
+              onClick={showDefaultComponents}
+            >
               Show Less
             </Button>
           )}
@@ -94,11 +107,26 @@ const TokenComponentsTable = ({
       padding={['inherit', '45px']}
     >
       <Box margin={['0 auto', '0 auto', '0 64px 0 0']}>
+        <Text
+          position={'relative'}
+          top={165}
+          left={125}
+          fontSize={'2xl'}
+          fontWeight={700}
+          fontFamily={'sans-serif'}
+          height={0}
+        >
+          Allocations
+        </Text>
         <TokenAllocationsChart
           data={components.map(mapSetComponentToPosition)}
         />
       </Box>
-      <Flex direction='column' alignItems='center' mt={['32px', '32px', '0']}>
+      <Flex
+        direction='column'
+        alignItems='flex-start'
+        mt={['32px', '32px', '0']}
+      >
         <Table variant='simple'>
           <Thead>
             <Tr>
@@ -110,13 +138,44 @@ const TokenComponentsTable = ({
               </Th>
             </Tr>
           </Thead>
-          <Tbody>
+          <Tbody
+            backgroundColor={colors.gray[50]}
+            sx={{
+              'tr:first-child td:first-child': {
+                borderRadius: '16px 0 0 0',
+              },
+              'tr:first-child td:last-child': {
+                borderRadius: '0 16px 0 0',
+              },
+              'tr:last-child td:first-child': {
+                borderRadius: '0 0 0 16px',
+              },
+              'tr:last-child td:last-child': {
+                borderRadius: '0 0 16px 0',
+              },
+            }}
+          >
             {components?.slice(0, amountToDisplay).map((data) => (
               <ComponentRow key={data.name} component={data} />
             ))}
+            <Tr>
+              <Td p={['16px 8px', '16px 8px', '16px 24px']} border='none'>
+                {renderTableDisplayControls()}
+              </Td>
+              <Td
+                isNumeric
+                color={colors.black}
+                // TODO?: weight 300 or 700 on hover
+                fontWeight={300}
+                fontSize='xs'
+                p={['16px 8px', '16px 8px', '16px 24px']}
+                border='none'
+              >
+                -
+              </Td>
+            </Tr>
           </Tbody>
         </Table>
-        {renderTableDisplayControls()}
       </Flex>
     </Flex>
   );
@@ -139,6 +198,7 @@ const ComponentRow = (props: { component: SetComponent }) => {
             alt={props.component.name}
             marginRight='10px'
           />
+          {/* TODO? <Dot color={props.component.} /> */}
           <Text fontWeight='500'>{props.component.name}</Text>
         </Flex>
       </Td>
@@ -157,4 +217,4 @@ const ComponentRow = (props: { component: SetComponent }) => {
   );
 };
 
-export default TokenComponentsTable;
+export default TokenAllocations;
