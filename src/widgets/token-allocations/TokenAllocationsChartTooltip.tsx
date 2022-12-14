@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, Flex, Text } from '@chakra-ui/react';
 
-// import { colors, useICColorMode } from 'styles/colors'
 import Dot from '../../components/Dot';
+import { colors } from '../../styles/colors';
 
 const DataRow = ({
   title,
@@ -27,27 +27,28 @@ const DataRow = ({
 
 const TokenAllocationsChartTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
-    const tooltipBgColor = '#EEE'; // FIXME WIP
-    // const tooltipBgColor = "#FFF"
-    const textColor = '#000';
-
     const { backgroundColor, title, percent } = payload[0].payload;
     return (
       <Flex
-        background={tooltipBgColor}
+        background={colors.white}
+        boxShadow='md'
         borderRadius='8px'
         direction='column'
         minW='160px'
         p='16px'
       >
         <Flex align='center' justify='space-between'>
-          <Text color={textColor} fontSize='16px' fontWeight='700'>
+          <Text color={colors.black} fontSize='16px' fontWeight='700'>
             {title}
           </Text>
           <Dot color={backgroundColor} />
         </Flex>
         <Box my='8px'>
-          <DataRow title='Allocation' value={percent} textColor={textColor} />
+          <DataRow
+            title='Allocation'
+            value={percent}
+            textColor={colors.black}
+          />
         </Box>
       </Flex>
     );

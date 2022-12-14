@@ -15,7 +15,6 @@ import {
 } from '@chakra-ui/react';
 
 import { productTokensBySymbol } from '../../constants/tokens';
-// import Dot from '../../components/Dot';
 import {
   SetComponent,
   useTokenComponents,
@@ -44,14 +43,12 @@ const ComponentRow = (props: { component: SetComponent }) => {
             alt={props.component.name}
             marginRight='10px'
           />
-          {/* TODO? <Dot color={props.component.} /> */}
           <Text fontWeight='500'>{props.component.name}</Text>
         </Flex>
       </Td>
       <Td
         isNumeric
         color={colors.black}
-        // TODO: weight 300 or 700 on hover
         fontWeight={300}
         fontSize='xs'
         p={['16px 8px', '16px 8px', '16px 24px']}
@@ -133,7 +130,6 @@ const TokenAllocations = ({
   }
 
   return (
-    // height 612px, width 1152px
     <Flex
       direction={['column', 'column', 'row']}
       alignItems='start'
@@ -151,6 +147,7 @@ const TokenAllocations = ({
           fontWeight={700}
           fontFamily={'sans-serif'}
           height={0}
+          width={130}
         >
           Allocations
         </Text>
@@ -202,7 +199,6 @@ const TokenAllocations = ({
               <Td
                 isNumeric
                 color={colors.black}
-                // TODO?: weight 300 or 700 on hover
                 fontWeight={300}
                 fontSize='xs'
                 p={['16px 8px', '16px 8px', '16px 24px']}
