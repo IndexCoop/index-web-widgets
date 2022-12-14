@@ -91,8 +91,11 @@ const TokenAllocations = ({
     return position;
   };
 
+  const shouldRenderTableControls =
+    components && components.length > defaultAmountToDisplay;
+
   const renderTableDisplayControls = () => {
-    if (components && components.length > defaultAmountToDisplay)
+    if (shouldRenderTableControls)
       return (
         <Box>
           {amountToDisplay < components.length ? (
@@ -192,21 +195,23 @@ const TokenAllocations = ({
             {components?.slice(0, amountToDisplay).map((data) => (
               <ComponentRow key={data.name} component={data} />
             ))}
-            <Tr>
-              <Td p={['16px 8px', '16px 8px', '16px 24px']} border='none'>
-                {renderTableDisplayControls()}
-              </Td>
-              <Td
-                isNumeric
-                color={colors.black}
-                fontWeight={300}
-                fontSize='xs'
-                p={['16px 8px', '16px 8px', '16px 24px']}
-                border='none'
-              >
-                -
-              </Td>
-            </Tr>
+            {shouldRenderTableControls && (
+              <Tr>
+                <Td p={['16px 8px', '16px 8px', '16px 24px']} border='none'>
+                  {renderTableDisplayControls()}
+                </Td>
+                <Td
+                  isNumeric
+                  color={colors.black}
+                  fontWeight={300}
+                  fontSize='xs'
+                  p={['16px 8px', '16px 8px', '16px 24px']}
+                  border='none'
+                >
+                  -
+                </Td>
+              </Tr>
+            )}
           </Tbody>
         </Table>
       </Flex>

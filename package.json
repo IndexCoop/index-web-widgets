@@ -2,7 +2,7 @@
   "name": "index-web-widgets",
   "version": "1.0.0",
   "description": "",
-  "main": "index-web-widgets.js",
+  "main": "dist/index-web-widgets.js",
   "scripts": {
     "start": "webpack-dev-server --config ./webpack.config.js --mode development --progress --color --port 3000",
     "lint:fix": "yarn prettier --write . && yarn eslint ./src --fix",
