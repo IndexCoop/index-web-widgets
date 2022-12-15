@@ -2,8 +2,7 @@ import React from 'react';
 import { useColorMode } from '@chakra-ui/react';
 
 import { productTokensBySymbol } from './constants/tokens';
-import LineChartExample from './widgets/LineChartExample';
-import PieChartExample from './widgets/PieChartExample';
+
 import TokenAllocations from './widgets/token-allocations/TokenAllocations';
 import TokenLineCharts from './widgets/token-line-charts/TokenLineCharts';
 
@@ -22,10 +21,6 @@ const App = ({ domElement }: { domElement: Element }) => {
   ) as keyof typeof productTokensBySymbol;
 
   switch (widgetType) {
-    case 'chart-line':
-      return <LineChartExample />;
-    case 'chart-pie':
-      return <PieChartExample />;
     case 'chart-token-allocation':
       return <TokenAllocations tokenSymbol={tokenSymbol} />;
     case 'chart-token-line':

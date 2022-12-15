@@ -32,7 +32,7 @@ https://www.jsdelivr.com/github
 
 Commited file: https://github.com/TheodoreChuang/index-web-widgets/blob/1.0.0/dist/index-web-widgets.js
 ->
-CDN automatically available at: https://cdn.jsdelivr.net/gh/TheodoreChuang/index-web-widgets@latest/dist/index-web-widgets.js
+CDN automatically available at: https://cdn.jsdelivr.net/gh/TheodoreChuang/index-web-widgets@1.0.0/dist/index-web-widgets.js
 
 We will need to either use release versions or somehow invalid their cache if we don't; otherwise, updates to the same compile files will not get reflected.
 
