@@ -1,4 +1,5 @@
 import React from 'react';
+import { Box } from '@chakra-ui/react';
 
 import {
   TokenMarketDataValues,
@@ -31,16 +32,18 @@ const TokenPage = ({ marketData }: { marketData: TokenMarketDataValues }) => {
   const chartHeight = window.outerWidth < 400 ? 300 : 400;
 
   return (
-    <TokenPriceChart
-      marketData={priceChartData}
-      prices={[priceFormatted]}
-      priceChanges={priceChangesFormatted}
-      options={{
-        width: chartWidth,
-        height: chartHeight,
-        hideYAxis: false,
-      }}
-    />
+    <Box w='100%' maxWidth={1150} padding={['inherit', '45px']}>
+      <TokenPriceChart
+        marketData={priceChartData}
+        prices={[priceFormatted]}
+        priceChanges={priceChangesFormatted}
+        options={{
+          width: chartWidth,
+          height: chartHeight,
+          hideYAxis: true,
+        }}
+      />
+    </Box>
   );
 };
 

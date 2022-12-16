@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Flex } from '@chakra-ui/layout';
 import { Tab, TabList, Tabs, Text, useTheme } from '@chakra-ui/react';
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts';
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 import { colors } from '../../../styles/colors';
 
 export enum Durations {
-  DAILY = 0,
-  WEEKLY = 1,
-  MONTHLY = 2,
-  QUARTERLY = 3,
-  YEARLY = 4,
+  DAILY,
+  WEEKLY,
+  MONTHLY,
+  QUARTERLY,
+  YEARLY,
 }
 
 export enum PriceChartRangeOption {
@@ -34,23 +41,17 @@ interface MarketChartPriceChange {
 
 export interface PriceChartData {
   x: number;
-  y1: number;
-  y2?: number;
-  y3?: number;
-  y4?: number;
-  y5?: number;
+  y: number;
 }
 
 const PriceDisplay = ({
   price,
   change,
   color,
-  customSelector,
 }: {
   price: string;
   change: string;
   color: string;
-  customSelector?: any;
 }) => (
   <Flex align='center' width='100%' alignItems={['', 'flex-end']}>
     <Flex align='baseline' flexDir={['column', 'column', 'column', 'row']}>
@@ -73,16 +74,18 @@ const PriceDisplay = ({
         </Text>
       </Flex>
     </Flex>
-    {customSelector && <Box mt='8px'>{customSelector}</Box>}
   </Flex>
 );
 
 const RangeSelector = ({ onChange }: { onChange: (index: number) => void }) => (
   <Tabs variant='unstyled' onChange={onChange}>
     <TabList>
+      {/* <Tab>1H</Tab> */}
+      {/* TODO? overkill?*/}
       <Tab>1D</Tab>
       <Tab>1W</Tab>
       <Tab>1M</Tab>
+      {/* <Tab>1Y</Tab> */}
     </TabList>
   </Tabs>
 );
@@ -92,14 +95,9 @@ const TokenPriceChart = (props: {
   prices: string[];
   priceChanges: MarketChartPriceChange[];
   options: MarketChartOptions;
-  customSelector?: any;
-  onMouseMove?: (...args: any[]) => any;
-  onMouseLeave?: (...args: any[]) => any;
 }) => {
   const theme = useTheme();
-  // const { isDarkMode } = useICColorMode()
-  // const strokeColor = isDarkMode ? colors.gray[500] : colors.gray[400]
-  const strokeColor = colors.gray[400];
+  const strokeColor = colors.gray[500];
 
   const [chartData, setChartData] = useState<PriceChartData[]>([]);
   const [durationSelector, setDurationSelector] = useState<number>(
@@ -117,19 +115,19 @@ const TokenPriceChart = (props: {
 
   const onChangeDuration = (index: number) => {
     switch (index) {
-      case 0:
+      case Durations.DAILY:
         setDurationSelector(Durations.DAILY);
         break;
-      case 1:
+      case Durations.WEEKLY:
         setDurationSelector(Durations.WEEKLY);
         break;
-      case 2:
+      case Durations.MONTHLY:
         setDurationSelector(Durations.MONTHLY);
         break;
-      case 3:
+      case Durations.QUARTERLY:
         setDurationSelector(Durations.QUARTERLY);
         break;
-      case 4:
+      case Durations.YEARLY:
         setDurationSelector(Durations.YEARLY);
         break;
     }
@@ -163,28 +161,8 @@ const TokenPriceChart = (props: {
     return `$${parseInt(val)}`;
   };
 
-  const minY = Math.min(
-    ...chartData.map<number>((data) =>
-      Math.min(
-        data.y1,
-        data.y2 ?? data.y1,
-        data.y3 ?? data.y1,
-        data.y4 ?? data.y1,
-        data.y5 ?? data.y1
-      )
-    )
-  );
-  const maxY = Math.max(
-    ...chartData.map<number>((data) =>
-      Math.max(
-        data.y1,
-        data.y2 ?? data.y1,
-        data.y3 ?? data.y1,
-        data.y4 ?? data.y1,
-        data.y5 ?? data.y1
-      )
-    )
-  );
+  const minY = Math.min(...chartData.map<number>((data) => Math.min(data.y)));
+  const maxY = Math.max(...chartData.map<number>((data) => Math.max(data.y)));
   const minYAdjusted = minY > 4 ? minY - 5 : 0;
   const yAxisDomain = [minYAdjusted, maxY + 5];
 
@@ -203,26 +181,27 @@ const TokenPriceChart = (props: {
         direction={['column', 'row']}
         alignItems={['left', 'flex-end']}
         mb='24px'
-        w='100%'
+        width={props.options.width ?? 900}
       >
         <PriceDisplay
           price={price}
           change={priceChange.label}
           color={priceChangeColor}
         />
-        {props.customSelector && (
-          <Box mr={['auto', '24px']}>{props.customSelector}</Box>
-        )}
         <Box mt={['8px', '0']} mr='auto' ml={['0', '15px']}>
           <RangeSelector onChange={onChangeDuration} />
         </Box>
       </Flex>
-      <AreaChart
+      <LineChart
         width={props.options.width ?? 900}
         height={props.options.height ?? 400}
         data={chartData}
       >
-        <CartesianGrid stroke={strokeColor} strokeOpacity={0.2} />
+        <CartesianGrid
+          stroke={strokeColor}
+          strokeOpacity={0.2}
+          vertical={false}
+        />
         <YAxis
           axisLine={false}
           domain={yAxisDomain}
@@ -243,37 +222,9 @@ const TokenPriceChart = (props: {
           tickFormatter={xAxisTickFormatter}
           tickLine={false}
         />
-        <Area
-          type='monotone'
-          dataKey='y1'
-          stroke={theme.colors.icBlue}
-          fill={theme.colors.icBlue}
-        />
-        <Area
-          type='monotone'
-          dataKey='y2'
-          stroke={theme.colors.icBlue2}
-          fill={theme.colors.icBlue2}
-        />
-        <Area
-          type='monotone'
-          dataKey='y3'
-          stroke={theme.colors.icBlue4}
-          fill={theme.colors.icBlue4}
-        />
-        <Area
-          type='monotone'
-          dataKey='y4'
-          stroke={theme.colors.icBlue6}
-          fill={theme.colors.icBlue6}
-        />
-        <Area
-          type='monotone'
-          dataKey='y5'
-          stroke={theme.colors.icBlue8}
-          fill={theme.colors.icBlue8}
-        />
-      </AreaChart>
+        <Tooltip />
+        <Line type='monotone' dataKey='y' stroke={theme.colors.icBlue} />
+      </LineChart>
     </Flex>
   );
 };
