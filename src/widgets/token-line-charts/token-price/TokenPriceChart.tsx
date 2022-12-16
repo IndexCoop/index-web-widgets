@@ -12,6 +12,8 @@ import {
 
 import { colors } from '../../../styles/colors';
 
+import TokenPriceChartTooltip from './TokenPriceChartTooltip';
+
 export enum Durations {
   DAILY,
   WEEKLY,
@@ -85,7 +87,8 @@ const RangeSelector = ({ onChange }: { onChange: (index: number) => void }) => (
       <Tab>1D</Tab>
       <Tab>1W</Tab>
       <Tab>1M</Tab>
-      {/* <Tab>1Y</Tab> */}
+      <Tab>3M</Tab>
+      {/* TODO <Tab>1Y</Tab> */}
     </TabList>
   </Tabs>
 );
@@ -222,8 +225,13 @@ const TokenPriceChart = (props: {
           tickFormatter={xAxisTickFormatter}
           tickLine={false}
         />
-        <Tooltip />
-        <Line type='monotone' dataKey='y' stroke={theme.colors.icBlue} />
+        <Tooltip content={<TokenPriceChartTooltip />} />
+        <Line
+          type='monotone'
+          dataKey='y'
+          stroke={theme.colors.icBlue}
+          dot={false}
+        />
       </LineChart>
     </Flex>
   );
