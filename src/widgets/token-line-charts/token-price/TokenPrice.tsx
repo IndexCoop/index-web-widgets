@@ -6,14 +6,20 @@ import {
   selectLatestMarketData,
 } from '../../../providers/MarketData';
 
-import TokenPriceChart from './TokenPriceChart';
+import TokenPriceChart, { MarketChartOptions } from './TokenPriceChart';
 import {
   getFormattedChartPriceChanges,
   getPriceChartData,
   getPricesChanges,
 } from './TokenPriceUtils';
 
-const TokenPage = ({ marketData }: { marketData: TokenMarketDataValues }) => {
+const TokenPrice = ({
+  marketData,
+  options,
+}: {
+  marketData: TokenMarketDataValues;
+  options?: MarketChartOptions;
+}) => {
   const priceChartData = getPriceChartData([marketData]);
 
   const price = selectLatestMarketData(marketData.hourlyPrices).toLocaleString(
@@ -32,7 +38,13 @@ const TokenPage = ({ marketData }: { marketData: TokenMarketDataValues }) => {
   const chartHeight = window.outerWidth < 400 ? 300 : 400;
 
   return (
-    <Box w='100%' maxWidth={1150} padding={['inherit', '45px']}>
+    <Box
+      w='100%'
+      maxWidth={900}
+      padding={['5px', '10px']}
+      margin={'auto'}
+      boxShadow='lg'
+    >
       <TokenPriceChart
         marketData={priceChartData}
         prices={[priceFormatted]}
@@ -41,10 +53,11 @@ const TokenPage = ({ marketData }: { marketData: TokenMarketDataValues }) => {
           width: chartWidth,
           height: chartHeight,
           hideYAxis: true,
+          ...options,
         }}
       />
     </Box>
   );
 };
 
-export default TokenPage;
+export default TokenPrice;

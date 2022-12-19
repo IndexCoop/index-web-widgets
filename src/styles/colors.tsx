@@ -1,5 +1,7 @@
 import { theme, useColorMode } from '@chakra-ui/react';
 
+import { ProductTokensBySymbol } from '../constants/tokens';
+
 export const colors = {
   ...theme.colors,
   // old colors will be removed once they are replaced everywhere
@@ -26,6 +28,10 @@ export const colors = {
   // not verified with designer (will be replaced soon)
   icGrayLightMode: '#aaa',
   icGrayDarkMode: '#777',
+  // Tokens
+  DpiPurple: '#8150E6',
+  MviPink: '#F85DDA',
+  BedRed: '#F2352F',
 };
 
 export const colorStyles = (isDarkMode: boolean) => {

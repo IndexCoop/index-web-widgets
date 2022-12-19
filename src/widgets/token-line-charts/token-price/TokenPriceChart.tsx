@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Flex } from '@chakra-ui/layout';
-import { Tab, TabList, Tabs, Text, useTheme } from '@chakra-ui/react';
+import { Tab, TabList, Tabs, Text } from '@chakra-ui/react';
 import {
   CartesianGrid,
   Line,
@@ -30,10 +30,11 @@ export enum PriceChartRangeOption {
   YEARLY_PRICE_RANGE = 365,
 }
 
-interface MarketChartOptions {
+export interface MarketChartOptions {
   width?: number;
   height?: number;
   hideYAxis?: boolean;
+  lineColor?: string;
 }
 
 interface MarketChartPriceChange {
@@ -55,40 +56,38 @@ const PriceDisplay = ({
   change: string;
   color: string;
 }) => (
-  <Flex align='center' width='100%' alignItems={['', 'flex-end']}>
-    <Flex align='baseline' flexDir={['column', 'column', 'column', 'row']}>
-      <Flex flexDirection={'column'}>
-        <Flex flexDirection={['row']} alignItems={['flex-end']}>
-          <Text
-            fontSize={['3xl', '3xl', '3xl', '4xl']}
-            color={colors.icBlue}
-            fontWeight='700'
-          >
-            {price}
-          </Text>
-        </Flex>
-        <Text
-          fontSize={['md', 'md', 'xl', '2xl']}
-          color={color}
-          fontWeight='700'
-        >
-          {change}
-        </Text>
-      </Flex>
-    </Flex>
+  <Flex
+    flexDirection='row'
+    alignItems='center'
+    gap={['5px', '15px']}
+    width='100%'
+  >
+    <Text fontSize={['2xl', '3xl']} color={colors.black}>
+      {price}
+    </Text>
+    <Text fontSize={['sm']} color={color}>
+      {change}
+    </Text>
   </Flex>
 );
 
 const RangeSelector = ({ onChange }: { onChange: (index: number) => void }) => (
-  <Tabs variant='unstyled' onChange={onChange}>
+  <Tabs
+    variant='unstyled'
+    size='sm'
+    backgroundColor={colors.gray[100]}
+    boxShadow='md'
+    borderRadius='8px'
+    onChange={onChange}
+  >
     <TabList>
-      {/* <Tab>1H</Tab> */}
+      {/* <Tab _selected={{ color: colors.icBlue }}>1H</Tab> */}
       {/* TODO? overkill?*/}
-      <Tab>1D</Tab>
-      <Tab>1W</Tab>
-      <Tab>1M</Tab>
-      <Tab>3M</Tab>
-      {/* TODO <Tab>1Y</Tab> */}
+      <Tab _selected={{ color: colors.icBlue }}>1D</Tab>
+      <Tab _selected={{ color: colors.icBlue }}>1W</Tab>
+      <Tab _selected={{ color: colors.icBlue }}>1M</Tab>
+      <Tab _selected={{ color: colors.icBlue }}>3M</Tab>
+      {/* TODO <Tab _selected={{ color: colors.icBlue}}>1Y</Tab> */}
     </TabList>
   </Tabs>
 );
@@ -99,7 +98,6 @@ const TokenPriceChart = (props: {
   priceChanges: MarketChartPriceChange[];
   options: MarketChartOptions;
 }) => {
-  const theme = useTheme();
   const strokeColor = colors.gray[500];
 
   const [chartData, setChartData] = useState<PriceChartData[]>([]);
@@ -229,7 +227,7 @@ const TokenPriceChart = (props: {
         <Line
           type='monotone'
           dataKey='y'
-          stroke={theme.colors.icBlue}
+          stroke={props.options.lineColor ?? colors.icBlue}
           dot={false}
         />
       </LineChart>
