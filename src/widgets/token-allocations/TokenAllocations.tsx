@@ -14,7 +14,7 @@ import {
   Tr,
 } from '@chakra-ui/react';
 
-import { productTokensBySymbol } from '../../constants/tokens';
+import { ProductTokensBySymbol } from '../../constants/tokens';
 import {
   SetComponent,
   useTokenComponents,
@@ -63,10 +63,10 @@ const ComponentRow = (props: { component: SetComponent }) => {
 const TokenAllocations = ({
   tokenSymbol,
 }: {
-  tokenSymbol: keyof typeof productTokensBySymbol;
+  tokenSymbol: keyof typeof ProductTokensBySymbol;
 }) => {
   const defaultAmountToDisplay = 4;
-  const token = productTokensBySymbol[tokenSymbol];
+  const token = ProductTokensBySymbol[tokenSymbol];
   const { components } = useTokenComponents(token);
   const [amountToDisplay, setAmountToDisplay] = useState<number>(
     defaultAmountToDisplay

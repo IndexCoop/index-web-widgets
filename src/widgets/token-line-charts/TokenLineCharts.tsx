@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { Box, Flex, Image, Text } from '@chakra-ui/react';
 
-import { productTokensBySymbol } from '../../constants/tokens';
+import { ProductTokensBySymbol } from '../../constants/tokens';
 import {
   fetchMarketData,
   TokenMarketDataValues,
@@ -11,10 +12,10 @@ import TokenPrice from './token-price/TokenPrice';
 const TokenLineCharts = ({
   tokenSymbol,
 }: {
-  tokenSymbol: keyof typeof productTokensBySymbol;
+  tokenSymbol: keyof typeof ProductTokensBySymbol;
 }) => {
   const [marketData, setMarketData] = useState<TokenMarketDataValues>({});
-  const token = productTokensBySymbol[tokenSymbol];
+  const token = ProductTokensBySymbol[tokenSymbol];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,7 +25,24 @@ const TokenLineCharts = ({
     fetchData();
   }, []);
 
-  return <TokenPrice marketData={marketData} />;
+  return (
+    <Box w='100%' maxWidth={1150} padding={['inherit', '45px']}>
+      <Flex alignItems='center' paddingBottom={['5px', '10px']}>
+        <Image
+          borderRadius='full'
+          boxSize='30px'
+          src={token.image}
+          alt={token.name}
+          marginRight='10px'
+        />
+        <Text fontWeight='500'>{token.name}</Text>
+      </Flex>
+      <TokenPrice
+        marketData={marketData}
+        options={{ lineColor: token.color }}
+      />
+    </Box>
+  );
 };
 
 export default TokenLineCharts;
