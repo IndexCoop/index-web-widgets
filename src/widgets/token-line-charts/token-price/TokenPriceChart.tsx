@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Flex } from '@chakra-ui/layout';
-import { Tab, TabList, Tabs, Text } from '@chakra-ui/react';
+import { Skeleton, Tab, TabList, Tabs, Text } from '@chakra-ui/react';
 import {
   CartesianGrid,
   Line,
   LineChart,
+  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
@@ -36,8 +37,6 @@ interface CategoricalChartState {
   activePayload: CategoricalChartStatePayload[];
   isTooltipActive?: boolean;
 }
-
-export const MaxChartWidth = 900;
 
 const PriceDisplay = ({
   initialPrice,
@@ -115,12 +114,16 @@ const PriceDisplay = ({
         gap={['10px', '25px']}
         width='100%'
       >
-        <Text fontSize={['2xl', '3xl', '4xl']} color={colors.black}>
-          {price}
-        </Text>
-        <Text fontSize={['sm']} color={color}>
-          {change}
-        </Text>
+        <Skeleton isLoaded={price !== '0.00'}>
+          <Text fontSize={['2xl', '3xl', '4xl']} color={colors.black}>
+            {price}
+          </Text>
+        </Skeleton>
+        <Skeleton isLoaded={price !== '0.00'}>
+          <Text fontSize={['sm']} color={color}>
+            {change}
+          </Text>
+        </Skeleton>
       </Flex>
     </Flex>
   );
@@ -151,6 +154,7 @@ const TokenPriceChart = (props: {
   options: MarketChartOptions;
 }) => {
   const strokeColor = colors.gray[500];
+  const chartHeight = window.outerWidth < 400 ? 300 : 400;
 
   const [chartData, setChartData] = useState<PriceChartData[]>([]);
   const [durationSelector, setDurationSelector] = useState<number>(
@@ -247,11 +251,12 @@ const TokenPriceChart = (props: {
 
   return (
     <Flex direction='column' alignItems='center' width='100%'>
+      {/* Display & Controls */}
       <Flex
         direction={['column', 'row']}
         alignItems={['left', 'flex-end']}
         mb='24px'
-        width={props.options.width ?? MaxChartWidth}
+        width={['100%', '90%']}
       >
         <PriceDisplay
           initialPrice={props.currentPrice}
@@ -263,45 +268,47 @@ const TokenPriceChart = (props: {
           <RangeSelector onChange={onChangeDuration} />
         </Box>
       </Flex>
-      <LineChart
-        width={props.options.width ?? MaxChartWidth}
-        height={props.options.height ?? 400}
-        data={chartData}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-      >
-        <CartesianGrid
-          stroke={strokeColor}
-          strokeOpacity={0.2}
-          vertical={false}
-        />
-        <YAxis
-          axisLine={false}
-          domain={yAxisDomain}
-          stroke={strokeColor}
-          tickCount={10}
-          tickFormatter={yAxisTickFormatter}
-          tickLine={false}
-          hide={props.options.hideYAxis ?? true}
-        />
-        <XAxis
-          axisLine={false}
-          dataKey='x'
-          interval='preserveStart'
-          minTickGap={100}
-          stroke={strokeColor}
-          tickCount={6}
-          tickFormatter={xAxisTickFormatter}
-          tickLine={false}
-        />
-        <Tooltip content={<TokenPriceChartTooltip />} />
-        <Line
-          type='monotone'
-          dataKey='y'
-          stroke={props.options.lineColor ?? colors.icBlue}
-          dot={false}
-        />
-      </LineChart>
+
+      {/* Chart */}
+      <ResponsiveContainer width={'95%'} height={chartHeight}>
+        <LineChart
+          data={chartData}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+        >
+          <CartesianGrid
+            stroke={strokeColor}
+            strokeOpacity={0.2}
+            vertical={false}
+          />
+          <YAxis
+            axisLine={false}
+            domain={yAxisDomain}
+            stroke={strokeColor}
+            tickCount={10}
+            tickFormatter={yAxisTickFormatter}
+            tickLine={false}
+            hide={true}
+          />
+          <XAxis
+            axisLine={false}
+            dataKey='x'
+            interval='preserveStart'
+            minTickGap={100}
+            stroke={strokeColor}
+            tickCount={6}
+            tickFormatter={xAxisTickFormatter}
+            tickLine={false}
+          />
+          <Tooltip content={<TokenPriceChartTooltip />} />
+          <Line
+            type='monotone'
+            dataKey='y'
+            stroke={props.options.lineColor ?? colors.icBlue}
+            dot={false}
+          />
+        </LineChart>
+      </ResponsiveContainer>
     </Flex>
   );
 };

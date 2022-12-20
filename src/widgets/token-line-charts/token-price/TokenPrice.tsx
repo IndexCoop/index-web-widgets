@@ -7,7 +7,7 @@ import {
 } from '../../../providers/MarketData';
 
 import { MaxPanelWidth } from '../TokenLineCharts';
-import TokenPriceChart, { MaxChartWidth } from './TokenPriceChart';
+import TokenPriceChart from './TokenPriceChart';
 import {
   getFormattedChartPriceChanges,
   getPriceChartData,
@@ -60,29 +60,19 @@ const TokenPrice = ({
   const priceChanges = getPricesChanges(marketData.hourlyPrices ?? []);
   const priceChangesFormatted = getFormattedChartPriceChanges(priceChanges);
 
-  // FIXME
-  const chartWidth =
-    window.outerWidth < 400 ? window.outerWidth : MaxChartWidth;
-  const chartHeight = window.outerWidth < 400 ? 300 : 400;
-
   return (
     <Box
       w='100%'
       maxWidth={MaxPanelWidth}
       padding={['5px', '10px']}
-      margin={'auto'}
+      margin='auto'
       boxShadow='lg'
     >
       <TokenPriceChart
         marketData={priceChartData}
         currentPrice={price}
         priceChanges={priceChangesFormatted}
-        options={{
-          width: chartWidth,
-          height: chartHeight,
-          hideYAxis: true,
-          ...options,
-        }}
+        options={options}
       />
     </Box>
   );

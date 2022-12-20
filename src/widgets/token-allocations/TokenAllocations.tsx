@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 
 import { ProductTokensBySymbol } from '../../constants/tokens';
+import { MaxWidgetWidth } from '../../constants/widget';
 import {
   SetComponent,
   useTokenComponents,
@@ -138,7 +139,7 @@ const TokenAllocations = ({
       alignItems='start'
       justifyContent='space-around'
       w='100%'
-      maxWidth={1150}
+      maxWidth={MaxWidgetWidth}
       padding={['inherit', '45px']}
     >
       <Box margin={['0 auto', '0 auto', '0 64px 0 0']}>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Flex, Image, Text } from '@chakra-ui/react';
 
 import { ProductTokensBySymbol } from '../../constants/tokens';
+import { MaxWidgetWidth } from '../../constants/widget';
 import {
   fetchMarketData,
   TokenMarketDataValues,
@@ -9,7 +10,7 @@ import {
 
 import TokenPrice from './token-price/TokenPrice';
 
-export const MaxPanelWidth = 980;
+export const MaxPanelWidth = 1100;
 
 const TokenLineCharts = ({
   tokenSymbol,
@@ -28,8 +29,9 @@ const TokenLineCharts = ({
   }, []);
 
   return (
-    <Box w='100%' maxWidth={1150} padding={['5px', '10px', '45px']}>
+    <Box w='100%' maxWidth={MaxWidgetWidth} padding={['5px', '10px', '45px']}>
       <Flex
+        w='100%'
         maxWidth={MaxPanelWidth}
         paddingBottom={['5px', '10px']}
         margin='auto'
