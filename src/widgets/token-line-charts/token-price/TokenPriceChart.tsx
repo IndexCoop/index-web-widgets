@@ -82,7 +82,12 @@ const PriceDisplay = ({
         )}`
       );
 
-      setPrice(`$${Number(price).toFixed(2)}`);
+      setPrice(
+        `${Number(price).toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`
+      );
 
       const diff = Number(initialPrice) - price;
       const abs = Math.abs(diff);
@@ -116,7 +121,7 @@ const PriceDisplay = ({
       >
         <Skeleton isLoaded={price !== '0.00'}>
           <Text fontSize={['2xl', '3xl', '4xl']} color={colors.black}>
-            {price}
+            {`$${price}`}
           </Text>
         </Skeleton>
         <Skeleton isLoaded={price !== '0.00'}>
