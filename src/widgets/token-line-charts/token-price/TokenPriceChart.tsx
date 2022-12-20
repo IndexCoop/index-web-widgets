@@ -11,65 +11,120 @@ import {
 } from 'recharts';
 
 import { colors } from '../../../styles/colors';
+import {
+  getDayOfMonth,
+  getFullDayOfWeek,
+  getFullMonth,
+} from '../../../utils/time';
 
+import { Durations, MarketChartOptions, PriceChartData } from './TokenPrice';
 import TokenPriceChartTooltip from './TokenPriceChartTooltip';
-
-export enum Durations {
-  DAILY,
-  WEEKLY,
-  MONTHLY,
-  QUARTERLY,
-  YEARLY,
-}
-
-export enum PriceChartRangeOption {
-  DAILY_PRICE_RANGE = 1,
-  WEEKLY_PRICE_RANGE = 7,
-  MONTHLY_PRICE_RANGE = 30,
-  QUARTERLY_PRICE_RANGE = 90,
-  YEARLY_PRICE_RANGE = 365,
-}
-
-export interface MarketChartOptions {
-  width?: number;
-  height?: number;
-  hideYAxis?: boolean;
-  lineColor?: string;
-}
 
 interface MarketChartPriceChange {
   label: string;
   isPositive: boolean;
 }
 
-export interface PriceChartData {
-  x: number;
-  y: number;
+/**
+ * Partial Rechart Type for CategoricalChartState
+ */
+interface CategoricalChartStatePayload {
+  value: number;
+  payload: PriceChartData;
+}
+interface CategoricalChartState {
+  activePayload: CategoricalChartStatePayload[];
+  isTooltipActive?: boolean;
 }
 
+export const MaxChartWidth = 900;
+
 const PriceDisplay = ({
-  price,
-  change,
-  color,
+  initialPrice,
+  initialChange,
+  initialColor,
+  chartState,
 }: {
-  price: string;
-  change: string;
-  color: string;
-}) => (
-  <Flex
-    flexDirection='row'
-    alignItems='center'
-    gap={['5px', '15px']}
-    width='100%'
-  >
-    <Text fontSize={['2xl', '3xl']} color={colors.black}>
-      {price}
-    </Text>
-    <Text fontSize={['sm']} color={color}>
-      {change}
-    </Text>
-  </Flex>
-);
+  initialPrice: string;
+  initialChange: string;
+  initialColor: string;
+  chartState?: CategoricalChartState;
+}) => {
+  const now = new Date();
+  const [date, setDate] = useState<string>(
+    `${getFullDayOfWeek(now)}, ${getFullMonth(now)} ${getDayOfMonth(now)}`
+  );
+  const [price, setPrice] = useState<string>(initialPrice);
+  const [change, setChange] = useState<string>(initialChange);
+  const [color, setColor] = useState<string>(initialColor);
+
+  // Handle updates to initial values
+  useEffect(() => {
+    setPrice(initialPrice);
+  }, [initialPrice]);
+  useEffect(() => {
+    setChange(initialChange);
+  }, [initialChange]);
+  useEffect(() => {
+    setColor(initialColor);
+  }, [initialColor]);
+
+  // Triggered on both handleMouseMove and handleMouseLeave
+  useEffect(() => {
+    // handleMouseMove
+    const { activePayload, isTooltipActive } = chartState ?? {};
+    if (activePayload?.length && isTooltipActive) {
+      const { x: date, y: price } = activePayload[0]?.payload;
+
+      const then = new Date(date);
+      setDate(
+        `${getFullDayOfWeek(then)}, ${getFullMonth(then)} ${getDayOfMonth(
+          then
+        )}`
+      );
+
+      setPrice(`$${Number(price).toFixed(2)}`);
+
+      const diff = Number(initialPrice) - price;
+      const abs = Math.abs(diff);
+      const isPositive = diff >= 0;
+      const rel = (abs / price) * 100;
+      const plusOrMinus = isPositive ? '' : '-';
+      setChange(`${plusOrMinus}${rel.toFixed(2)}%`);
+
+      const priceChangeColor = isPositive ? colors.icMalachite : colors.icRed;
+      setColor(priceChangeColor);
+    }
+
+    // handleMouseLeave
+    if (!isTooltipActive) {
+      setPrice(initialPrice);
+      setChange(initialChange);
+      setColor(initialColor);
+    }
+  }, [chartState]);
+
+  return (
+    <Flex flexDirection='column' width='100%'>
+      <Text fontSize={['sm']} color={colors.gray[500]}>
+        {date}
+      </Text>
+      <Flex
+        flexDirection='row'
+        alignItems='center'
+        gap={['10px', '25px']}
+        width='100%'
+      >
+        <Text fontSize={['2xl', '3xl', '4xl']} color={colors.black}>
+          {price}
+        </Text>
+        <Text fontSize={['sm']} color={color}>
+          {change}
+        </Text>
+      </Flex>
+    </Flex>
+  );
+};
 
 const RangeSelector = ({ onChange }: { onChange: (index: number) => void }) => (
   <Tabs
@@ -81,20 +136,17 @@ const RangeSelector = ({ onChange }: { onChange: (index: number) => void }) => (
     onChange={onChange}
   >
     <TabList>
-      {/* <Tab _selected={{ color: colors.icBlue }}>1H</Tab> */}
-      {/* TODO? overkill?*/}
       <Tab _selected={{ color: colors.icBlue }}>1D</Tab>
       <Tab _selected={{ color: colors.icBlue }}>1W</Tab>
       <Tab _selected={{ color: colors.icBlue }}>1M</Tab>
       <Tab _selected={{ color: colors.icBlue }}>3M</Tab>
-      {/* TODO <Tab _selected={{ color: colors.icBlue}}>1Y</Tab> */}
     </TabList>
   </Tabs>
 );
 
 const TokenPriceChart = (props: {
   marketData: PriceChartData[][];
-  prices: string[];
+  currentPrice: string;
   priceChanges: MarketChartPriceChange[];
   options: MarketChartOptions;
 }) => {
@@ -104,6 +156,8 @@ const TokenPriceChart = (props: {
   const [durationSelector, setDurationSelector] = useState<number>(
     Durations.DAILY
   );
+
+  const [chartState, setChartState] = useState<CategoricalChartState>();
 
   useEffect(() => {
     if (props.marketData.length < 1) {
@@ -128,29 +182,48 @@ const TokenPriceChart = (props: {
       case Durations.QUARTERLY:
         setDurationSelector(Durations.QUARTERLY);
         break;
-      case Durations.YEARLY:
-        setDurationSelector(Durations.YEARLY);
-        break;
     }
   };
 
-  const dateFormatterOptions = (
-    duration: Durations
-  ): Intl.DateTimeFormatOptions => {
-    switch (duration) {
-      case Durations.DAILY:
-        return {
-          hour: '2-digit',
-        };
-      default:
-        return {
-          month: 'short',
-          day: '2-digit',
-        };
-    }
+  // Update PriceDisplay to tooltip values
+  const handleMouseMove = (state: CategoricalChartState) => {
+    setChartState(state);
+  };
+
+  // Update PriceDisplay to current
+  const handleMouseLeave = () => {
+    const resetState: CategoricalChartState = {
+      activePayload: [
+        {
+          value: Number(props.currentPrice),
+          payload: {
+            x: new Date().getTime(),
+            y: Number(props.currentPrice),
+          },
+        },
+      ],
+      isTooltipActive: false,
+    };
+    setChartState(resetState);
   };
 
   const xAxisTickFormatter = (val: any | null | undefined) => {
+    const dateFormatterOptions = (
+      duration: Durations
+    ): Intl.DateTimeFormatOptions => {
+      switch (duration) {
+        case Durations.DAILY:
+          return {
+            hour: '2-digit',
+          };
+        default:
+          return {
+            month: 'short',
+            day: '2-digit',
+          };
+      }
+    };
+
     var options = dateFormatterOptions(durationSelector);
     return new Date(val).toLocaleString(undefined, options);
   };
@@ -167,10 +240,6 @@ const TokenPriceChart = (props: {
   const minYAdjusted = minY > 4 ? minY - 5 : 0;
   const yAxisDomain = [minYAdjusted, maxY + 5];
 
-  const price =
-    props.prices.length === 1
-      ? props.prices[0]
-      : props.prices[durationSelector];
   const priceChange = props.priceChanges[durationSelector];
   const priceChangeColor = priceChange.isPositive
     ? colors.icMalachite
@@ -182,21 +251,24 @@ const TokenPriceChart = (props: {
         direction={['column', 'row']}
         alignItems={['left', 'flex-end']}
         mb='24px'
-        width={props.options.width ?? 900}
+        width={props.options.width ?? MaxChartWidth}
       >
         <PriceDisplay
-          price={price}
-          change={priceChange.label}
-          color={priceChangeColor}
+          initialPrice={props.currentPrice}
+          initialChange={priceChange.label}
+          initialColor={priceChangeColor}
+          chartState={chartState}
         />
         <Box mt={['8px', '0']} mr='auto' ml={['0', '15px']}>
           <RangeSelector onChange={onChangeDuration} />
         </Box>
       </Flex>
       <LineChart
-        width={props.options.width ?? 900}
+        width={props.options.width ?? MaxChartWidth}
         height={props.options.height ?? 400}
         data={chartData}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
       >
         <CartesianGrid
           stroke={strokeColor}
@@ -215,7 +287,6 @@ const TokenPriceChart = (props: {
         <XAxis
           axisLine={false}
           dataKey='x'
-          dy={10}
           interval='preserveStart'
           minTickGap={100}
           stroke={strokeColor}

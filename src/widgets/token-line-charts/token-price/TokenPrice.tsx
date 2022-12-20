@@ -6,12 +6,39 @@ import {
   selectLatestMarketData,
 } from '../../../providers/MarketData';
 
-import TokenPriceChart, { MarketChartOptions } from './TokenPriceChart';
+import { MaxPanelWidth } from '../TokenLineCharts';
+import TokenPriceChart, { MaxChartWidth } from './TokenPriceChart';
 import {
   getFormattedChartPriceChanges,
   getPriceChartData,
   getPricesChanges,
 } from './TokenPriceUtils';
+
+export enum Durations {
+  DAILY = 0,
+  WEEKLY = 1,
+  MONTHLY = 2,
+  QUARTERLY = 3,
+}
+
+export enum PriceChartRangeOption {
+  DAILY_PRICE_RANGE = 1,
+  WEEKLY_PRICE_RANGE = 7,
+  MONTHLY_PRICE_RANGE = 30,
+  QUARTERLY_PRICE_RANGE = 90,
+}
+
+export interface MarketChartOptions {
+  width?: number;
+  height?: number;
+  hideYAxis?: boolean;
+  lineColor?: string;
+}
+
+export interface PriceChartData {
+  x: number;
+  y: number;
+}
 
 const TokenPrice = ({
   marketData,
@@ -29,25 +56,26 @@ const TokenPrice = ({
       maximumFractionDigits: 2,
     }
   );
-  const priceFormatted = `$${price}`;
 
   const priceChanges = getPricesChanges(marketData.hourlyPrices ?? []);
   const priceChangesFormatted = getFormattedChartPriceChanges(priceChanges);
 
-  const chartWidth = window.outerWidth < 400 ? window.outerWidth : 648;
+  // FIXME
+  const chartWidth =
+    window.outerWidth < 400 ? window.outerWidth : MaxChartWidth;
   const chartHeight = window.outerWidth < 400 ? 300 : 400;
 
   return (
     <Box
       w='100%'
-      maxWidth={900}
+      maxWidth={MaxPanelWidth}
       padding={['5px', '10px']}
       margin={'auto'}
       boxShadow='lg'
     >
       <TokenPriceChart
         marketData={priceChartData}
-        prices={[priceFormatted]}
+        currentPrice={price}
         priceChanges={priceChangesFormatted}
         options={{
           width: chartWidth,

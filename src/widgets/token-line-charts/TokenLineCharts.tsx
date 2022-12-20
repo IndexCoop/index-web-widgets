@@ -9,6 +9,8 @@ import {
 
 import TokenPrice from './token-price/TokenPrice';
 
+export const MaxPanelWidth = 980;
+
 const TokenLineCharts = ({
   tokenSymbol,
 }: {
@@ -26,16 +28,22 @@ const TokenLineCharts = ({
   }, []);
 
   return (
-    <Box w='100%' maxWidth={1150} padding={['inherit', '45px']}>
-      <Flex alignItems='center' paddingBottom={['5px', '10px']}>
+    <Box w='100%' maxWidth={1150} padding={['5px', '10px', '45px']}>
+      <Flex
+        maxWidth={MaxPanelWidth}
+        paddingBottom={['5px', '10px']}
+        margin='auto'
+      >
         <Image
           borderRadius='full'
-          boxSize='30px'
+          boxSize='20px'
           src={token.image}
           alt={token.name}
           marginRight='10px'
         />
-        <Text fontWeight='500'>{token.name}</Text>
+        <Text fontWeight='500' fontSize='sm'>
+          {token.name}
+        </Text>
       </Flex>
       <TokenPrice
         marketData={marketData}

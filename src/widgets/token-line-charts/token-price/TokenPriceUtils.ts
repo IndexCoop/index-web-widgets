@@ -1,6 +1,6 @@
 import { TokenMarketDataValues } from '../../../providers/MarketData';
 
-import { PriceChartData, PriceChartRangeOption } from './TokenPriceChart';
+import { PriceChartRangeOption, PriceChartData } from './TokenPrice';
 
 interface PriceChange {
   abs: number;
@@ -48,7 +48,6 @@ export function getPriceChartData(marketData: TokenMarketDataValues[]) {
     PriceChartRangeOption.WEEKLY_PRICE_RANGE,
     PriceChartRangeOption.MONTHLY_PRICE_RANGE,
     PriceChartRangeOption.QUARTERLY_PRICE_RANGE,
-    PriceChartRangeOption.YEARLY_PRICE_RANGE,
   ];
 
   const marketChartData: PriceChartData[][] = [];
@@ -89,7 +88,7 @@ export function getFormattedChartPriceChanges(priceChanges: PriceChange[]) {
   const priceChangesFormatted = priceChanges.map((change) => {
     const plusOrMinus = change.isPositive ? '' : '-';
     return {
-      label: `${plusOrMinus} ${change.rel.toFixed(2)}%`,
+      label: `${plusOrMinus}${change.rel.toFixed(2)}%`,
       isPositive: change.isPositive,
     };
   });
@@ -103,7 +102,6 @@ export function getPricesChanges(priceData: number[][]): PriceChange[] {
     PriceChartRangeOption.WEEKLY_PRICE_RANGE,
     PriceChartRangeOption.MONTHLY_PRICE_RANGE,
     PriceChartRangeOption.QUARTERLY_PRICE_RANGE,
-    PriceChartRangeOption.YEARLY_PRICE_RANGE,
   ];
 
   const changes: PriceChange[] = [];
