@@ -11,7 +11,7 @@ const WidgetTargets = document.querySelectorAll('.index_web_widget');
 WidgetTargets.forEach((widgetElement) => {
   const root = createRoot(widgetElement!);
   root.render(
-    <ChakraProvider>
+    <ChakraProvider resetCSS={false}>
       <React.StrictMode>
         <App domElement={widgetElement} />
       </React.StrictMode>

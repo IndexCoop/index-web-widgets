@@ -1,12 +1,17 @@
 import { TokenMarketDataValues } from '../../../providers/MarketData';
 
-import { PriceChartData, PriceChartRangeOption } from './TokenPriceChart';
+import { PriceChartRangeOption, PriceChartData } from './TokenPrice';
 
 interface PriceChange {
   abs: number;
   rel: number;
   isPositive: boolean;
 }
+
+/**
+ * Max points for a chart before degradation in performance
+ */
+const MaxPointsPerRange: number = 200;
 
 function getChartData(
   range: PriceChartRangeOption,
@@ -33,11 +38,7 @@ function getChartData(
 
     const data: PriceChartData = {
       x: pricesFromRange[0][i][0],
-      y1: y[0],
-      y2: y[1],
-      y3: y[2],
-      y4: y[3],
-      y5: y[4],
+      y: y[0],
     };
 
     chartData.push(data);
@@ -52,14 +53,14 @@ export function getPriceChartData(marketData: TokenMarketDataValues[]) {
     PriceChartRangeOption.WEEKLY_PRICE_RANGE,
     PriceChartRangeOption.MONTHLY_PRICE_RANGE,
     PriceChartRangeOption.QUARTERLY_PRICE_RANGE,
-    PriceChartRangeOption.YEARLY_PRICE_RANGE,
   ];
 
   const marketChartData: PriceChartData[][] = [];
   ranges.forEach((range) => {
     const prices = marketData.map((data) => data.hourlyPrices ?? []);
     const chartData = getChartData(range, prices);
-    marketChartData.push(chartData);
+    const trimmedData = trimArray(chartData, MaxPointsPerRange);
+    marketChartData.push(trimmedData);
   });
 
   return marketChartData;
@@ -90,13 +91,10 @@ function getChangeInPrice(priceData: number[][]): PriceChange {
 }
 
 export function getFormattedChartPriceChanges(priceChanges: PriceChange[]) {
-  // ['+10.53 ( +5.89% )', '+6.53 ( +2.89% )', ...]
   const priceChangesFormatted = priceChanges.map((change) => {
-    const plusOrMinus = change.isPositive ? '+' : '-';
+    const plusOrMinus = change.isPositive ? '' : '-';
     return {
-      label: `${plusOrMinus}$${change.abs.toFixed(
-        2
-      )} ( ${plusOrMinus} ${change.rel.toFixed(2)}% )`,
+      label: `${plusOrMinus}${change.rel.toFixed(2)}%`,
       isPositive: change.isPositive,
     };
   });
@@ -110,7 +108,6 @@ export function getPricesChanges(priceData: number[][]): PriceChange[] {
     PriceChartRangeOption.WEEKLY_PRICE_RANGE,
     PriceChartRangeOption.MONTHLY_PRICE_RANGE,
     PriceChartRangeOption.QUARTERLY_PRICE_RANGE,
-    PriceChartRangeOption.YEARLY_PRICE_RANGE,
   ];
 
   const changes: PriceChange[] = [];
@@ -121,4 +118,22 @@ export function getPricesChanges(priceData: number[][]): PriceChange[] {
   });
 
   return changes;
+}
+
+/**
+ * Trim an array from an arbitrary length to a fixed length
+ * If fixed length is greater than array, return array
+ */
+function trimArray(array: any[], fixedLength: number) {
+  if (array.length < fixedLength) return array;
+
+  const step = array.length / fixedLength;
+  const newArray = [];
+
+  for (let i = 0; i < fixedLength; i += 1) {
+    const index = Math.floor(i * step);
+    newArray.push(array[index]);
+  }
+
+  return newArray;
 }

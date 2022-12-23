@@ -1,5 +1,7 @@
 import { MAINNET } from './chains';
 
+import { colors } from '../styles/colors';
+
 export enum IndexType {
   thematic = 'thematic',
   leverage = 'leverage',
@@ -15,6 +17,7 @@ export interface Token {
   decimals: number;
   url: string;
   image: string;
+  color?: string;
   coingeckoId: string;
   tokensetsId: string;
   fees:
@@ -51,6 +54,7 @@ export const DefiPulseIndex: Token = {
   name: 'DeFi Pulse Index',
   symbol: 'DPI',
   image: 'https://index-dao.s3.amazonaws.com/defi_pulse_index_set.svg',
+  color: colors.DpiPurple,
   address: '0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b',
   polygonAddress: '0x85955046DF4668e1DD369D2DE9f3AEB98DD2A369',
   optimismAddress: undefined,
@@ -75,6 +79,7 @@ export const MetaverseIndex: Token = {
   decimals: 18,
   url: 'mvi',
   image: 'https://set-core.s3.amazonaws.com/img/portfolios/mvi.svg',
+  color: colors.MviPink,
   coingeckoId: 'metaverse-index',
   tokensetsId: 'mvi',
   fees: {
@@ -95,6 +100,7 @@ export const BedIndex: Token = {
   url: 'bed',
   image:
     'https://assets.website-files.com/60f6894ff98ed9aeca219e0e/62bdb61688a3657cf9b4ff29_BED_Logo-1.svg',
+  color: colors.BedRed,
   coingeckoId: 'bankless-bed-index',
   tokensetsId: 'bed',
   fees: {
@@ -105,7 +111,7 @@ export const BedIndex: Token = {
   defaultChain: MAINNET.chainId,
 };
 
-export const productTokensBySymbol = {
+export const ProductTokensBySymbol = {
   DPI: DefiPulseIndex,
   MVI: MetaverseIndex,
   BED: BedIndex,

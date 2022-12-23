@@ -14,7 +14,8 @@ import {
   Tr,
 } from '@chakra-ui/react';
 
-import { productTokensBySymbol } from '../../constants/tokens';
+import { ProductTokensBySymbol } from '../../constants/tokens';
+import { MaxWidgetWidth } from '../../constants/widget';
 import {
   SetComponent,
   useTokenComponents,
@@ -43,7 +44,9 @@ const ComponentRow = (props: { component: SetComponent }) => {
             alt={props.component.name}
             marginRight='10px'
           />
-          <Text fontWeight='500'>{props.component.name}</Text>
+          <Text fontWeight='500' margin='0'>
+            {props.component.name}
+          </Text>
         </Flex>
       </Td>
       <Td
@@ -63,10 +66,10 @@ const ComponentRow = (props: { component: SetComponent }) => {
 const TokenAllocations = ({
   tokenSymbol,
 }: {
-  tokenSymbol: keyof typeof productTokensBySymbol;
+  tokenSymbol: keyof typeof ProductTokensBySymbol;
 }) => {
   const defaultAmountToDisplay = 4;
-  const token = productTokensBySymbol[tokenSymbol];
+  const token = ProductTokensBySymbol[tokenSymbol];
   const { components } = useTokenComponents(token);
   const [amountToDisplay, setAmountToDisplay] = useState<number>(
     defaultAmountToDisplay
@@ -104,6 +107,7 @@ const TokenAllocations = ({
               size={'xs'}
               background={colors.gray[100]}
               boxShadow='md'
+              border={'none'}
               onClick={showAllComponents}
             >
               Show Complete List
@@ -138,7 +142,7 @@ const TokenAllocations = ({
       alignItems='start'
       justifyContent='space-around'
       w='100%'
-      maxWidth={1150}
+      maxWidth={MaxWidgetWidth}
       padding={['inherit', '45px']}
     >
       <Box margin={['0 auto', '0 auto', '0 64px 0 0']}>
@@ -151,6 +155,7 @@ const TokenAllocations = ({
           fontFamily={'sans-serif'}
           height={0}
           width={130}
+          margin={0}
         >
           Allocations
         </Text>

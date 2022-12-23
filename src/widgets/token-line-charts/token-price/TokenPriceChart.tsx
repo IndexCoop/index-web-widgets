@@ -1,110 +1,193 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Flex } from '@chakra-ui/layout';
-import { Tab, TabList, Tabs, Text, useTheme } from '@chakra-ui/react';
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts';
+import { Skeleton, Tab, TabList, Tabs, Text } from '@chakra-ui/react';
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 import { colors } from '../../../styles/colors';
+import {
+  getDayOfMonth,
+  getFullDayOfWeek,
+  getFullMonth,
+} from '../../../utils/time';
 
-export enum Durations {
-  DAILY = 0,
-  WEEKLY = 1,
-  MONTHLY = 2,
-  QUARTERLY = 3,
-  YEARLY = 4,
-}
-
-export enum PriceChartRangeOption {
-  DAILY_PRICE_RANGE = 1,
-  WEEKLY_PRICE_RANGE = 7,
-  MONTHLY_PRICE_RANGE = 30,
-  QUARTERLY_PRICE_RANGE = 90,
-  YEARLY_PRICE_RANGE = 365,
-}
-
-interface MarketChartOptions {
-  width?: number;
-  height?: number;
-  hideYAxis?: boolean;
-}
+import { Durations, MarketChartOptions, PriceChartData } from './TokenPrice';
+import TokenPriceChartTooltip from './TokenPriceChartTooltip';
 
 interface MarketChartPriceChange {
   label: string;
   isPositive: boolean;
 }
 
-export interface PriceChartData {
-  x: number;
-  y1: number;
-  y2?: number;
-  y3?: number;
-  y4?: number;
-  y5?: number;
+/**
+ * Partial Rechart Type for CategoricalChartState
+ */
+interface CategoricalChartStatePayload {
+  value: number;
+  payload: PriceChartData;
+}
+interface CategoricalChartState {
+  activePayload: CategoricalChartStatePayload[];
+  isTooltipActive?: boolean;
 }
 
 const PriceDisplay = ({
-  price,
-  change,
-  color,
-  customSelector,
+  initialPrice,
+  initialChange,
+  initialColor,
+  chartState,
 }: {
-  price: string;
-  change: string;
-  color: string;
-  customSelector?: any;
-}) => (
-  <Flex align='center' width='100%' alignItems={['', 'flex-end']}>
-    <Flex align='baseline' flexDir={['column', 'column', 'column', 'row']}>
-      <Flex flexDirection={'column'}>
-        <Flex flexDirection={['row']} alignItems={['flex-end']}>
+  initialPrice: string;
+  initialChange: string;
+  initialColor: string;
+  chartState?: CategoricalChartState;
+}) => {
+  const now = new Date();
+  const [date, setDate] = useState<string>(
+    `${getFullDayOfWeek(now)}, ${getFullMonth(now)} ${getDayOfMonth(now)}`
+  );
+  const [price, setPrice] = useState<string>(initialPrice);
+  const [change, setChange] = useState<string>(initialChange);
+  const [color, setColor] = useState<string>(initialColor);
+
+  // Handle updates to initial values
+  useEffect(() => {
+    setPrice(initialPrice);
+  }, [initialPrice]);
+  useEffect(() => {
+    setChange(initialChange);
+  }, [initialChange]);
+  useEffect(() => {
+    setColor(initialColor);
+  }, [initialColor]);
+
+  // Triggered on both handleMouseMove and handleMouseLeave
+  useEffect(() => {
+    // handleMouseMove
+    const { activePayload, isTooltipActive } = chartState ?? {};
+    if (activePayload?.length && isTooltipActive) {
+      const { x: date, y: price } = activePayload[0]?.payload;
+
+      const then = new Date(date);
+      setDate(
+        `${getFullDayOfWeek(then)}, ${getFullMonth(then)} ${getDayOfMonth(
+          then
+        )}`
+      );
+
+      setPrice(
+        `${Number(price).toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`
+      );
+
+      const diff = Number(initialPrice) - price;
+      const abs = Math.abs(diff);
+      const isPositive = diff >= 0;
+      const rel = (abs / price) * 100;
+      const plusOrMinus = isPositive ? '' : '-';
+      setChange(`${plusOrMinus}${rel.toFixed(2)}%`);
+
+      const priceChangeColor = isPositive ? colors.icMalachite : colors.icRed;
+      setColor(priceChangeColor);
+    }
+
+    // handleMouseLeave
+    if (!isTooltipActive) {
+      setPrice(initialPrice);
+      setChange(initialChange);
+      setColor(initialColor);
+    }
+  }, [chartState]);
+
+  return (
+    <Flex flexDirection='column' width='100%'>
+      <Text fontSize='sm' margin='0' color={colors.gray[500]}>
+        {date}
+      </Text>
+      <Flex
+        flexDirection='row'
+        alignItems='center'
+        gap={['10px', '25px']}
+        width='100%'
+      >
+        <Skeleton isLoaded={price !== '0.00'}>
           <Text
-            fontSize={['3xl', '3xl', '3xl', '4xl']}
-            color={colors.icBlue}
-            fontWeight='700'
+            fontSize={['2xl', '3xl', '4xl']}
+            margin='0'
+            color={colors.black}
           >
-            {price}
+            {`$${price}`}
           </Text>
-        </Flex>
-        <Text
-          fontSize={['md', 'md', 'xl', '2xl']}
-          color={color}
-          fontWeight='700'
-        >
-          {change}
-        </Text>
+        </Skeleton>
+        <Skeleton isLoaded={price !== '0.00'}>
+          <Text fontSize='sm' margin='0' color={color}>
+            {change}
+          </Text>
+        </Skeleton>
       </Flex>
     </Flex>
-    {customSelector && <Box mt='8px'>{customSelector}</Box>}
-  </Flex>
-);
+  );
+};
 
 const RangeSelector = ({ onChange }: { onChange: (index: number) => void }) => (
-  <Tabs variant='unstyled' onChange={onChange}>
-    <TabList>
-      <Tab>1D</Tab>
-      <Tab>1W</Tab>
-      <Tab>1M</Tab>
+  <Tabs
+    variant='unstyled'
+    size='sm'
+    backgroundColor={colors.gray[100]}
+    boxShadow='md'
+    borderRadius='8px'
+    onChange={onChange}
+  >
+    <TabList
+      sx={{
+        'button:first-child': {
+          borderRadius: '16px 0 0 16px',
+        },
+        'button:last-child': {
+          borderRadius: '0 16px 16px 0',
+        },
+      }}
+    >
+      <Tab _selected={{ color: colors.icBlue }} border='none'>
+        1D
+      </Tab>
+      <Tab _selected={{ color: colors.icBlue }} border='none'>
+        1W
+      </Tab>
+      <Tab _selected={{ color: colors.icBlue }} border='none'>
+        1M
+      </Tab>
+      <Tab _selected={{ color: colors.icBlue }} border='none'>
+        3M
+      </Tab>
     </TabList>
   </Tabs>
 );
 
 const TokenPriceChart = (props: {
   marketData: PriceChartData[][];
-  prices: string[];
+  currentPrice: string;
   priceChanges: MarketChartPriceChange[];
   options: MarketChartOptions;
-  customSelector?: any;
-  onMouseMove?: (...args: any[]) => any;
-  onMouseLeave?: (...args: any[]) => any;
 }) => {
-  const theme = useTheme();
-  // const { isDarkMode } = useICColorMode()
-  // const strokeColor = isDarkMode ? colors.gray[500] : colors.gray[400]
-  const strokeColor = colors.gray[400];
+  const strokeColor = colors.gray[500];
+  const chartHeight = window.outerWidth < 400 ? 300 : 400;
 
   const [chartData, setChartData] = useState<PriceChartData[]>([]);
   const [durationSelector, setDurationSelector] = useState<number>(
     Durations.DAILY
   );
+
+  const [chartState, setChartState] = useState<CategoricalChartState>();
 
   useEffect(() => {
     if (props.marketData.length < 1) {
@@ -117,41 +200,60 @@ const TokenPriceChart = (props: {
 
   const onChangeDuration = (index: number) => {
     switch (index) {
-      case 0:
+      case Durations.DAILY:
         setDurationSelector(Durations.DAILY);
         break;
-      case 1:
+      case Durations.WEEKLY:
         setDurationSelector(Durations.WEEKLY);
         break;
-      case 2:
+      case Durations.MONTHLY:
         setDurationSelector(Durations.MONTHLY);
         break;
-      case 3:
+      case Durations.QUARTERLY:
         setDurationSelector(Durations.QUARTERLY);
-        break;
-      case 4:
-        setDurationSelector(Durations.YEARLY);
         break;
     }
   };
 
-  const dateFormatterOptions = (
-    duration: Durations
-  ): Intl.DateTimeFormatOptions => {
-    switch (duration) {
-      case Durations.DAILY:
-        return {
-          hour: '2-digit',
-        };
-      default:
-        return {
-          month: 'short',
-          day: '2-digit',
-        };
-    }
+  // Update PriceDisplay to tooltip values
+  const handleMouseMove = (state: CategoricalChartState) => {
+    setChartState(state);
+  };
+
+  // Update PriceDisplay to current
+  const handleMouseLeave = () => {
+    const resetState: CategoricalChartState = {
+      activePayload: [
+        {
+          value: Number(props.currentPrice),
+          payload: {
+            x: new Date().getTime(),
+            y: Number(props.currentPrice),
+          },
+        },
+      ],
+      isTooltipActive: false,
+    };
+    setChartState(resetState);
   };
 
   const xAxisTickFormatter = (val: any | null | undefined) => {
+    const dateFormatterOptions = (
+      duration: Durations
+    ): Intl.DateTimeFormatOptions => {
+      switch (duration) {
+        case Durations.DAILY:
+          return {
+            hour: '2-digit',
+          };
+        default:
+          return {
+            month: 'short',
+            day: '2-digit',
+          };
+      }
+    };
+
     var options = dateFormatterOptions(durationSelector);
     return new Date(val).toLocaleString(undefined, options);
   };
@@ -163,35 +265,11 @@ const TokenPriceChart = (props: {
     return `$${parseInt(val)}`;
   };
 
-  const minY = Math.min(
-    ...chartData.map<number>((data) =>
-      Math.min(
-        data.y1,
-        data.y2 ?? data.y1,
-        data.y3 ?? data.y1,
-        data.y4 ?? data.y1,
-        data.y5 ?? data.y1
-      )
-    )
-  );
-  const maxY = Math.max(
-    ...chartData.map<number>((data) =>
-      Math.max(
-        data.y1,
-        data.y2 ?? data.y1,
-        data.y3 ?? data.y1,
-        data.y4 ?? data.y1,
-        data.y5 ?? data.y1
-      )
-    )
-  );
+  const minY = Math.min(...chartData.map<number>((data) => Math.min(data.y)));
+  const maxY = Math.max(...chartData.map<number>((data) => Math.max(data.y)));
   const minYAdjusted = minY > 4 ? minY - 5 : 0;
   const yAxisDomain = [minYAdjusted, maxY + 5];
 
-  const price =
-    props.prices.length === 1
-      ? props.prices[0]
-      : props.prices[durationSelector];
   const priceChange = props.priceChanges[durationSelector];
   const priceChangeColor = priceChange.isPositive
     ? colors.icMalachite
@@ -199,81 +277,64 @@ const TokenPriceChart = (props: {
 
   return (
     <Flex direction='column' alignItems='center' width='100%'>
+      {/* Display & Controls */}
       <Flex
         direction={['column', 'row']}
         alignItems={['left', 'flex-end']}
         mb='24px'
-        w='100%'
+        width={['100%', '90%']}
       >
         <PriceDisplay
-          price={price}
-          change={priceChange.label}
-          color={priceChangeColor}
+          initialPrice={props.currentPrice}
+          initialChange={priceChange.label}
+          initialColor={priceChangeColor}
+          chartState={chartState}
         />
-        {props.customSelector && (
-          <Box mr={['auto', '24px']}>{props.customSelector}</Box>
-        )}
         <Box mt={['8px', '0']} mr='auto' ml={['0', '15px']}>
           <RangeSelector onChange={onChangeDuration} />
         </Box>
       </Flex>
-      <AreaChart
-        width={props.options.width ?? 900}
-        height={props.options.height ?? 400}
-        data={chartData}
-      >
-        <CartesianGrid stroke={strokeColor} strokeOpacity={0.2} />
-        <YAxis
-          axisLine={false}
-          domain={yAxisDomain}
-          stroke={strokeColor}
-          tickCount={10}
-          tickFormatter={yAxisTickFormatter}
-          tickLine={false}
-          hide={props.options.hideYAxis ?? true}
-        />
-        <XAxis
-          axisLine={false}
-          dataKey='x'
-          dy={10}
-          interval='preserveStart'
-          minTickGap={100}
-          stroke={strokeColor}
-          tickCount={6}
-          tickFormatter={xAxisTickFormatter}
-          tickLine={false}
-        />
-        <Area
-          type='monotone'
-          dataKey='y1'
-          stroke={theme.colors.icBlue}
-          fill={theme.colors.icBlue}
-        />
-        <Area
-          type='monotone'
-          dataKey='y2'
-          stroke={theme.colors.icBlue2}
-          fill={theme.colors.icBlue2}
-        />
-        <Area
-          type='monotone'
-          dataKey='y3'
-          stroke={theme.colors.icBlue4}
-          fill={theme.colors.icBlue4}
-        />
-        <Area
-          type='monotone'
-          dataKey='y4'
-          stroke={theme.colors.icBlue6}
-          fill={theme.colors.icBlue6}
-        />
-        <Area
-          type='monotone'
-          dataKey='y5'
-          stroke={theme.colors.icBlue8}
-          fill={theme.colors.icBlue8}
-        />
-      </AreaChart>
+
+      {/* Chart */}
+      <ResponsiveContainer width={'95%'} height={chartHeight}>
+        <LineChart
+          data={chartData}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+        >
+          <CartesianGrid
+            stroke={strokeColor}
+            strokeOpacity={0.2}
+            vertical={false}
+          />
+          <YAxis
+            axisLine={false}
+            domain={yAxisDomain}
+            stroke={strokeColor}
+            tickCount={10}
+            tickFormatter={yAxisTickFormatter}
+            tickLine={false}
+            hide={true}
+          />
+          <XAxis
+            axisLine={false}
+            dataKey='x'
+            interval='preserveStart'
+            minTickGap={100}
+            stroke={strokeColor}
+            tickCount={6}
+            tickFormatter={xAxisTickFormatter}
+            tickLine={false}
+          />
+          <Tooltip content={<TokenPriceChartTooltip />} />
+          <Line
+            type='monotone'
+            dataKey='y'
+            stroke={props.options.lineColor ?? colors.icBlue}
+            dot={false}
+          />
+        </LineChart>
+      </ResponsiveContainer>
     </Flex>
   );
 };

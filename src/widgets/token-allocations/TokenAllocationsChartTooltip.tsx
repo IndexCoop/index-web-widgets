@@ -15,10 +15,10 @@ const DataRow = ({
 }) => {
   return (
     <Flex direction='column'>
-      <Text color={textColor} fontSize='12px' fontWeight='500'>
+      <Text color={textColor} fontSize='12px' fontWeight='500' margin='0'>
         {title}
       </Text>
-      <Text color={textColor} fontSize='16px' fontWeight='500'>
+      <Text color={textColor} fontSize='16px' fontWeight='500' margin='0'>
         {value}
       </Text>
     </Flex>
@@ -38,7 +38,12 @@ const TokenAllocationsChartTooltip = ({ active, payload }: any) => {
         p='16px'
       >
         <Flex align='center' justify='space-between'>
-          <Text color={colors.black} fontSize='16px' fontWeight='700'>
+          <Text
+            color={colors.black}
+            fontSize='16px'
+            fontWeight='700'
+            margin='0'
+          >
             {title}
           </Text>
           <Dot color={backgroundColor} />

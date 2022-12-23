@@ -1,10 +1,12 @@
 import React from 'react';
+import { Box } from '@chakra-ui/react';
 
 import {
   TokenMarketDataValues,
   selectLatestMarketData,
 } from '../../../providers/MarketData';
 
+import { MaxPanelWidth } from '../TokenLineCharts';
 import TokenPriceChart from './TokenPriceChart';
 import {
   getFormattedChartPriceChanges,
@@ -12,7 +14,39 @@ import {
   getPricesChanges,
 } from './TokenPriceUtils';
 
-const TokenPage = ({ marketData }: { marketData: TokenMarketDataValues }) => {
+export enum Durations {
+  DAILY = 0,
+  WEEKLY = 1,
+  MONTHLY = 2,
+  QUARTERLY = 3,
+}
+
+export enum PriceChartRangeOption {
+  DAILY_PRICE_RANGE = 1,
+  WEEKLY_PRICE_RANGE = 7,
+  MONTHLY_PRICE_RANGE = 30,
+  QUARTERLY_PRICE_RANGE = 90,
+}
+
+export interface MarketChartOptions {
+  width?: number;
+  height?: number;
+  hideYAxis?: boolean;
+  lineColor?: string;
+}
+
+export interface PriceChartData {
+  x: number;
+  y: number;
+}
+
+const TokenPrice = ({
+  marketData,
+  options,
+}: {
+  marketData: TokenMarketDataValues;
+  options?: MarketChartOptions;
+}) => {
   const priceChartData = getPriceChartData([marketData]);
 
   const price = selectLatestMarketData(marketData.hourlyPrices).toLocaleString(
@@ -22,26 +56,26 @@ const TokenPage = ({ marketData }: { marketData: TokenMarketDataValues }) => {
       maximumFractionDigits: 2,
     }
   );
-  const priceFormatted = `$${price}`;
 
   const priceChanges = getPricesChanges(marketData.hourlyPrices ?? []);
   const priceChangesFormatted = getFormattedChartPriceChanges(priceChanges);
 
-  const chartWidth = window.outerWidth < 400 ? window.outerWidth : 648;
-  const chartHeight = window.outerWidth < 400 ? 300 : 400;
-
   return (
-    <TokenPriceChart
-      marketData={priceChartData}
-      prices={[priceFormatted]}
-      priceChanges={priceChangesFormatted}
-      options={{
-        width: chartWidth,
-        height: chartHeight,
-        hideYAxis: false,
-      }}
-    />
+    <Box
+      w='100%'
+      maxWidth={MaxPanelWidth}
+      padding={['5px', '10px']}
+      margin='auto'
+      boxShadow='lg'
+    >
+      <TokenPriceChart
+        marketData={priceChartData}
+        currentPrice={price}
+        priceChanges={priceChangesFormatted}
+        options={options}
+      />
+    </Box>
   );
 };
 
-export default TokenPage;
+export default TokenPrice;

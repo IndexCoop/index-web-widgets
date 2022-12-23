@@ -50,22 +50,30 @@ A. For each page that will be consuming these widgets, you will first need to ad
 
 1. Go to page settings
 2. Go to `Custom Code` section
-3. In the `Before </body> tag` subsection insert the previous build and deploy JS
+3. In the `Before </body> tag` subsection insert the script like the following:
 
 ```
 <!-- S3 hosting -->
 <script src="https://<bucket>.s3.<region>.amazonaws.com/bundle.js"></script>
 <!-- jsDelivr hosting -->
-<script src="https://cdn.jsdelivr.net/gh/TheodoreChuang/index-web-widgets@main/dist/index-web-widgets.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/IndexCoop/index-web-widgets@1.0.1/dist/index-web-widgets.js"></script>
 ```
 
 B. Inserting a widget
 
 1. Add Element > Advanced > Embed
-2. Add custom code for whichever widget you would like
+2. Add custom code for **one** of the following widgets you would like to insert
 
 ```
-<div class="index_web_widget" data-widget-type="chart-line"></div>
+<!-- Token Allocation (Pie Chart) -->
+<div class="index_web_widget" data-widget-type="chart-token-allocation" data-token-symbol="DPI"></div>
+<div class="index_web_widget" data-widget-type="chart-token-allocation" data-token-symbol="MVI"></div>
+<div class="index_web_widget" data-widget-type="chart-token-allocation" data-token-symbol="BED"></div>
+
+<!-- Price (Line Chart) -->
+<div class="index_web_widget" data-widget-type="chart-token-line" data-token-symbol="DPI"></div>
+<div class="index_web_widget" data-widget-type="chart-token-line" data-token-symbol="MVI"></div>
+<div class="index_web_widget" data-widget-type="chart-token-line" data-token-symbol="BED"></div>
 ```
 
 C. Publish Site To Review Changes
