@@ -8,6 +8,11 @@ interface PriceChange {
   isPositive: boolean;
 }
 
+/**
+ * Max points for a chart before degradation in performance
+ */
+const MaxPointsPerRange: number = 200;
+
 function getChartData(
   range: PriceChartRangeOption,
   prices: number[][][]
@@ -54,7 +59,8 @@ export function getPriceChartData(marketData: TokenMarketDataValues[]) {
   ranges.forEach((range) => {
     const prices = marketData.map((data) => data.hourlyPrices ?? []);
     const chartData = getChartData(range, prices);
-    marketChartData.push(chartData);
+    const trimmedData = trimArray(chartData, MaxPointsPerRange);
+    marketChartData.push(trimmedData);
   });
 
   return marketChartData;
@@ -112,4 +118,22 @@ export function getPricesChanges(priceData: number[][]): PriceChange[] {
   });
 
   return changes;
+}
+
+/**
+ * Trim an array from an arbitrary length to a fixed length
+ * If fixed length is greater than array, return array
+ */
+function trimArray(array: any[], fixedLength: number) {
+  if (array.length < fixedLength) return array;
+
+  const step = array.length / fixedLength;
+  const newArray = [];
+
+  for (let i = 0; i < fixedLength; i += 1) {
+    const index = Math.floor(i * step);
+    newArray.push(array[index]);
+  }
+
+  return newArray;
 }
