@@ -44,7 +44,9 @@ const ComponentRow = (props: { component: SetComponent }) => {
             alt={props.component.name}
             marginRight='10px'
           />
-          <Text fontWeight='500'>{props.component.name}</Text>
+          <Text fontWeight='500' margin='0'>
+            {props.component.name}
+          </Text>
         </Flex>
       </Td>
       <Td
@@ -105,6 +107,7 @@ const TokenAllocations = ({
               size={'xs'}
               background={colors.gray[100]}
               boxShadow='md'
+              border={'none'}
               onClick={showAllComponents}
             >
               Show Complete List
@@ -152,6 +155,7 @@ const TokenAllocations = ({
           fontFamily={'sans-serif'}
           height={0}
           width={130}
+          margin={0}
         >
           Allocations
         </Text>

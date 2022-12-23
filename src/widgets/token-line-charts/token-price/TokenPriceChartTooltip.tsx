@@ -17,10 +17,20 @@ const TokenPriceChartTooltip = ({ active, payload }: any) => {
       >
         <Flex direction='column'>
           <Flex direction='row' justifyContent='space-between' minWidth={10}>
-            <Text color={colors.black} fontSize='12px' fontWeight='500'>
+            <Text
+              color={colors.black}
+              fontSize='12px'
+              fontWeight='500'
+              margin='0'
+            >
               {new Date(date).toLocaleDateString()}
             </Text>
-            <Text color={colors.black} fontSize='12px' fontWeight='500'>
+            <Text
+              color={colors.black}
+              fontSize='12px'
+              fontWeight='500'
+              margin='0'
+            >
               {new Date(date).toLocaleTimeString()}
             </Text>
           </Flex>
@@ -28,6 +38,7 @@ const TokenPriceChartTooltip = ({ active, payload }: any) => {
             color={payload[0]?.stroke ?? colors.black}
             fontSize='16px'
             fontWeight='500'
+            margin='0'
           >
             {`$${Number(price).toFixed(2)}`}
           </Text>

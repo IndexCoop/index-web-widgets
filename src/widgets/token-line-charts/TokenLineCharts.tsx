@@ -43,7 +43,7 @@ const TokenLineCharts = ({
           alt={token.name}
           marginRight='10px'
         />
-        <Text fontWeight='500' fontSize='sm'>
+        <Text fontWeight='500' fontSize='sm' margin='0'>
           {token.name}
         </Text>
       </Flex>

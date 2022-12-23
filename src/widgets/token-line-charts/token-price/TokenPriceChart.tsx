@@ -110,7 +110,7 @@ const PriceDisplay = ({
 
   return (
     <Flex flexDirection='column' width='100%'>
-      <Text fontSize={['sm']} color={colors.gray[500]}>
+      <Text fontSize='sm' margin='0' color={colors.gray[500]}>
         {date}
       </Text>
       <Flex
@@ -120,12 +120,16 @@ const PriceDisplay = ({
         width='100%'
       >
         <Skeleton isLoaded={price !== '0.00'}>
-          <Text fontSize={['2xl', '3xl', '4xl']} color={colors.black}>
+          <Text
+            fontSize={['2xl', '3xl', '4xl']}
+            margin='0'
+            color={colors.black}
+          >
             {`$${price}`}
           </Text>
         </Skeleton>
         <Skeleton isLoaded={price !== '0.00'}>
-          <Text fontSize={['sm']} color={color}>
+          <Text fontSize='sm' margin='0' color={color}>
             {change}
           </Text>
         </Skeleton>
@@ -143,11 +147,28 @@ const RangeSelector = ({ onChange }: { onChange: (index: number) => void }) => (
     borderRadius='8px'
     onChange={onChange}
   >
-    <TabList>
-      <Tab _selected={{ color: colors.icBlue }}>1D</Tab>
-      <Tab _selected={{ color: colors.icBlue }}>1W</Tab>
-      <Tab _selected={{ color: colors.icBlue }}>1M</Tab>
-      <Tab _selected={{ color: colors.icBlue }}>3M</Tab>
+    <TabList
+      sx={{
+        'button:first-child': {
+          borderRadius: '16px 0 0 16px',
+        },
+        'button:last-child': {
+          borderRadius: '0 16px 16px 0',
+        },
+      }}
+    >
+      <Tab _selected={{ color: colors.icBlue }} border='none'>
+        1D
+      </Tab>
+      <Tab _selected={{ color: colors.icBlue }} border='none'>
+        1W
+      </Tab>
+      <Tab _selected={{ color: colors.icBlue }} border='none'>
+        1M
+      </Tab>
+      <Tab _selected={{ color: colors.icBlue }} border='none'>
+        3M
+      </Tab>
     </TabList>
   </Tabs>
 );
