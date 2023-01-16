@@ -29,9 +29,10 @@ export const colors = {
   icGrayLightMode: '#aaa',
   icGrayDarkMode: '#777',
   // Tokens
-  DpiPurple: '#8150E6',
-  MviPink: '#F85DDA',
   BedRed: '#F2352F',
+  DpiPurple: '#8150E6',
+  FliPurple: '#45057C',
+  MviPink: '#F85DDA',
 };
 
 export const colorStyles = (isDarkMode: boolean) => {

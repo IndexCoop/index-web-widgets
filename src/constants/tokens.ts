@@ -33,21 +33,45 @@ export interface Token {
  * Tokens
  */
 
-export const ETH: Token = {
-  name: 'Ethereum',
-  symbol: 'ETH',
-  image:
-    'https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880',
-  address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-  polygonAddress: '',
-  optimismAddress: '',
+export const BedIndex: Token = {
+  name: 'Bankless BED Index',
+  symbol: 'BED',
+  address: '0x2aF1dF3AB0ab157e1E2Ad8F88A7D04fbea0c7dc6',
+  polygonAddress: undefined,
+  optimismAddress: undefined,
   decimals: 18,
-  url: '',
-  coingeckoId: 'ethereum',
-  tokensetsId: 'eth',
-  fees: undefined,
-  isDangerous: false,
-  indexTypes: [],
+  url: 'bed',
+  image:
+    'https://assets.website-files.com/60f6894ff98ed9aeca219e0e/62bdb61688a3657cf9b4ff29_BED_Logo-1.svg',
+  color: colors.BedRed,
+  coingeckoId: 'bankless-bed-index',
+  tokensetsId: 'bed',
+  fees: {
+    streamingFee: '0.25%',
+  },
+  isDangerous: true,
+  indexTypes: [IndexType.thematic],
+  defaultChain: MAINNET.chainId,
+};
+
+export const Bitcoin2xFlexibleLeverageIndex: Token = {
+  name: 'Bitcoin 2x Flexible Leverage Index',
+  symbol: 'BTC2x-FLI',
+  address: '0x0B498ff89709d3838a063f1dFA463091F9801c2b',
+  polygonAddress: undefined,
+  optimismAddress: undefined,
+  decimals: 18,
+  url: 'btcfli',
+  image: 'https://set-core.s3.amazonaws.com/img/portfolios/fli_btc.svg',
+  color: colors.FliPurple,
+  coingeckoId: 'btc-2x-flexible-leverage-index',
+  tokensetsId: 'btcfli',
+  fees: {
+    streamingFee: '1.95%',
+  },
+  isDangerous: true,
+  indexTypes: [IndexType.leverage],
+  defaultChain: MAINNET.chainId,
 };
 
 export const DefiPulseIndex: Token = {
@@ -67,6 +91,43 @@ export const DefiPulseIndex: Token = {
   },
   isDangerous: true,
   indexTypes: [IndexType.thematic],
+  defaultChain: MAINNET.chainId,
+};
+
+export const ETH: Token = {
+  name: 'Ethereum',
+  symbol: 'ETH',
+  image:
+    'https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880',
+  address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+  polygonAddress: '',
+  optimismAddress: '',
+  decimals: 18,
+  url: '',
+  coingeckoId: 'ethereum',
+  tokensetsId: 'eth',
+  fees: undefined,
+  isDangerous: false,
+  indexTypes: [],
+};
+
+export const Ethereum2xFlexibleLeverageIndex: Token = {
+  name: 'Ethereum 2x Flexible Leverage Index',
+  symbol: 'ETH2x-FLI',
+  address: '0xAa6E8127831c9DE45ae56bB1b0d4D4Da6e5665BD',
+  polygonAddress: undefined,
+  optimismAddress: undefined,
+  decimals: 18,
+  url: 'ethfli',
+  image: 'https://set-core.s3.amazonaws.com/img/portfolios/eth2x_fli.svg',
+  color: colors.FliPurple,
+  coingeckoId: 'eth-2x-flexible-leverage-index',
+  tokensetsId: 'ethfli',
+  fees: {
+    streamingFee: '1.95%',
+  },
+  isDangerous: true,
+  indexTypes: [IndexType.leverage],
   defaultChain: MAINNET.chainId,
 };
 
@@ -90,29 +151,10 @@ export const MetaverseIndex: Token = {
   defaultChain: MAINNET.chainId,
 };
 
-export const BedIndex: Token = {
-  name: 'Bankless BED Index',
-  symbol: 'BED',
-  address: '0x2aF1dF3AB0ab157e1E2Ad8F88A7D04fbea0c7dc6',
-  polygonAddress: undefined,
-  optimismAddress: undefined,
-  decimals: 18,
-  url: 'bed',
-  image:
-    'https://assets.website-files.com/60f6894ff98ed9aeca219e0e/62bdb61688a3657cf9b4ff29_BED_Logo-1.svg',
-  color: colors.BedRed,
-  coingeckoId: 'bankless-bed-index',
-  tokensetsId: 'bed',
-  fees: {
-    streamingFee: '0.25%',
-  },
-  isDangerous: true,
-  indexTypes: [IndexType.thematic],
-  defaultChain: MAINNET.chainId,
-};
-
 export const ProductTokensBySymbol = {
-  DPI: DefiPulseIndex,
-  MVI: MetaverseIndex,
   BED: BedIndex,
+  BTCFLI: Bitcoin2xFlexibleLeverageIndex,
+  DPI: DefiPulseIndex,
+  ETHFLI: Ethereum2xFlexibleLeverageIndex,
+  MVI: MetaverseIndex,
 };
