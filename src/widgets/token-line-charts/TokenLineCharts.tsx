@@ -29,7 +29,7 @@ const TokenLineCharts = ({
   }, []);
 
   return (
-    <Box w='100%' maxWidth={MaxWidgetWidth} padding={['5px', '10px', '45px']}>
+    <Box w='100%' maxWidth={MaxWidgetWidth}>
       <Flex
         w='100%'
         maxWidth={MaxPanelWidth}
