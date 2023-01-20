@@ -138,14 +138,12 @@ const TokenAllocations = ({
 
   return (
     <Flex
-      direction={['column', 'column', 'row']}
+      direction={['column']}
       alignItems='start'
       justifyContent='space-around'
-      w='100%'
       maxWidth={MaxWidgetWidth}
-      padding={['inherit', '45px']}
     >
-      <Box margin={['0 auto', '0 auto', '0 64px 0 0']}>
+      <Box margin={['auto']}>
         <Text
           position={'relative'}
           top={165}
