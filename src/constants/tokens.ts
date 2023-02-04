@@ -1,5 +1,7 @@
 import { MAINNET } from './chains';
 
+import { colors } from '../styles/colors';
+
 export enum IndexType {
   thematic = 'thematic',
   leverage = 'leverage',
@@ -15,6 +17,7 @@ export interface Token {
   decimals: number;
   url: string;
   image: string;
+  color?: string;
   coingeckoId: string;
   tokensetsId: string;
   fees:
@@ -29,6 +32,67 @@ export interface Token {
 /**
  * Tokens
  */
+
+export const BedIndex: Token = {
+  name: 'Bankless BED Index',
+  symbol: 'BED',
+  address: '0x2aF1dF3AB0ab157e1E2Ad8F88A7D04fbea0c7dc6',
+  polygonAddress: undefined,
+  optimismAddress: undefined,
+  decimals: 18,
+  url: 'bed',
+  image:
+    'https://assets.website-files.com/60f6894ff98ed9aeca219e0e/62bdb61688a3657cf9b4ff29_BED_Logo-1.svg',
+  color: colors.BedRed,
+  coingeckoId: 'bankless-bed-index',
+  tokensetsId: 'bed',
+  fees: {
+    streamingFee: '0.25%',
+  },
+  isDangerous: true,
+  indexTypes: [IndexType.thematic],
+  defaultChain: MAINNET.chainId,
+};
+
+export const Bitcoin2xFlexibleLeverageIndex: Token = {
+  name: 'Bitcoin 2x Flexible Leverage Index',
+  symbol: 'BTC2x-FLI',
+  address: '0x0B498ff89709d3838a063f1dFA463091F9801c2b',
+  polygonAddress: undefined,
+  optimismAddress: undefined,
+  decimals: 18,
+  url: 'btcfli',
+  image: 'https://set-core.s3.amazonaws.com/img/portfolios/fli_btc.svg',
+  color: colors.FliPurple,
+  coingeckoId: 'btc-2x-flexible-leverage-index',
+  tokensetsId: 'btcfli',
+  fees: {
+    streamingFee: '1.95%',
+  },
+  isDangerous: true,
+  indexTypes: [IndexType.leverage],
+  defaultChain: MAINNET.chainId,
+};
+
+export const DefiPulseIndex: Token = {
+  name: 'DeFi Pulse Index',
+  symbol: 'DPI',
+  image: 'https://index-dao.s3.amazonaws.com/defi_pulse_index_set.svg',
+  color: colors.DpiPurple,
+  address: '0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b',
+  polygonAddress: '0x85955046DF4668e1DD369D2DE9f3AEB98DD2A369',
+  optimismAddress: undefined,
+  decimals: 18,
+  url: 'dpi',
+  coingeckoId: 'defipulse-index',
+  tokensetsId: 'dpi',
+  fees: {
+    streamingFee: '0.95%',
+  },
+  isDangerous: true,
+  indexTypes: [IndexType.thematic],
+  defaultChain: MAINNET.chainId,
+};
 
 export const ETH: Token = {
   name: 'Ethereum',
@@ -47,22 +111,23 @@ export const ETH: Token = {
   indexTypes: [],
 };
 
-export const DefiPulseIndex: Token = {
-  name: 'DeFi Pulse Index',
-  symbol: 'DPI',
-  image: 'https://index-dao.s3.amazonaws.com/defi_pulse_index_set.svg',
-  address: '0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b',
-  polygonAddress: '0x85955046DF4668e1DD369D2DE9f3AEB98DD2A369',
+export const Ethereum2xFlexibleLeverageIndex: Token = {
+  name: 'Ethereum 2x Flexible Leverage Index',
+  symbol: 'ETH2x-FLI',
+  address: '0xAa6E8127831c9DE45ae56bB1b0d4D4Da6e5665BD',
+  polygonAddress: undefined,
   optimismAddress: undefined,
   decimals: 18,
-  url: 'dpi',
-  coingeckoId: 'defipulse-index',
-  tokensetsId: 'dpi',
+  url: 'ethfli',
+  image: 'https://set-core.s3.amazonaws.com/img/portfolios/eth2x_fli.svg',
+  color: colors.FliPurple,
+  coingeckoId: 'eth-2x-flexible-leverage-index',
+  tokensetsId: 'ethfli',
   fees: {
-    streamingFee: '0.95%',
+    streamingFee: '1.95%',
   },
   isDangerous: true,
-  indexTypes: [IndexType.thematic],
+  indexTypes: [IndexType.leverage],
   defaultChain: MAINNET.chainId,
 };
 
@@ -75,6 +140,7 @@ export const MetaverseIndex: Token = {
   decimals: 18,
   url: 'mvi',
   image: 'https://set-core.s3.amazonaws.com/img/portfolios/mvi.svg',
+  color: colors.MviPink,
   coingeckoId: 'metaverse-index',
   tokensetsId: 'mvi',
   fees: {
@@ -85,28 +151,10 @@ export const MetaverseIndex: Token = {
   defaultChain: MAINNET.chainId,
 };
 
-export const BedIndex: Token = {
-  name: 'Bankless BED Index',
-  symbol: 'BED',
-  address: '0x2aF1dF3AB0ab157e1E2Ad8F88A7D04fbea0c7dc6',
-  polygonAddress: undefined,
-  optimismAddress: undefined,
-  decimals: 18,
-  url: 'bed',
-  image:
-    'https://assets.website-files.com/60f6894ff98ed9aeca219e0e/62bdb61688a3657cf9b4ff29_BED_Logo-1.svg',
-  coingeckoId: 'bankless-bed-index',
-  tokensetsId: 'bed',
-  fees: {
-    streamingFee: '0.25%',
-  },
-  isDangerous: true,
-  indexTypes: [IndexType.thematic],
-  defaultChain: MAINNET.chainId,
-};
-
-export const productTokensBySymbol = {
-  DPI: DefiPulseIndex,
-  MVI: MetaverseIndex,
+export const ProductTokensBySymbol = {
   BED: BedIndex,
+  BTCFLI: Bitcoin2xFlexibleLeverageIndex,
+  DPI: DefiPulseIndex,
+  ETHFLI: Ethereum2xFlexibleLeverageIndex,
+  MVI: MetaverseIndex,
 };

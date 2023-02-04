@@ -1,69 +1,38 @@
-import { ETH } from '../../constants/tokens';
 import { TokenMarketDataValues } from '../../providers/MarketData';
 import { IndexApi } from '../../utils/api/indexApi';
 
 const baseURL = '/coingecko';
 const indexApi = new IndexApi();
 
+/**
+ * Get token historic market data
+ * https://www.coingecko.com/en/api/documentation
+ * @param id Token['coingeckoId']
+ * @param baseCurrency
+ * @returns
+ */
 export const fetchHistoricalTokenMarketData = async (
   id: string,
   baseCurrency = 'usd'
 ): Promise<TokenMarketDataValues> => {
-  const coingeckoMaxTokenDataUrl =
-    baseURL +
-    `/coins/${id}/market_chart?vs_currency=${baseCurrency}&days=max&interval=daily`;
+  // const coingeckoMaxTokenDataUrl =
+  //   baseURL +
+  //   `/coins/${id}/market_chart?vs_currency=${baseCurrency}&days=max&interval=daily`;
   const coingeckoHourlyTokenDataUrl =
     baseURL + `/coins/${id}/market_chart?vs_currency=${baseCurrency}&days=90`;
   return Promise.all([
-    indexApi.get(coingeckoMaxTokenDataUrl),
     indexApi.get(coingeckoHourlyTokenDataUrl),
+    // indexApi.get(coingeckoMaxTokenDataUrl),
   ])
     .then((data) => {
-      const hourlyPrices = data[1].prices,
-        marketcaps = data[0].market_caps,
-        volumes = data[0].total_volumes;
+      const hourlyPrices = data[0].prices;
+      // marketcaps = data[1].market_caps,
+      // volumes = data[1].total_volumes;
 
-      return { hourlyPrices, marketcaps, volumes };
+      return { hourlyPrices };
     })
     .catch((error) => {
       console.error('Error fetching historical token market data', error);
       return { hourly: [], marketcaps: [], volumes: [] };
     });
-};
-
-const getAssetPlatform = (chainId: number) => {
-  if (chainId === 1) return 'ethereum';
-};
-
-export const fetchCoingeckoTokenPrice = async (
-  address: string,
-  chainId: number,
-  baseCurrency = 'usd'
-): Promise<number> => {
-  if (address === ETH.address) {
-    const priceUrl =
-      baseURL + `/simple/price/?ids=ethereum&vs_currencies=${baseCurrency}`;
-
-    const data = await indexApi.get(priceUrl).catch((_) => {
-      return 0;
-    });
-
-    if (data === 0 || !data['ethereum']) return 0;
-
-    return data['ethereum'][baseCurrency];
-  }
-
-  const getPriceUrl =
-    baseURL +
-    `/simple/token_price/${getAssetPlatform(
-      chainId
-    )}/?contract_addresses=${address}&vs_currencies=${baseCurrency}`;
-
-  const data = await indexApi.get(getPriceUrl).catch((_) => {
-    return 0;
-  });
-
-  if (data === 0 || !data[address.toLowerCase()]) return 0;
-
-  return data[address.toLowerCase()][baseCurrency];
 };

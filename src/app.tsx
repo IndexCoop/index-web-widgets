@@ -1,7 +1,7 @@
 import React from 'react';
 import { useColorMode } from '@chakra-ui/react';
 
-import { productTokensBySymbol } from './constants/tokens';
+import { ProductTokensBySymbol } from './constants/tokens';
 
 import TokenAllocations from './widgets/token-allocations/TokenAllocations';
 import TokenLineCharts from './widgets/token-line-charts/TokenLineCharts';
@@ -18,7 +18,7 @@ const App = ({ domElement }: { domElement: Element }) => {
   const widgetType = domElement.getAttribute('data-widget-type');
   const tokenSymbol = domElement.getAttribute(
     'data-token-symbol'
-  ) as keyof typeof productTokensBySymbol;
+  ) as keyof typeof ProductTokensBySymbol;
 
   switch (widgetType) {
     case 'chart-token-allocation':
