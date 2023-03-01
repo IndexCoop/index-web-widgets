@@ -1,4 +1,11 @@
-.App {
-  font-family: sans-serif;
-  text-align: center;
+body {
+  line-height: 1.75em !important;
+  font-family: 'Open Sauce Sans', sans-serif !important;
+  font-size: 16px !important;
+}
+
+@media screen and (max-width: 767px) {
+  body {
+    font-size: 15px !important;
+  }
 }

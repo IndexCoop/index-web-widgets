@@ -4,6 +4,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 
 import App from './app';
 
+import './styles.css';
+
 // Find all widget targets (in production there will likely only be a single widget per element)
 const WidgetTargets = document.querySelectorAll('.index_web_widget');
 
