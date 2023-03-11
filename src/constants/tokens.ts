@@ -94,6 +94,26 @@ export const DefiPulseIndex: Token = {
   defaultChain: MAINNET.chainId,
 };
 
+export const DiversifiedStakedETHIndex: Token = {
+  name: 'Diversified Staked ETH Index',
+  symbol: 'dsETH',
+  image:
+    'https://assets.website-files.com/60d237b6ea65be721ff4bbfa/637daed7345b29db5929e009_Dseth%20Logo.png',
+  address: '0x341c05c0E9b33C0E38d64de76516b2Ce970bB3BE',
+  polygonAddress: undefined,
+  optimismAddress: undefined,
+  decimals: 18,
+  url: 'dseth',
+  coingeckoId: 'diversified-staked-eth',
+  tokensetsId: 'dseth',
+  fees: {
+    streamingFee: '0.25%',
+  },
+  isDangerous: false,
+  indexTypes: [IndexType.yield],
+  defaultChain: MAINNET.chainId,
+};
+
 export const ETH: Token = {
   name: 'Ethereum',
   symbol: 'ETH',
@@ -131,6 +151,26 @@ export const Ethereum2xFlexibleLeverageIndex: Token = {
   defaultChain: MAINNET.chainId,
 };
 
+export const GitcoinStakedETHIndex: Token = {
+  name: 'Gitcoin Staked ETH Index',
+  symbol: 'gtcETH',
+  image:
+    'https://assets.website-files.com/60d237b6ea65be721ff4bbfa/63f3a853c42e2e45ee6076c6_gtcETH-logo-p-500.png',
+  address: '0x36c833Eed0D376f75D1ff9dFDeE260191336065e',
+  polygonAddress: undefined,
+  optimismAddress: undefined,
+  decimals: 18,
+  url: 'gtceth',
+  coingeckoId: 'gitcoin-staked-eth-index',
+  tokensetsId: 'gtceth',
+  fees: {
+    streamingFee: '2.0%',
+  },
+  isDangerous: false,
+  indexTypes: [IndexType.yield],
+  defaultChain: MAINNET.chainId,
+};
+
 export const MetaverseIndex: Token = {
   name: 'Metaverse Index',
   symbol: 'MVI',
@@ -155,6 +195,8 @@ export const ProductTokensBySymbol = {
   BED: BedIndex,
   BTCFLI: Bitcoin2xFlexibleLeverageIndex,
   DPI: DefiPulseIndex,
+  DSETH: DiversifiedStakedETHIndex,
   ETHFLI: Ethereum2xFlexibleLeverageIndex,
+  GTCETH: GitcoinStakedETHIndex,
   MVI: MetaverseIndex,
 };
