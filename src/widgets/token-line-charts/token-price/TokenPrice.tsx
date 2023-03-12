@@ -1,13 +1,13 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
 
+import { MaxPanelWidth } from '../../../constants/widget';
 import {
   TokenMarketDataValues,
   selectLatestMarketData,
 } from '../../../providers/MarketData';
 import { ChartOption } from '../../../utils/chart';
 
-import { MaxPanelWidth } from '../TokenLineCharts';
 import TokenPriceChart from './TokenPriceChart';
 import {
   getFormattedChartPriceChanges,
