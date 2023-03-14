@@ -31,7 +31,7 @@ const TokenAreaYieldsIceth = ({
           boxSize='20px'
           src={token.image}
           alt={token.name}
-          marginRight='10px'
+          margin='5px 10px'
         />
         <Text fontWeight='500' fontSize='sm' margin='0'>
           {token.name}

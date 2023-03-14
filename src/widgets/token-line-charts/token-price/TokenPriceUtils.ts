@@ -1,9 +1,5 @@
 import { TokenMarketDataValues } from '../../../providers/MarketData';
-import {
-  MaxPointsPerRange,
-  ChartDatas,
-  ChartDataPoint,
-} from '../../../utils/chart';
+import { ChartDatas, ChartDataPoint } from '../../../utils/chart';
 import { trimArray } from '../../../utils/helpers';
 
 import { PriceChartRangeOption } from './TokenPrice';
@@ -13,6 +9,11 @@ interface PriceChange {
   rel: number;
   isPositive: boolean;
 }
+
+/**
+ * Approximate max points for these line charts before experiencing degradation in performance
+ */
+export const MaxPointsPerRange: number = 200;
 
 function getChartData(
   range: PriceChartRangeOption,

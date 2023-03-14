@@ -15,8 +15,3 @@ export interface ChartDataPoint {
   y4?: number;
   y5?: number;
 }
-
-/**
- * Max points for a line chart before degradation in performance
- */
-export const MaxPointsPerRange: number = 200;
