@@ -1,30 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Box, Flex, Image, Text } from '@chakra-ui/react';
 
 import { ProductTokensBySymbol } from '../../constants/tokens';
 import { MaxPanelWidth, MaxWidgetWidth } from '../../constants/widget';
-import {
-  fetchMarketData,
-  TokenMarketDataValues,
-} from '../../providers/MarketData';
+import { useIcEthYields } from '../../hooks/useIcEthYields';
 
-import TokenPrice from './token-price/TokenPrice';
+import TokenYieldChart from './TokenYieldChart';
+import { mapYieldsToChartData } from './TokenYieldUtils';
 
-const TokenLineCharts = ({
+const TokenAreaYieldsIceth = ({
   tokenSymbol,
 }: {
   tokenSymbol: keyof typeof ProductTokensBySymbol;
 }) => {
-  const [marketData, setMarketData] = useState<TokenMarketDataValues>({});
   const token = ProductTokensBySymbol[tokenSymbol];
+  const { yields } = useIcEthYields();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchMarketData(token.coingeckoId);
-      setMarketData(data);
-    };
-    fetchData();
-  }, []);
+  const chartDatas = mapYieldsToChartData(yields);
 
   return (
     <Box w='100%' maxWidth={MaxWidgetWidth}>
@@ -45,12 +37,9 @@ const TokenLineCharts = ({
           {token.name}
         </Text>
       </Flex>
-      <TokenPrice
-        marketData={marketData}
-        options={{ lineColor: token.color }}
-      />
+      <TokenYieldChart chartDatas={chartDatas} />
     </Box>
   );
 };
 
-export default TokenLineCharts;
+export default TokenAreaYieldsIceth;

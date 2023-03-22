@@ -151,6 +151,28 @@ export const Ethereum2xFlexibleLeverageIndex: Token = {
   defaultChain: MAINNET.chainId,
 };
 
+export const icETHIndex: Token = {
+  name: 'Interest Compounding ETH Index',
+  symbol: 'icETH',
+  address: '0x7C07F7aBe10CE8e33DC6C5aD68FE033085256A84',
+  polygonAddress: undefined,
+  optimismAddress: undefined,
+  decimals: 18,
+  url: 'iceth',
+  image:
+    'https://assets.website-files.com/60d237b6ea65be721ff4bbfa/62388a82c46d9a1dfb3dc506_icETH-token-logo.png',
+  coingeckoId: 'interest-compounding-eth-index',
+  tokensetsId: 'iceth',
+  fees: {
+    streamingFee: '0.75%',
+    mintFee: '0.0%',
+    redeemFee: '0.0%',
+  },
+  isDangerous: true,
+  indexTypes: [IndexType.yield],
+  defaultChain: MAINNET.chainId,
+};
+
 export const GitcoinStakedETHIndex: Token = {
   name: 'Gitcoin Staked ETH Index',
   symbol: 'gtcETH',
@@ -198,5 +220,6 @@ export const ProductTokensBySymbol = {
   DSETH: DiversifiedStakedETHIndex,
   ETHFLI: Ethereum2xFlexibleLeverageIndex,
   GTCETH: GitcoinStakedETHIndex,
+  ICETH: icETHIndex,
   MVI: MetaverseIndex,
 };

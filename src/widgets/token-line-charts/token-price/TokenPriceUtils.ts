@@ -1,6 +1,8 @@
 import { TokenMarketDataValues } from '../../../providers/MarketData';
+import { ChartDatas, ChartDataPoint } from '../../../utils/chart';
+import { trimArray } from '../../../utils/helpers';
 
-import { PriceChartRangeOption, PriceChartData } from './TokenPrice';
+import { PriceChartRangeOption } from './TokenPrice';
 
 interface PriceChange {
   abs: number;
@@ -9,14 +11,14 @@ interface PriceChange {
 }
 
 /**
- * Max points for a chart before degradation in performance
+ * Approximate max points for these line charts before experiencing degradation in performance
  */
-const MaxPointsPerRange: number = 200;
+export const MaxPointsPerRange: number = 200;
 
 function getChartData(
   range: PriceChartRangeOption,
   prices: number[][][]
-): PriceChartData[] {
+): ChartDatas {
   const hourlyDataInterval = 24;
   const pricesFromRange: any[] = prices.map((priceData: number[][]) => {
     return priceData.slice(-range * hourlyDataInterval) ?? [];
@@ -26,7 +28,7 @@ function getChartData(
     return [];
   }
 
-  const chartData: PriceChartData[] = [];
+  const chartData: ChartDatas = [];
   for (let i = 0; i < pricesFromRange[0].length; i += 1) {
     const y: number[] = [];
 
@@ -36,7 +38,7 @@ function getChartData(
       y.push(price);
     }
 
-    const data: PriceChartData = {
+    const data: ChartDataPoint = {
       x: pricesFromRange[0][i][0],
       y: y[0],
     };
@@ -55,7 +57,7 @@ export function getPriceChartData(marketData: TokenMarketDataValues[]) {
     PriceChartRangeOption.QUARTERLY_PRICE_RANGE,
   ];
 
-  const marketChartData: PriceChartData[][] = [];
+  const marketChartData: ChartDatas[] = [];
   ranges.forEach((range) => {
     const prices = marketData.map((data) => data.hourlyPrices ?? []);
     const chartData = getChartData(range, prices);
@@ -118,22 +120,4 @@ export function getPricesChanges(priceData: number[][]): PriceChange[] {
   });
 
   return changes;
-}
-
-/**
- * Trim an array from an arbitrary length to a fixed length
- * If fixed length is greater than array, return array
- */
-function trimArray(array: any[], fixedLength: number) {
-  if (array.length < fixedLength) return array;
-
-  const step = array.length / fixedLength;
-  const newArray = [];
-
-  for (let i = 0; i < fixedLength; i += 1) {
-    const index = Math.floor(i * step);
-    newArray.push(array[index]);
-  }
-
-  return newArray;
 }

@@ -38,6 +38,26 @@ We will need to either use release versions or somehow invalid their cache if we
 
 ## Development
 
+```bash
+# Install external dependencies
+yarn install
+
+# Start local instance of the application
+yarn start
+
+# Lint
+yarn lint:fix
+
+# Compile code for production
+yarn build
+
+# Deploy built code
+yarn deploy
+
+# Combination on build and deploy
+yarn build-deploy
+```
+
 ### Adding a new widget
 
 1. Add a new component in the `/src/widget` directory

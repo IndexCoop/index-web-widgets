@@ -1,12 +1,13 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
 
+import { MaxPanelWidth } from '../../../constants/widget';
 import {
   TokenMarketDataValues,
   selectLatestMarketData,
 } from '../../../providers/MarketData';
+import { ChartOption } from '../../../utils/chart';
 
-import { MaxPanelWidth } from '../TokenLineCharts';
 import TokenPriceChart from './TokenPriceChart';
 import {
   getFormattedChartPriceChanges,
@@ -28,24 +29,12 @@ export enum PriceChartRangeOption {
   QUARTERLY_PRICE_RANGE = 90,
 }
 
-export interface MarketChartOptions {
-  width?: number;
-  height?: number;
-  hideYAxis?: boolean;
-  lineColor?: string;
-}
-
-export interface PriceChartData {
-  x: number;
-  y: number;
-}
-
 const TokenPrice = ({
   marketData,
   options,
 }: {
   marketData: TokenMarketDataValues;
-  options?: MarketChartOptions;
+  options?: ChartOption;
 }) => {
   const priceChartData = getPriceChartData([marketData]);
 

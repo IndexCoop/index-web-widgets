@@ -12,13 +12,14 @@ import {
 } from 'recharts';
 
 import { colors } from '../../../styles/colors';
+import { ChartOption, ChartDatas, ChartDataPoint } from '../../../utils/chart';
 import {
   getDayOfMonth,
   getFullDayOfWeek,
   getFullMonth,
 } from '../../../utils/time';
 
-import { Durations, MarketChartOptions, PriceChartData } from './TokenPrice';
+import { Durations } from './TokenPrice';
 import TokenPriceChartTooltip from './TokenPriceChartTooltip';
 
 interface MarketChartPriceChange {
@@ -31,7 +32,7 @@ interface MarketChartPriceChange {
  */
 interface CategoricalChartStatePayload {
   value: number;
-  payload: PriceChartData;
+  payload: ChartDataPoint;
 }
 interface CategoricalChartState {
   activePayload: CategoricalChartStatePayload[];
@@ -174,15 +175,15 @@ const RangeSelector = ({ onChange }: { onChange: (index: number) => void }) => (
 );
 
 const TokenPriceChart = (props: {
-  marketData: PriceChartData[][];
+  marketData: ChartDatas[];
   currentPrice: string;
   priceChanges: MarketChartPriceChange[];
-  options: MarketChartOptions;
+  options: ChartOption;
 }) => {
   const strokeColor = colors.gray[500];
   const chartHeight = window.outerWidth < 400 ? 300 : 400;
 
-  const [chartData, setChartData] = useState<PriceChartData[]>([]);
+  const [chartData, setChartData] = useState<ChartDatas>([]);
   const [durationSelector, setDurationSelector] = useState<number>(
     Durations.DAILY
   );
