@@ -193,6 +193,24 @@ export const GitcoinStakedETHIndex: Token = {
   defaultChain: MAINNET.chainId,
 };
 
+export const IndexToken: Token = {
+  name: 'Index Cooperative',
+  symbol: 'INDEX',
+  address: '0x0954906da0Bf32d5479e25f46056d22f08464cab',
+  polygonAddress: '0xfBd8A3b908e764dBcD51e27992464B4432A1132b',
+  optimismAddress: undefined,
+  decimals: 18,
+  url: 'index',
+  image:
+    'https://assets.coingecko.com/coins/images/12729/small/index.png?1634894321',
+  coingeckoId: 'index-cooperative',
+  tokensetsId: 'index',
+  fees: undefined,
+  isDangerous: false,
+  indexTypes: [],
+  defaultChain: MAINNET.chainId,
+};
+
 export const MetaverseIndex: Token = {
   name: 'Metaverse Index',
   symbol: 'MVI',
@@ -221,5 +239,6 @@ export const ProductTokensBySymbol = {
   ETHFLI: Ethereum2xFlexibleLeverageIndex,
   GTCETH: GitcoinStakedETHIndex,
   ICETH: icETHIndex,
+  INDEX: IndexToken,
   MVI: MetaverseIndex,
 };
