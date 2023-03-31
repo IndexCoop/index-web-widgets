@@ -38,7 +38,10 @@ const TokenLinesChartsAprs = ({
           margin='5px 10px'
         />
         <Text fontWeight='500' fontSize='sm' margin='0'>
-          {`${token.name} (APR 7 Day Moving Average)`}
+          {token.name}
+        </Text>
+        <Text fontWeight='300' fontSize='xs' margin='0 0.25rem'>
+          (APR 7 Day Moving Average)
         </Text>
       </Flex>
       <TokenAprsChart chartDatas={chartDatas} token={token} />
