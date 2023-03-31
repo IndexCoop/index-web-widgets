@@ -4,6 +4,7 @@ import { ProductTokensBySymbol } from './constants/tokens';
 
 import TokenAllocations from './widgets/token-allocations/TokenAllocations';
 import TokenLineCharts from './widgets/token-line-charts/TokenLineCharts';
+import TokenLinesChartsAprs from './widgets/token-lines-charts-aprs/TokenLinesChartsAprs';
 import TokenAreaYieldsIceth from './widgets/token-area-yields-iceth/TokenAreaYieldsIceth';
 
 const App = ({ domElement }: { domElement: Element }) => {
@@ -17,6 +18,8 @@ const App = ({ domElement }: { domElement: Element }) => {
       return <TokenAllocations tokenSymbol={tokenSymbol} />;
     case 'chart-token-line':
       return <TokenLineCharts tokenSymbol={tokenSymbol} />;
+    case 'chart-token-line-aprs':
+      return <TokenLinesChartsAprs tokenSymbol={tokenSymbol} />;
     case 'chart-token-area-yields-iceth':
       return <TokenAreaYieldsIceth tokenSymbol={tokenSymbol} />;
     default:

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Flex } from '@chakra-ui/layout';
 import {
-  Area,
-  AreaChart,
+  Line,
+  LineChart,
   CartesianGrid,
   ResponsiveContainer,
   Tooltip,
@@ -10,12 +10,19 @@ import {
   YAxis,
 } from 'recharts';
 
+import { Token } from '../../constants/tokens';
 import { colors } from '../../styles/colors';
 import { ChartDatas } from '../../utils/chart';
 
-import TokenYieldChartTooltip from './TokenYieldChartTooltip';
+import TokenAprsChartTooltip from './TokenAprsChartTooltip';
 
-const TokenYieldChart = ({ chartDatas }: { chartDatas: ChartDatas }) => {
+const TokenAprsChart = ({
+  chartDatas,
+  token,
+}: {
+  chartDatas: ChartDatas;
+  token: Token;
+}) => {
   const strokeColor = colors.gray[500];
   const chartHeight = window.outerWidth < 400 ? 300 : 400;
 
@@ -46,7 +53,7 @@ const TokenYieldChart = ({ chartDatas }: { chartDatas: ChartDatas }) => {
     <Flex direction='column' alignItems='center' width='100%'>
       {/* Chart */}
       <ResponsiveContainer width={'95%'} height={chartHeight}>
-        <AreaChart data={chartData}>
+        <LineChart data={chartData}>
           <CartesianGrid
             stroke={strokeColor}
             strokeOpacity={0.2}
@@ -62,45 +69,43 @@ const TokenYieldChart = ({ chartDatas }: { chartDatas: ChartDatas }) => {
           />
           <YAxis
             axisLine={false}
-            domain={[0, (dataMax: number) => dataMax * 1.1]}
+            domain={['auto', 'auto']}
             tickFormatter={yAxisTickFormatter}
             tickLine={false}
           />
-          <Tooltip content={<TokenYieldChartTooltip />} />
-          <Area
+          <Tooltip content={<TokenAprsChartTooltip token={token} />} />
+          <Line
             type='monotone'
             dataKey='y'
             stroke={colors.icBlue}
             fill={colors.icBlue}
+            dot={false}
           />
-          <Area
+          <Line
             type='monotone'
             dataKey='y2'
-            stroke={colors.icBlue2}
-            fill={colors.icBlue2}
+            stroke={colors.icGray4}
+            fill={colors.icGray4}
+            dot={false}
           />
-          <Area
+          <Line
             type='monotone'
             dataKey='y3'
-            stroke={colors.icBlue4}
-            fill={colors.icBlue4}
+            stroke={colors.icGray3}
+            fill={colors.icGray3}
+            dot={false}
           />
-          <Area
+          <Line
             type='monotone'
             dataKey='y4'
-            stroke={colors.icBlue6}
-            fill={colors.icBlue6}
+            stroke={colors.icGray2}
+            fill={colors.icGray2}
+            dot={false}
           />
-          <Area
-            type='monotone'
-            dataKey='y5'
-            stroke={colors.icBlue8}
-            fill={colors.icBlue8}
-          />
-        </AreaChart>
+        </LineChart>
       </ResponsiveContainer>
     </Flex>
   );
 };
 
-export default TokenYieldChart;
+export default TokenAprsChart;
