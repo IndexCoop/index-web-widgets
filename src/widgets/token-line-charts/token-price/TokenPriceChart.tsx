@@ -146,6 +146,7 @@ const RangeSelector = ({ onChange }: { onChange: (index: number) => void }) => (
     backgroundColor={colors.gray[100]}
     boxShadow='md'
     borderRadius='8px'
+    defaultIndex={Durations.QUARTERLY}
     onChange={onChange}
   >
     <TabList
@@ -185,7 +186,7 @@ const TokenPriceChart = (props: {
 
   const [chartData, setChartData] = useState<ChartDatas>([]);
   const [durationSelector, setDurationSelector] = useState<number>(
-    Durations.DAILY
+    Durations.QUARTERLY
   );
 
   const [chartState, setChartState] = useState<CategoricalChartState>();
