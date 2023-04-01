@@ -6,7 +6,10 @@ import { MaxPanelWidth, MaxWidgetWidth } from '../../constants/widget';
 import { useGtcDsEthAprs } from '../../hooks/useGtcDsEthAprs';
 
 import TokenAprsChart from './TokenAprsChart';
-import { mapAprsToChartData } from './TokenAprsUtils';
+import {
+  parseChartDataForDurations,
+  mapAprsToChartData,
+} from './TokenAprsUtils';
 
 const TokenLinesChartsAprs = ({
   tokenSymbol,
@@ -21,6 +24,8 @@ const TokenLinesChartsAprs = ({
   }
 
   const chartDatas = mapAprsToChartData(aprs);
+
+  const chartDatasForDurations = parseChartDataForDurations(chartDatas);
 
   return (
     <Box w='100%' maxWidth={MaxWidgetWidth}>
@@ -44,7 +49,7 @@ const TokenLinesChartsAprs = ({
           (APR 7 Day Moving Average)
         </Text>
       </Flex>
-      <TokenAprsChart chartDatas={chartDatas} token={token} />
+      <TokenAprsChart chartDatas={chartDatasForDurations} token={token} />
     </Box>
   );
 };
