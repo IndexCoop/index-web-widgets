@@ -12,14 +12,18 @@ import {
 } from 'recharts';
 
 import { colors } from '../../../styles/colors';
-import { ChartOption, ChartDatas, ChartDataPoint } from '../../../utils/chart';
+import {
+  ChartOption,
+  ChartDatas,
+  ChartDataPoint,
+  DurationIndex,
+} from '../../../utils/chart';
 import {
   getDayOfMonth,
   getFullDayOfWeek,
   getFullMonth,
 } from '../../../utils/time';
 
-import { Durations } from './TokenPrice';
 import TokenPriceChartTooltip from './TokenPriceChartTooltip';
 
 interface MarketChartPriceChange {
@@ -146,7 +150,7 @@ const RangeSelector = ({ onChange }: { onChange: (index: number) => void }) => (
     backgroundColor={colors.gray[100]}
     boxShadow='md'
     borderRadius='8px'
-    defaultIndex={Durations.QUARTERLY}
+    defaultIndex={DurationIndex.QUARTERLY}
     onChange={onChange}
   >
     <TabList
@@ -185,8 +189,8 @@ const TokenPriceChart = (props: {
   const chartHeight = window.outerWidth < 400 ? 300 : 400;
 
   const [chartData, setChartData] = useState<ChartDatas>([]);
-  const [durationSelector, setDurationSelector] = useState<number>(
-    Durations.QUARTERLY
+  const [durationIndexSelector, setDurationIndexelector] = useState<number>(
+    DurationIndex.QUARTERLY
   );
 
   const [chartState, setChartState] = useState<CategoricalChartState>();
@@ -195,24 +199,24 @@ const TokenPriceChart = (props: {
     if (props.marketData.length < 1) {
       return;
     }
-    const index = durationSelector;
+    const index = durationIndexSelector;
     const chartData = props.marketData[index];
     setChartData(chartData);
-  }, [durationSelector, props.marketData]);
+  }, [durationIndexSelector, props.marketData]);
 
   const onChangeDuration = (index: number) => {
     switch (index) {
-      case Durations.DAILY:
-        setDurationSelector(Durations.DAILY);
+      case DurationIndex.DAILY:
+        setDurationIndexelector(DurationIndex.DAILY);
         break;
-      case Durations.WEEKLY:
-        setDurationSelector(Durations.WEEKLY);
+      case DurationIndex.WEEKLY:
+        setDurationIndexelector(DurationIndex.WEEKLY);
         break;
-      case Durations.MONTHLY:
-        setDurationSelector(Durations.MONTHLY);
+      case DurationIndex.MONTHLY:
+        setDurationIndexelector(DurationIndex.MONTHLY);
         break;
-      case Durations.QUARTERLY:
-        setDurationSelector(Durations.QUARTERLY);
+      case DurationIndex.QUARTERLY:
+        setDurationIndexelector(DurationIndex.QUARTERLY);
         break;
     }
   };
@@ -241,10 +245,10 @@ const TokenPriceChart = (props: {
 
   const xAxisTickFormatter = (val: any | null | undefined) => {
     const dateFormatterOptions = (
-      duration: Durations
+      duration: DurationIndex
     ): Intl.DateTimeFormatOptions => {
       switch (duration) {
-        case Durations.DAILY:
+        case DurationIndex.DAILY:
           return {
             hour: '2-digit',
           };
@@ -256,7 +260,7 @@ const TokenPriceChart = (props: {
       }
     };
 
-    var options = dateFormatterOptions(durationSelector);
+    var options = dateFormatterOptions(durationIndexSelector);
     return new Date(val).toLocaleString(undefined, options);
   };
 
@@ -272,7 +276,7 @@ const TokenPriceChart = (props: {
   const minYAdjusted = minY > 4 ? minY - 5 : 0;
   const yAxisDomain = [minYAdjusted, maxY + 5];
 
-  const priceChange = props.priceChanges[durationSelector];
+  const priceChange = props.priceChanges[durationIndexSelector];
   const priceChangeColor = priceChange.isPositive
     ? colors.icMalachite
     : colors.icRed;
