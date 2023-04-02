@@ -3,14 +3,9 @@ import {
   ChartDatas,
   ChartDataPoint,
   ChartRangeOption,
+  DataChange,
 } from '../../../utils/chart';
 import { trimArray } from '../../../utils/helpers';
-
-interface PriceChange {
-  abs: number;
-  rel: number;
-  isPositive: boolean;
-}
 
 /**
  * Approximate max points for these line charts before experiencing degradation in performance
@@ -76,7 +71,7 @@ export function getChartDataForDurations(marketData: TokenMarketDataValues[]) {
   return marketChartData;
 }
 
-function getChangeInPrice(priceData: number[][]): PriceChange {
+function getChangeInPrice(priceData: number[][]): DataChange {
   if (priceData[0] === undefined) {
     return {
       abs: 0,
@@ -100,7 +95,7 @@ function getChangeInPrice(priceData: number[][]): PriceChange {
   };
 }
 
-export function getFormattedChartPriceChanges(priceChanges: PriceChange[]) {
+export function getFormattedChartPriceChanges(priceChanges: DataChange[]) {
   const priceChangesFormatted = priceChanges.map((change) => {
     const plusOrMinus = change.isPositive ? '' : '-';
     return {
@@ -111,7 +106,7 @@ export function getFormattedChartPriceChanges(priceChanges: PriceChange[]) {
   return priceChangesFormatted;
 }
 
-export function getPricesChanges(priceData: number[][]): PriceChange[] {
+export function getPricesChanges(priceData: number[][]): DataChange[] {
   const hourlyDataInterval = 24;
   let ranges = [
     ChartRangeOption.DAILY_PRICE_RANGE,
@@ -120,7 +115,7 @@ export function getPricesChanges(priceData: number[][]): PriceChange[] {
     ChartRangeOption.QUARTERLY_PRICE_RANGE,
   ];
 
-  const changes: PriceChange[] = [];
+  const changes: DataChange[] = [];
   ranges.forEach((range) => {
     const prices = priceData.slice(-range * hourlyDataInterval);
     const change = getChangeInPrice(prices);

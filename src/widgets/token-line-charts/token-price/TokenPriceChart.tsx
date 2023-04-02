@@ -13,9 +13,10 @@ import {
 
 import { colors } from '../../../styles/colors';
 import {
+  CategoricalChartState,
+  ChartChange,
   ChartOption,
   ChartDatas,
-  ChartDataPoint,
   DurationIndex,
 } from '../../../utils/chart';
 import {
@@ -25,23 +26,6 @@ import {
 } from '../../../utils/time';
 
 import TokenPriceChartTooltip from './TokenPriceChartTooltip';
-
-interface MarketChartPriceChange {
-  label: string;
-  isPositive: boolean;
-}
-
-/**
- * Partial Rechart Type for CategoricalChartState
- */
-interface CategoricalChartStatePayload {
-  value: number;
-  payload: ChartDataPoint;
-}
-interface CategoricalChartState {
-  activePayload: CategoricalChartStatePayload[];
-  isTooltipActive?: boolean;
-}
 
 const PriceDisplay = ({
   initialPrice,
@@ -182,7 +166,7 @@ const RangeSelector = ({ onChange }: { onChange: (index: number) => void }) => (
 const TokenPriceChart = (props: {
   marketData: ChartDatas[];
   currentPrice: string;
-  priceChanges: MarketChartPriceChange[];
+  priceChanges: ChartChange[];
   options: ChartOption;
 }) => {
   const strokeColor = colors.gray[500];

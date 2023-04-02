@@ -1,3 +1,20 @@
+/**
+ * Partial Rechart Type for CategoricalChartState
+ */
+export interface CategoricalChartStatePayload {
+  value: number;
+  payload: ChartDataPoint;
+}
+export interface CategoricalChartState {
+  activePayload: CategoricalChartStatePayload[];
+  isTooltipActive?: boolean;
+}
+
+export interface ChartChange {
+  label: string;
+  isPositive: boolean;
+}
+
 export type ChartDatas = ChartDataPoint[];
 
 export interface ChartDataPoint {
@@ -21,6 +38,12 @@ export enum ChartRangeOption {
   WEEKLY_PRICE_RANGE = 7,
   MONTHLY_PRICE_RANGE = 30,
   QUARTERLY_PRICE_RANGE = 90,
+}
+
+export interface DataChange {
+  abs: number;
+  rel: number;
+  isPositive: boolean;
 }
 
 export enum DurationIndex {
