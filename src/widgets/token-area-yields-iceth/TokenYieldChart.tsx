@@ -44,8 +44,6 @@ const TokenYieldChart = ({ chartDatas }: { chartDatas: ChartDatas }) => {
 
   return (
     <Flex direction='column' alignItems='center' width='100%'>
-      {/* TODO? Legend? */}
-
       {/* Chart */}
       <ResponsiveContainer width={'95%'} height={chartHeight}>
         <AreaChart data={chartData}>

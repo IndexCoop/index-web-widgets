@@ -11,29 +11,29 @@ import {
   YAxis,
 } from 'recharts';
 
-import { colors } from '../../../styles/colors';
+import { Token } from '../../constants/tokens';
+import { colors } from '../../styles/colors';
 import {
   CategoricalChartState,
   ChartChange,
-  ChartOption,
   ChartDatas,
   DurationIndex,
-} from '../../../utils/chart';
+} from '../../utils/chart';
 import {
   getDayOfMonth,
   getFullDayOfWeek,
   getFullMonth,
-} from '../../../utils/time';
+} from '../../utils/time';
 
-import TokenPriceChartTooltip from './TokenPriceChartTooltip';
+import TokenAprsChartTooltip from './TokenAprsChartTooltip';
 
-const PriceDisplay = ({
-  initialPrice,
+const AprDisplay = ({
+  initialApr,
   initialChange,
   initialColor,
   chartState,
 }: {
-  initialPrice: string;
+  initialApr: string;
   initialChange: string;
   initialColor: string;
   chartState?: CategoricalChartState;
@@ -42,14 +42,14 @@ const PriceDisplay = ({
   const [date, setDate] = useState<string>(
     `${getFullDayOfWeek(now)}, ${getFullMonth(now)} ${getDayOfMonth(now)}`
   );
-  const [price, setPrice] = useState<string>(initialPrice);
+  const [apr, setApr] = useState<string>(initialApr);
   const [change, setChange] = useState<string>(initialChange);
   const [color, setColor] = useState<string>(initialColor);
 
   // Handle updates to initial values
   useEffect(() => {
-    setPrice(initialPrice);
-  }, [initialPrice]);
+    setApr(initialApr);
+  }, [initialApr]);
   useEffect(() => {
     setChange(initialChange);
   }, [initialChange]);
@@ -62,7 +62,7 @@ const PriceDisplay = ({
     // handleMouseMove
     const { activePayload, isTooltipActive } = chartState ?? {};
     if (activePayload?.length && isTooltipActive) {
-      const { x: date, y: price } = activePayload[0]?.payload;
+      const { x: date, y: apr } = activePayload[0]?.payload;
 
       const then = new Date(date);
       setDate(
@@ -71,27 +71,22 @@ const PriceDisplay = ({
         )}`
       );
 
-      setPrice(
-        `${Number(price).toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })}`
-      );
+      setApr(`${apr.toFixed(2)}`);
 
-      const diff = Number(initialPrice) - price;
+      const diff = Number(initialApr) - apr;
       const abs = Math.abs(diff);
       const isPositive = diff >= 0;
-      const rel = (abs / price) * 100;
+      const rel = (abs / apr) * 100;
       const plusOrMinus = isPositive ? '' : '-';
       setChange(`${plusOrMinus}${rel.toFixed(2)}%`);
 
-      const priceChangeColor = isPositive ? colors.icMalachite : colors.icRed;
-      setColor(priceChangeColor);
+      const aprChangeColor = isPositive ? colors.icMalachite : colors.icRed;
+      setColor(aprChangeColor);
     }
 
     // handleMouseLeave
     if (!isTooltipActive) {
-      setPrice(initialPrice);
+      setApr(initialApr);
       setChange(initialChange);
       setColor(initialColor);
     }
@@ -108,16 +103,16 @@ const PriceDisplay = ({
         gap={['10px', '25px']}
         width='100%'
       >
-        <Skeleton isLoaded={price !== '0.00'}>
+        <Skeleton isLoaded={apr !== '0.00'}>
           <Text
             fontSize={['2xl', '3xl', '4xl']}
             margin='0'
             color={colors.black}
           >
-            {`$${price}`}
+            {`${apr}%`}
           </Text>
         </Skeleton>
-        <Skeleton isLoaded={price !== '0.00'}>
+        <Skeleton isLoaded={apr !== '0.00'}>
           <Text fontSize='sm' margin='0' color={color}>
             {change}
           </Text>
@@ -163,11 +158,16 @@ const RangeSelector = ({ onChange }: { onChange: (index: number) => void }) => (
   </Tabs>
 );
 
-const TokenPriceChart = (props: {
-  marketData: ChartDatas[];
-  currentPrice: string;
-  priceChanges: ChartChange[];
-  options: ChartOption;
+const TokenAprsChart = ({
+  chartDatas,
+  initialApr,
+  aprChanges,
+  token,
+}: {
+  chartDatas: ChartDatas[];
+  initialApr: string;
+  aprChanges: ChartChange[];
+  token: Token;
 }) => {
   const strokeColor = colors.gray[500];
   const chartHeight = window.outerWidth < 400 ? 300 : 400;
@@ -176,17 +176,16 @@ const TokenPriceChart = (props: {
   const [durationIndexSelector, setDurationIndexelector] = useState<number>(
     DurationIndex.QUARTERLY
   );
-
   const [chartState, setChartState] = useState<CategoricalChartState>();
 
   useEffect(() => {
-    if (props.marketData.length < 1) {
+    if (chartDatas.length < 1) {
       return;
     }
     const index = durationIndexSelector;
-    const chartData = props.marketData[index];
+    const chartData = chartDatas[index];
     setChartData(chartData);
-  }, [durationIndexSelector, props.marketData]);
+  }, [durationIndexSelector, chartDatas]);
 
   const onChangeDuration = (index: number) => {
     switch (index) {
@@ -205,20 +204,20 @@ const TokenPriceChart = (props: {
     }
   };
 
-  // Update PriceDisplay to tooltip values
+  // Update AprDisplay to tooltip values
   const handleMouseMove = (state: CategoricalChartState) => {
     setChartState(state);
   };
 
-  // Update PriceDisplay to current
+  // Update AprDisplay to current
   const handleMouseLeave = () => {
     const resetState: CategoricalChartState = {
       activePayload: [
         {
-          value: Number(props.currentPrice),
+          value: Number(initialApr),
           payload: {
             x: new Date().getTime(),
-            y: Number(props.currentPrice),
+            y: Number(initialApr),
           },
         },
       ],
@@ -228,40 +227,21 @@ const TokenPriceChart = (props: {
   };
 
   const xAxisTickFormatter = (val: any | null | undefined) => {
-    const dateFormatterOptions = (
-      duration: DurationIndex
-    ): Intl.DateTimeFormatOptions => {
-      switch (duration) {
-        case DurationIndex.DAILY:
-          return {
-            hour: '2-digit',
-          };
-        default:
-          return {
-            month: 'short',
-            day: '2-digit',
-          };
-      }
-    };
-
-    var options = dateFormatterOptions(durationIndexSelector);
-    return new Date(val).toLocaleString(undefined, options);
+    return new Date(val).toLocaleString(undefined, {
+      month: 'short',
+      day: '2-digit',
+    });
   };
 
   const yAxisTickFormatter = (val: any | null | undefined) => {
     if (val === undefined || val === null) {
       return '';
     }
-    return `$${parseInt(val)}`;
+    return `${parseInt(val)}%`;
   };
 
-  const minY = Math.min(...chartData.map<number>((data) => Math.min(data.y)));
-  const maxY = Math.max(...chartData.map<number>((data) => Math.max(data.y)));
-  const minYAdjusted = minY > 4 ? minY - 5 : 0;
-  const yAxisDomain = [minYAdjusted, maxY + 5];
-
-  const priceChange = props.priceChanges[durationIndexSelector];
-  const priceChangeColor = priceChange.isPositive
+  const aprChange = aprChanges[durationIndexSelector];
+  const aprChangeColor = aprChange.isPositive
     ? colors.icMalachite
     : colors.icRed;
 
@@ -274,10 +254,10 @@ const TokenPriceChart = (props: {
         mb='24px'
         width={['100%', '90%']}
       >
-        <PriceDisplay
-          initialPrice={props.currentPrice}
-          initialChange={priceChange.label}
-          initialColor={priceChangeColor}
+        <AprDisplay
+          initialApr={initialApr}
+          initialChange={aprChange.label}
+          initialColor={aprChangeColor}
           chartState={chartState}
         />
         <Box mt={['8px', '0']} mr='auto' ml={['0', '15px']}>
@@ -297,30 +277,47 @@ const TokenPriceChart = (props: {
             strokeOpacity={0.2}
             vertical={false}
           />
-          <YAxis
-            axisLine={false}
-            domain={yAxisDomain}
-            stroke={strokeColor}
-            tickCount={10}
-            tickFormatter={yAxisTickFormatter}
-            tickLine={false}
-            hide={true}
-          />
           <XAxis
-            axisLine={false}
             dataKey='x'
+            axisLine={false}
             interval='preserveStart'
             minTickGap={100}
-            stroke={strokeColor}
-            tickCount={6}
             tickFormatter={xAxisTickFormatter}
             tickLine={false}
           />
-          <Tooltip content={<TokenPriceChartTooltip />} />
+          <YAxis
+            axisLine={false}
+            domain={['auto', 'auto']}
+            tickFormatter={yAxisTickFormatter}
+            tickLine={false}
+          />
+          <Tooltip content={<TokenAprsChartTooltip token={token} />} />
           <Line
             type='monotone'
             dataKey='y'
-            stroke={props.options.lineColor ?? colors.icBlue}
+            stroke={colors.icBlue}
+            fill={colors.icBlue}
+            dot={false}
+          />
+          <Line
+            type='monotone'
+            dataKey='y2'
+            stroke={colors.icGray4}
+            fill={colors.icGray4}
+            dot={false}
+          />
+          <Line
+            type='monotone'
+            dataKey='y3'
+            stroke={colors.icGray3}
+            fill={colors.icGray3}
+            dot={false}
+          />
+          <Line
+            type='monotone'
+            dataKey='y4'
+            stroke={colors.icGray2}
+            fill={colors.icGray2}
             dot={false}
           />
         </LineChart>
@@ -329,4 +326,4 @@ const TokenPriceChart = (props: {
   );
 };
 
-export default TokenPriceChart;
+export default TokenAprsChart;
