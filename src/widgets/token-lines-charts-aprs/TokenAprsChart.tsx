@@ -73,7 +73,7 @@ const AprDisplay = ({
 
       setApr(`${apr.toFixed(2)}`);
 
-      const diff = Number(initialApr) - apr;
+      const diff = Number(initialApr.replace(/,/g, '')) - apr;
       const abs = Math.abs(diff);
       const isPositive = diff >= 0;
       const rel = (abs / apr) * 100;
