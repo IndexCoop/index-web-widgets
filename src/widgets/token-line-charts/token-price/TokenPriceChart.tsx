@@ -78,7 +78,7 @@ const PriceDisplay = ({
         })}`
       );
 
-      const diff = Number(initialPrice) - price;
+      const diff = Number(initialPrice.replace(/,/g, '')) - price;
       const abs = Math.abs(diff);
       const isPositive = diff >= 0;
       const rel = (abs / price) * 100;
