@@ -18,6 +18,7 @@ import TokenYieldChartTooltip from './TokenYieldChartTooltip';
 const TokenYieldChart = ({ chartDatas }: { chartDatas: ChartDatas }) => {
   const strokeColor = colors.gray[500];
   const chartHeight = window.outerWidth < 400 ? 300 : 400;
+  const displayYAxis = window.outerWidth < 500 ? true : false;
 
   const [chartData, setChartData] = useState<ChartDatas>([]);
 
@@ -43,7 +44,14 @@ const TokenYieldChart = ({ chartDatas }: { chartDatas: ChartDatas }) => {
   };
 
   return (
-    <Flex direction='column' alignItems='center' width='100%'>
+    <Flex
+      direction='column'
+      alignItems='center'
+      width='100%'
+      padding={['0.5em', '1em']}
+      borderRadius='10px'
+      boxShadow='0 0 0 1px rgba(20, 23, 48, 0.1), 0 2px 4px 0 rgba(20, 23, 48, 0.05)'
+    >
       {/* Chart */}
       <ResponsiveContainer width={'95%'} height={chartHeight}>
         <AreaChart data={chartData}>
@@ -65,6 +73,7 @@ const TokenYieldChart = ({ chartDatas }: { chartDatas: ChartDatas }) => {
             domain={[0, (dataMax: number) => dataMax * 1.1]}
             tickFormatter={yAxisTickFormatter}
             tickLine={false}
+            hide={displayYAxis}
           />
           <Tooltip content={<TokenYieldChartTooltip />} />
           <Area
