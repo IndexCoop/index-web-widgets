@@ -171,6 +171,7 @@ const TokenPriceChart = (props: {
 }) => {
   const strokeColor = colors.gray[500];
   const chartHeight = window.outerWidth < 400 ? 300 : 400;
+  const displayYAxis = window.outerWidth < 500 ? true : false;
 
   const [chartData, setChartData] = useState<ChartDatas>([]);
   const [durationIndexSelector, setDurationIndexelector] = useState<number>(
@@ -266,7 +267,14 @@ const TokenPriceChart = (props: {
     : colors.icRed;
 
   return (
-    <Flex direction='column' alignItems='center' width='100%'>
+    <Flex
+      direction='column'
+      alignItems='center'
+      width='100%'
+      padding={['0.5em', '1em']}
+      borderRadius='10px'
+      boxShadow='0 0 0 1px rgba(20, 23, 48, 0.1), 0 2px 4px 0 rgba(20, 23, 48, 0.05)'
+    >
       {/* Display & Controls */}
       <Flex
         direction={['column', 'row']}
@@ -297,24 +305,22 @@ const TokenPriceChart = (props: {
             strokeOpacity={0.2}
             vertical={false}
           />
+          <XAxis
+            dataKey='x'
+            axisLine={false}
+            interval='preserveStart'
+            minTickGap={100}
+            stroke={strokeColor}
+            tickFormatter={xAxisTickFormatter}
+            tickLine={false}
+          />
           <YAxis
             axisLine={false}
             domain={yAxisDomain}
             stroke={strokeColor}
-            tickCount={10}
             tickFormatter={yAxisTickFormatter}
             tickLine={false}
-            hide={true}
-          />
-          <XAxis
-            axisLine={false}
-            dataKey='x'
-            interval='preserveStart'
-            minTickGap={100}
-            stroke={strokeColor}
-            tickCount={6}
-            tickFormatter={xAxisTickFormatter}
-            tickLine={false}
+            hide={displayYAxis}
           />
           <Tooltip content={<TokenPriceChartTooltip />} />
           <Line
