@@ -36,20 +36,12 @@ const TokenPrice = ({
   const priceChangesFormatted = getFormattedChartPriceChanges(priceChanges);
 
   return (
-    <Box
-      w='100%'
-      maxWidth={MaxPanelWidth}
-      padding={['5px', '10px']}
-      margin='auto'
-      boxShadow='lg'
-    >
-      <TokenPriceChart
-        marketData={priceChartData}
-        currentPrice={price}
-        priceChanges={priceChangesFormatted}
-        options={options}
-      />
-    </Box>
+    <TokenPriceChart
+      marketData={priceChartData}
+      currentPrice={price}
+      priceChanges={priceChangesFormatted}
+      options={options}
+    />
   );
 };
 
