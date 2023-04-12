@@ -270,7 +270,6 @@ const TokenPriceChart = (props: {
     <Flex
       direction='column'
       alignItems='center'
-      width='100%'
       padding={['0.5em', '1em']}
       borderRadius='10px'
       boxShadow='0 0 0 1px rgba(20, 23, 48, 0.1), 0 2px 4px 0 rgba(20, 23, 48, 0.05)'

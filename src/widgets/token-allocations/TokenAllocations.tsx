@@ -12,6 +12,7 @@ import {
   Th,
   Thead,
   Tr,
+  useMediaQuery,
 } from '@chakra-ui/react';
 
 import { ProductTokensBySymbol } from '../../constants/tokens';
@@ -68,6 +69,7 @@ const TokenAllocations = ({
 }: {
   tokenSymbol: keyof typeof ProductTokensBySymbol;
 }) => {
+  const [isLargerThan400] = useMediaQuery('(min-width: 400px)');
   const defaultAmountToDisplay = 4;
   const token = ProductTokensBySymbol[tokenSymbol];
   const { components } = useTokenComponents(token);
@@ -144,19 +146,36 @@ const TokenAllocations = ({
       maxWidth={MaxWidgetWidth}
     >
       <Box margin={['auto']}>
-        <Text
-          position={'relative'}
-          top={165}
-          left={125}
-          fontSize={'2xl'}
-          fontWeight={700}
-          fontFamily={'sans-serif'}
-          height={0}
-          width={130}
-          margin={0}
-        >
-          Allocations
-        </Text>
+        {isLargerThan400 && (
+          <Text
+            position={'relative'}
+            top={165}
+            left={125}
+            fontSize={'2xl'}
+            fontWeight={700}
+            fontFamily={'sans-serif'}
+            height={0}
+            width={130}
+            margin={0}
+          >
+            Allocations
+          </Text>
+        )}
+        {!isLargerThan400 && (
+          <Text
+            position={'relative'}
+            top={135}
+            left={85}
+            fontSize={'2xl'}
+            fontWeight={700}
+            fontFamily={'sans-serif'}
+            height={0}
+            width={130}
+            margin={0}
+          >
+            Allocations
+          </Text>
+        )}
         <TokenAllocationsChart
           data={components.map(mapSetComponentToPosition)}
         />
