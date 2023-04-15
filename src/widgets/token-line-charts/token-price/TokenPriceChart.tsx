@@ -39,9 +39,10 @@ const PriceDisplay = ({
   chartState?: CategoricalChartState;
 }) => {
   const now = new Date();
-  const [date, setDate] = useState<string>(
-    `${getFullDayOfWeek(now)}, ${getFullMonth(now)} ${getDayOfMonth(now)}`
-  );
+  const initialDate = `${getFullDayOfWeek(now)}, ${getFullMonth(
+    now
+  )} ${getDayOfMonth(now)}`;
+  const [date, setDate] = useState<string>(initialDate);
   const [price, setPrice] = useState<string>(initialPrice);
   const [change, setChange] = useState<string>(initialChange);
   const [color, setColor] = useState<string>(initialColor);
@@ -91,6 +92,7 @@ const PriceDisplay = ({
 
     // handleMouseLeave
     if (!isTooltipActive) {
+      setDate(initialDate);
       setPrice(initialPrice);
       setChange(initialChange);
       setColor(initialColor);
@@ -206,12 +208,12 @@ const TokenPriceChart = (props: {
     }
   };
 
-  // Update PriceDisplay to tooltip values
+  // Update Display to tooltip values
   const handleMouseMove = (state: CategoricalChartState) => {
     setChartState(state);
   };
 
-  // Update PriceDisplay to current
+  // Update Display to current
   const handleMouseLeave = () => {
     const resetState: CategoricalChartState = {
       activePayload: [
