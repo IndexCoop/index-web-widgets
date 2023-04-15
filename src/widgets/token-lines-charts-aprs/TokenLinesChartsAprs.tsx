@@ -10,8 +10,8 @@ import {
   currentApr,
   dataChangeForDurations,
   formatDataChangeForDurations,
-  parseChartDataForDurations,
   mapAprsToChartData,
+  parseChartDataForDurations,
 } from './TokenAprsUtils';
 
 const TokenLinesChartsAprs = ({

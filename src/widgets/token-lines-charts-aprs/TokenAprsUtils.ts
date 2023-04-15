@@ -35,7 +35,7 @@ function filterChartDataForRange(
 }
 
 /**
- * Data parsing for AprDisplay component
+ * Data parsing for Display component
  */
 export function dataChangeForDurations(chartDatas: ChartDatas): DataChange[] {
   const hourlyDataInterval = 24;
@@ -57,7 +57,7 @@ export function dataChangeForDurations(chartDatas: ChartDatas): DataChange[] {
 }
 
 /**
- * Data parsing for AprDisplay component
+ * Data parsing for Display component
  */
 export function formatDataChangeForDurations(priceChanges: DataChange[]) {
   const priceChangesFormatted = priceChanges.map((change) => {
@@ -94,7 +94,7 @@ export const mapAprsToChartData = (aprs: GtcDsEthAprRow[]): ChartDatas => {
 };
 
 /**
- * Data parsing for AprDisplay component
+ * Data parsing for Display component
  */
 function parseChangeInPoints(points: ChartDataPoint[]): DataChange {
   if (points[0] === undefined) {
