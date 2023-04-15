@@ -6,7 +6,13 @@ import { MaxPanelWidth, MaxWidgetWidth } from '../../constants/widget';
 import { useIcEthYields } from '../../hooks/useIcEthYields';
 
 import TokenYieldChart from './TokenYieldChart';
-import { mapYieldsToChartData } from './TokenYieldUtils';
+import {
+  currentNetYield,
+  dataChangeForDurations,
+  formatDataChangeForDurations,
+  parseChartDataForDurations,
+  mapYieldsToChartData,
+} from './TokenYieldUtils';
 
 const TokenAreaYieldsIceth = ({
   tokenSymbol,
@@ -16,7 +22,18 @@ const TokenAreaYieldsIceth = ({
   const token = ProductTokensBySymbol[tokenSymbol];
   const { yields } = useIcEthYields();
 
+  if (yields.length === 0) {
+    return <></>;
+  }
+
   const chartDatas = mapYieldsToChartData(yields);
+
+  const chartDatasForDurations = parseChartDataForDurations(chartDatas);
+
+  const initialNetYield = currentNetYield(chartDatas);
+
+  const dataChanges = dataChangeForDurations(chartDatas);
+  const netYieldChanges = formatDataChangeForDurations(dataChanges);
 
   return (
     <Box w='100%' maxWidth={MaxWidgetWidth} paddingTop={['10px', '20px']}>
@@ -32,7 +49,11 @@ const TokenAreaYieldsIceth = ({
           {token.name}
         </Text>
       </Flex>
-      <TokenYieldChart chartDatas={chartDatas} />
+      <TokenYieldChart
+        chartDatas={chartDatasForDurations}
+        initialNetYield={initialNetYield}
+        netYieldChanges={netYieldChanges}
+      />
     </Box>
   );
 };
