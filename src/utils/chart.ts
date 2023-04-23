@@ -53,4 +53,5 @@ export enum DurationIndex {
   QUARTERLY = 3,
 }
 
+export const DailyDataInterval = 1;
 export const HourlyDataInterval = 24;
