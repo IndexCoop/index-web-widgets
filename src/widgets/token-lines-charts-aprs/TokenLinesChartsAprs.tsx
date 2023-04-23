@@ -14,6 +14,10 @@ import {
   parseChartDataForDurations,
 } from './TokenAprsUtils';
 
+/**
+ * APRs over time, multi-line chart
+ * Supported Indices: dsETH, gtcETH
+ */
 const TokenLinesChartsAprs = ({
   tokenSymbol,
 }: {

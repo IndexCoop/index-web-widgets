@@ -4,6 +4,7 @@ import {
   ChartDatas,
   ChartRangeOption,
   DataChange,
+  HourlyDataInterval,
 } from '../../utils/chart';
 import { trimArray } from '../../utils/helpers';
 
@@ -23,9 +24,8 @@ function filterChartDataForRange(
   range: ChartRangeOption,
   chartDatas: ChartDatas
 ): ChartDatas {
-  const hourlyDataInterval = 24;
   const chartDatasForRange: ChartDatas =
-    chartDatas.slice(-range * hourlyDataInterval) ?? [];
+    chartDatas.slice(-range * HourlyDataInterval) ?? [];
 
   if (chartDatasForRange.length < 1) {
     return [];
@@ -38,7 +38,6 @@ function filterChartDataForRange(
  * Data parsing for Display component
  */
 export function dataChangeForDurations(chartDatas: ChartDatas): DataChange[] {
-  const hourlyDataInterval = 24;
   let ranges = [
     ChartRangeOption.DAILY_PRICE_RANGE,
     ChartRangeOption.WEEKLY_PRICE_RANGE,
@@ -48,7 +47,7 @@ export function dataChangeForDurations(chartDatas: ChartDatas): DataChange[] {
 
   const changes: DataChange[] = [];
   ranges.forEach((range) => {
-    const points = chartDatas.slice(-range * hourlyDataInterval);
+    const points = chartDatas.slice(-range * HourlyDataInterval);
     const change = parseChangeInPoints(points);
     changes.push(change);
   });
