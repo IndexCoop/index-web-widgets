@@ -1,4 +1,4 @@
-import { IcMmAprRow } from '../../hooks/useIcmmAprs';
+import { IcSmmtAprRow } from '../../hooks/useIcSmmtAprs';
 import {
   ChartDataPoint,
   ChartDatas,
@@ -66,7 +66,7 @@ export function formatDataChangeForDurations(priceChanges: DataChange[]) {
 /**
  * Map API data to chart format
  */
-export const mapAprToChartData = (apr: IcMmAprRow[]): ChartDatas => {
+export const mapAprToChartData = (apr: IcSmmtAprRow[]): ChartDatas => {
   return apr.map((point) => ({
     x: Number(new Date(point.day)),
     y: point['icmm_txt'],

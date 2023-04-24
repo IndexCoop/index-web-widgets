@@ -3,28 +3,28 @@ import { useCallback, useEffect, useState } from 'react';
 import { MoneyMarketIndex } from '../constants/tokens';
 import { IndexApi } from '../utils/api/indexApi';
 
-export type IcMmAprRow = {
+export type IcSmmtAprRow = {
   day: string | null;
   icmm_txt: number | null;
 };
 
-export const useIcMmAprs = () => {
-  const [aprs, setAprs] = useState<IcMmAprRow[]>([]);
+export const useIcSmmtAprs = () => {
+  const [aprs, setAprs] = useState<IcSmmtAprRow[]>([]);
 
-  const fetchIcMmAprs = useCallback(async () => {
+  const fetchIcSmmtAprs = useCallback(async () => {
     try {
       const indexApi = new IndexApi();
       const aprs = await indexApi.get(`/${MoneyMarketIndex.url}/aprs`);
 
       setAprs(aprs);
     } catch (err) {
-      console.log(`Failed to get icMM Aprs Over Time. ${err}`);
+      console.log(`Failed to get icSMMT Aprs Over Time. ${err}`);
     }
   }, []);
 
   useEffect(() => {
-    fetchIcMmAprs();
-  }, [fetchIcMmAprs]);
+    fetchIcSmmtAprs();
+  }, [fetchIcSmmtAprs]);
 
   return { aprs };
 };

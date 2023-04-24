@@ -20,7 +20,7 @@ const App = ({ domElement }: { domElement: Element }) => {
     case 'chart-token-line':
       return <TokenLineCharts tokenSymbol={tokenSymbol} />;
     case 'chart-token-line-aprs':
-      if (tokenSymbol === 'ICMM') {
+      if (tokenSymbol === 'ICSMMT') {
         return <TokenLinesChartsAprsDaily tokenSymbol={tokenSymbol} />;
       }
       return <TokenLinesChartsAprs tokenSymbol={tokenSymbol} />;

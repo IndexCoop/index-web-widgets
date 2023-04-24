@@ -3,7 +3,7 @@ import { Box, Flex, Image, Text } from '@chakra-ui/react';
 
 import { ProductTokensBySymbol } from '../../constants/tokens';
 import { MaxPanelWidth, MaxWidgetWidth } from '../../constants/widget';
-import { useIcMmAprs } from '../../hooks/useIcmmAprs';
+import { useIcSmmtAprs } from '../../hooks/useIcSmmtAprs';
 
 import TokenAprChart from './TokenAprChart';
 import {
@@ -16,7 +16,7 @@ import {
 
 /**
  * APR over time, line chart
- * Supported Indices: icMM
+ * Supported Indices: icSMMT
  */
 const TokenLineChartsAprsDaily = ({
   tokenSymbol,
@@ -24,7 +24,7 @@ const TokenLineChartsAprsDaily = ({
   tokenSymbol: keyof typeof ProductTokensBySymbol;
 }) => {
   const token = ProductTokensBySymbol[tokenSymbol];
-  const { aprs } = useIcMmAprs();
+  const { aprs } = useIcSmmtAprs();
 
   if (aprs.length === 0) {
     return <></>;

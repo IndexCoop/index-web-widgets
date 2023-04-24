@@ -234,16 +234,16 @@ export const MetaverseIndex: Token = {
 // Not all details confirmed
 export const MoneyMarketIndex: Token = {
   name: 'Money Market Index',
-  symbol: 'icMM',
+  symbol: 'icSMMT',
   address: '0xB396C717105f2F9Ba81007c7FB774fb06d0fb937',
   polygonAddress: undefined,
   optimismAddress: undefined,
   decimals: 18,
-  url: 'icmm',
+  url: 'icsmmt',
   image:
     'https://assets.coingecko.com/coins/images/29752/small/MMI-token-logoStandard.png?1681117910',
   coingeckoId: 'money-market-index',
-  tokensetsId: 'icmm',
+  tokensetsId: 'icsmmt',
   fees: undefined,
   isDangerous: false,
   indexTypes: [],
@@ -259,6 +259,6 @@ export const ProductTokensBySymbol = {
   GTCETH: GitcoinStakedETHIndex,
   ICETH: icETHIndex,
   INDEX: IndexToken,
-  ICMM: MoneyMarketIndex,
+  ICSMMT: MoneyMarketIndex,
   MVI: MetaverseIndex,
 };
