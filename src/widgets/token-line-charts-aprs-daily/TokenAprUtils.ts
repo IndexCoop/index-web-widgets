@@ -1,21 +1,15 @@
-import { IcEthYieldRow } from '../../hooks/useIcEthYields';
+import { IcSmmtAprRow } from '../../hooks/useIcSmmtAprs';
 import {
   ChartDataPoint,
   ChartDatas,
   ChartRangeOption,
   DataChange,
-  HourlyDataInterval,
+  DailyDataInterval,
 } from '../../utils/chart';
-import { trimArray } from '../../utils/helpers';
 
-export const currentNetYield = (chartDatas: ChartDatas): string => {
+export const currentApr = (chartDatas: ChartDatas): string => {
   return `${chartDatas.slice(-1)[0]['y'].toFixed(2)}`;
 };
-
-/**
- * Approximate max points for these line charts before experiencing degradation in performance
- */
-export const MaxPointsPerRange: number = 200;
 
 /**
  * Filter the chart data for desired range
@@ -25,7 +19,7 @@ function filterChartDataForRange(
   chartDatas: ChartDatas
 ): ChartDatas {
   const chartDatasForRange: ChartDatas =
-    chartDatas.slice(-range * HourlyDataInterval) ?? [];
+    chartDatas.slice(-range * DailyDataInterval) ?? [];
 
   if (chartDatasForRange.length < 1) {
     return [];
@@ -47,7 +41,7 @@ export function dataChangeForDurations(chartDatas: ChartDatas): DataChange[] {
 
   const changes: DataChange[] = [];
   ranges.forEach((range) => {
-    const points = chartDatas.slice(-range * HourlyDataInterval);
+    const points = chartDatas.slice(-range * DailyDataInterval);
     const change = parseChangeInPoints(points);
     changes.push(change);
   });
@@ -72,22 +66,11 @@ export function formatDataChangeForDurations(priceChanges: DataChange[]) {
 /**
  * Map API data to chart format
  */
-export const mapYieldsToChartData = (yields: IcEthYieldRow[]): ChartDatas => {
-  return yields
-    .map((point) => ({
-      x: Number(new Date(point.Hour)),
-      y: point['Net Yield vs ETH'] * 100,
-      y2: point['Net Yield vs stETH'] * 100,
-    }))
-    .sort((a, b) => {
-      if (a.x < b.x) {
-        return -1;
-      }
-      if (a.x > b.x) {
-        return 1;
-      }
-      return 0;
-    });
+export const mapAprToChartData = (apr: IcSmmtAprRow[]): ChartDatas => {
+  return apr.map((point) => ({
+    x: Number(new Date(point.day)),
+    y: point['icmm_txt'],
+  }));
 };
 
 /**
@@ -131,8 +114,7 @@ export function parseChartDataForDurations(chartDatas: ChartDatas) {
   const chartDatasForDurations: ChartDatas[] = [];
   ranges.forEach((range) => {
     const chartData = filterChartDataForRange(range, chartDatas);
-    const trimmedData = trimArray(chartData, MaxPointsPerRange);
-    chartDatasForDurations.push(trimmedData);
+    chartDatasForDurations.push(chartData);
   });
 
   return chartDatasForDurations;

@@ -3,34 +3,34 @@ import { Box, Flex, Image, Text } from '@chakra-ui/react';
 
 import { ProductTokensBySymbol } from '../../constants/tokens';
 import { MaxPanelWidth, MaxWidgetWidth } from '../../constants/widget';
-import { useGtcDsEthAprs } from '../../hooks/useGtcDsEthAprs';
+import { useIcSmmtAprs } from '../../hooks/useIcSmmtAprs';
 
-import TokenAprsChart from './TokenAprsChart';
+import TokenAprChart from './TokenAprChart';
 import {
   currentApr,
   dataChangeForDurations,
   formatDataChangeForDurations,
-  mapAprsToChartData,
+  mapAprToChartData,
   parseChartDataForDurations,
-} from './TokenAprsUtils';
+} from './TokenAprUtils';
 
 /**
- * APRs over time, multi-line chart
- * Supported Indices: dsETH, gtcETH
+ * APR over time, line chart
+ * Supported Indices: icSMMT
  */
-const TokenLinesChartsAprs = ({
+const TokenLineChartsAprsDaily = ({
   tokenSymbol,
 }: {
   tokenSymbol: keyof typeof ProductTokensBySymbol;
 }) => {
   const token = ProductTokensBySymbol[tokenSymbol];
-  const { aprs } = useGtcDsEthAprs(token);
+  const { aprs } = useIcSmmtAprs();
 
   if (aprs.length === 0) {
     return <></>;
   }
 
-  const chartDatas = mapAprsToChartData(aprs);
+  const chartDatas = mapAprToChartData(aprs);
 
   const chartDatasForDurations = parseChartDataForDurations(chartDatas);
 
@@ -58,10 +58,10 @@ const TokenLinesChartsAprs = ({
           margin='auto 0.25rem'
           display={['none', 'block']}
         >
-          (APR 7 Day Moving Average)
+          (Weighted APR)
         </Text>
       </Flex>
-      <TokenAprsChart
+      <TokenAprChart
         chartDatas={chartDatasForDurations}
         initialApr={initialApr}
         aprChanges={aprChanges}
@@ -71,4 +71,4 @@ const TokenLinesChartsAprs = ({
   );
 };
 
-export default TokenLinesChartsAprs;
+export default TokenLineChartsAprsDaily;

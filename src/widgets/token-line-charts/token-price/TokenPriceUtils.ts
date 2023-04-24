@@ -4,6 +4,7 @@ import {
   ChartDataPoint,
   ChartRangeOption,
   DataChange,
+  HourlyDataInterval,
 } from '../../../utils/chart';
 import { trimArray } from '../../../utils/helpers';
 
@@ -19,9 +20,8 @@ function getChartData(
   range: ChartRangeOption,
   prices: number[][][]
 ): ChartDatas {
-  const hourlyDataInterval = 24;
   const pricesFromRange: any[] = prices.map((priceData: number[][]) => {
-    return priceData.slice(-range * hourlyDataInterval) ?? [];
+    return priceData.slice(-range * HourlyDataInterval) ?? [];
   });
 
   if (pricesFromRange.length < 1) {
@@ -107,7 +107,6 @@ export function getFormattedChartPriceChanges(priceChanges: DataChange[]) {
 }
 
 export function getPricesChanges(priceData: number[][]): DataChange[] {
-  const hourlyDataInterval = 24;
   let ranges = [
     ChartRangeOption.DAILY_PRICE_RANGE,
     ChartRangeOption.WEEKLY_PRICE_RANGE,
@@ -117,7 +116,7 @@ export function getPricesChanges(priceData: number[][]): DataChange[] {
 
   const changes: DataChange[] = [];
   ranges.forEach((range) => {
-    const prices = priceData.slice(-range * hourlyDataInterval);
+    const prices = priceData.slice(-range * HourlyDataInterval);
     const change = getChangeInPrice(prices);
     changes.push(change);
   });

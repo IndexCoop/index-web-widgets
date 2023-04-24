@@ -14,7 +14,7 @@ export type GtcDsEthAprRow = {
 export const useGtcDsEthAprs = (token: Token) => {
   const [aprs, setAprs] = useState<GtcDsEthAprRow[]>([]);
 
-  const fetchIcETHAprs = useCallback(async () => {
+  const fetchEthAprs = useCallback(async () => {
     if (
       token !== ProductTokensBySymbol.DSETH &&
       token !== ProductTokensBySymbol.GTCETH
@@ -32,8 +32,8 @@ export const useGtcDsEthAprs = (token: Token) => {
   }, []);
 
   useEffect(() => {
-    fetchIcETHAprs();
-  }, [fetchIcETHAprs]);
+    fetchEthAprs();
+  }, [fetchEthAprs]);
 
   return { aprs };
 };
