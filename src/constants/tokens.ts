@@ -235,7 +235,7 @@ export const MetaverseIndex: Token = {
 export const MoneyMarketIndex: Token = {
   name: 'Money Market Index',
   symbol: 'icSMMT',
-  address: '0xB396C717105f2F9Ba81007c7FB774fb06d0fb937',
+  address: '0xc30FBa978743a43E736fc32FBeEd364b8A2039cD',
   polygonAddress: undefined,
   optimismAddress: undefined,
   decimals: 18,

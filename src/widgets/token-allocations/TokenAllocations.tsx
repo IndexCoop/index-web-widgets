@@ -38,13 +38,15 @@ const ComponentRow = (props: { component: SetComponent }) => {
     <Tr>
       <Td p={['16px 8px', '16px 8px', '16px 24px']} border='none'>
         <Flex alignItems='center'>
-          <Image
-            borderRadius='full'
-            boxSize='30px'
-            src={props.component.image}
-            alt={props.component.name}
-            marginRight='10px'
-          />
+          {props.component.image && (
+            <Image
+              borderRadius='full'
+              boxSize='30px'
+              src={props.component.image}
+              alt={props.component.name}
+              marginRight='10px'
+            />
+          )}
           <Text fontWeight='500' margin='0'>
             {props.component.name}
           </Text>
