@@ -250,6 +250,23 @@ export const MoneyMarketIndex: Token = {
   defaultChain: MAINNET.chainId,
 };
 
+export const ic21Index: Token = {
+  name: 'Index Coop Large Cap Index',
+  symbol: 'ic21',
+  image: '',
+  address: '0x1B5E16C5b20Fb5EE87C61fE9Afe735Cca3B21A65',
+  polygonAddress: undefined,
+  optimismAddress: undefined,
+  decimals: 18,
+  url: 'ic21',
+  coingeckoId: 'large-cap-index-ic21',
+  tokensetsId: '',
+  fees: undefined,
+  isDangerous: false,
+  indexTypes: [IndexType.thematic],
+  defaultChain: MAINNET.chainId,
+};
+
 export const ProductTokensBySymbol = {
   BED: BedIndex,
   BTCFLI: Bitcoin2xFlexibleLeverageIndex,
@@ -257,6 +274,7 @@ export const ProductTokensBySymbol = {
   DSETH: DiversifiedStakedETHIndex,
   ETHFLI: Ethereum2xFlexibleLeverageIndex,
   GTCETH: GitcoinStakedETHIndex,
+  IC21: ic21Index,
   ICETH: icETHIndex,
   INDEX: IndexToken,
   ICSMMT: MoneyMarketIndex,
