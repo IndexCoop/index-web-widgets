@@ -262,7 +262,7 @@ export const ic21Index: Token = {
   coingeckoId: 'large-cap-index-ic21',
   tokensetsId: '',
   fees: undefined,
-  isDangerous: false,
+  isDangerous: true,
   indexTypes: [IndexType.thematic],
   defaultChain: MAINNET.chainId,
 };
