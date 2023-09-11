@@ -253,7 +253,7 @@ export const MoneyMarketIndex: Token = {
 export const ic21Index: Token = {
   name: 'Index Coop Large Cap Index',
   symbol: 'ic21',
-  image: '',
+  image: 'https://app.indexcoop.com/assets/ic21_logo.svg',
   address: '0x1B5E16C5b20Fb5EE87C61fE9Afe735Cca3B21A65',
   polygonAddress: undefined,
   optimismAddress: undefined,
