@@ -259,7 +259,7 @@ export const ic21Index: Token = {
   optimismAddress: undefined,
   decimals: 18,
   url: 'ic21',
-  coingeckoId: 'large-cap-index-ic21',
+  coingeckoId: 'index-coop-large-cap',
   tokensetsId: '',
   fees: undefined,
   isDangerous: true,
