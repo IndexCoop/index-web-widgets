@@ -267,9 +267,28 @@ export const ic21Index: Token = {
   defaultChain: MAINNET.chainId,
 };
 
+// FIXME: Update properties
+export const CoinDeskETHTrendIndicator: Token = {
+  name: 'CoinDesk ETH Trend Indicator',
+  symbol: 'cdETI',
+  image: 'https://indexcoop.com/assets/fixme.svg',
+  address: '0xTODO',
+  polygonAddress: undefined,
+  optimismAddress: undefined,
+  decimals: 18,
+  url: 'cdeti',
+  coingeckoId: 'coindesk-eth-trend-indicator',
+  tokensetsId: '',
+  fees: undefined,
+  isDangerous: true,
+  indexTypes: [],
+  defaultChain: MAINNET.chainId,
+};
+
 export const ProductTokensBySymbol = {
   BED: BedIndex,
   BTCFLI: Bitcoin2xFlexibleLeverageIndex,
+  CDETI: CoinDeskETHTrendIndicator,
   DPI: DefiPulseIndex,
   DSETH: DiversifiedStakedETHIndex,
   ETHFLI: Ethereum2xFlexibleLeverageIndex,
