@@ -271,7 +271,7 @@ export const ic21Index: Token = {
 export const CoinDeskETHTrendIndicator: Token = {
   name: 'CoinDesk ETH Trend Indicator',
   symbol: 'cdETI',
-  image: 'https://indexcoop.com/assets/fixme.svg',
+  image: 'https://uploads-ssl.webflow.com/62e3ff7a08cb1968bf057388/651f04818f458f918171c84d_cdETI-logo.svg',
   address: '0xTODO',
   polygonAddress: undefined,
   optimismAddress: undefined,
