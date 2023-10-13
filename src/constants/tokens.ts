@@ -276,7 +276,7 @@ export const CoinDeskETHTrendIndex: Token = {
   optimismAddress: undefined,
   decimals: 18,
   url: 'cdeti',
-  coingeckoId: 'coindesk-eth-trend-indicator',
+  coingeckoId: 'coindesk-eth-trend-index',
   tokensetsId: '',
   fees: undefined,
   isDangerous: true,
