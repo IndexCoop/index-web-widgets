@@ -24,8 +24,11 @@ const TokenLineCharts = ({
     const fetchData = async () => {
       if (tokenSymbol === 'CDETI') {
         const indexApi = new IndexApi();
-        const nav: CdetiNavRow[]  = await indexApi.get('/cdeti/navs');
-        const data: number[][] = nav.map(navItem => [ new Date(navItem.hour).getTime(), navItem.NAV ] )
+        const nav: CdetiNavRow[] = await indexApi.get('/cdeti/navs');
+        const data: number[][] = nav.map((navItem) => [
+          new Date(navItem.hour).getTime(),
+          navItem.NAV,
+        ]);
         setMarketData({ hourlyPrices: data });
       } else {
         const data = await fetchMarketData(token.coingeckoId);
