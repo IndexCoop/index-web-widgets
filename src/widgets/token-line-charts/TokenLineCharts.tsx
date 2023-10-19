@@ -9,6 +9,8 @@ import {
 } from '../../providers/MarketData';
 
 import TokenPrice from './token-price/TokenPrice';
+import { IndexApi } from '../../utils/api/indexApi';
+import { CdetiNavRow } from './types';
 
 const TokenLineCharts = ({
   tokenSymbol,
@@ -20,8 +22,15 @@ const TokenLineCharts = ({
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchMarketData(token.coingeckoId);
-      setMarketData(data);
+      if (tokenSymbol === 'CDETI') {
+        const indexApi = new IndexApi();
+        const nav: CdetiNavRow[]  = await indexApi.get('/cdeti/navs');
+        const data: number[][] = nav.map(navItem => [ new Date(navItem.hour).getTime(), navItem.NAV ] )
+        setMarketData({ hourlyPrices: data });
+      } else {
+        const data = await fetchMarketData(token.coingeckoId);
+        setMarketData(data);
+      }
     };
     fetchData();
   }, []);
