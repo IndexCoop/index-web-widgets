@@ -29,7 +29,7 @@ const TokenLineCharts = ({
           new Date(navItem.hour).getTime(),
           navItem.NAV,
         ]);
-        setMarketData({ hourlyPrices: data });
+        setMarketData({ hourlyPrices: data.sort((a, b) => a[0] - b[0]) });
       } else {
         const data = await fetchMarketData(token.coingeckoId);
         setMarketData(data);
