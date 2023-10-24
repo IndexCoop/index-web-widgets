@@ -21,7 +21,7 @@ import {
   SetComponent,
   useTokenComponents,
 } from '../../hooks/useTokenComponents';
-import { colors, pieChartColors } from '../../styles/colors';
+import { colors, getPieChartColor } from '../../styles/colors';
 
 import TokenAllocationsChart, { Position } from './TokenAllocationsChart';
 
@@ -87,7 +87,7 @@ const TokenAllocations = ({
     component: SetComponent,
     index: number
   ) => {
-    const sliceColor = pieChartColors[index];
+    const sliceColor = getPieChartColor(component, index);
     const position: Position = {
       title: component.symbol,
       value: component.percentOfSetNumber,

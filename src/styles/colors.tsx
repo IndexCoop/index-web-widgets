@@ -1,6 +1,7 @@
 import { theme, useColorMode } from '@chakra-ui/react';
 
 import { ProductTokensBySymbol } from '../constants/tokens';
+import { SetComponent } from '../hooks/useTokenComponents';
 
 export const colors = {
   ...theme.colors,
@@ -60,6 +61,17 @@ export const useICColorMode = () => {
   const isDarkMode = colorMode === 'dark';
   return { isDarkMode };
 };
+
+export const getPieChartColor = (component: SetComponent, index: number) => {
+  const symbol = component.symbol.toLowerCase()
+  if (symbol === 'usdc') {
+    return ''
+  }
+  if (symbol === 'weth') {
+    return '#888'
+  }
+  return pieChartColors[index]
+}
 
 export const pieChartColors = [
   '#2328cd',

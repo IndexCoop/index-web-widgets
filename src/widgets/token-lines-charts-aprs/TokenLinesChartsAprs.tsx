@@ -40,7 +40,7 @@ const TokenLinesChartsAprs = ({
   const aprChanges = formatDataChangeForDurations(dataChanges);
 
   return (
-    <Box w='100%' maxWidth={MaxWidgetWidth} paddingTop={['10px', '20px']}>
+    <Box w='100%' maxWidth={MaxWidgetWidth}>
       <Flex w='100%' maxWidth={MaxPanelWidth} paddingBottom={['5px', '10px']}>
         <Image
           borderRadius='full'
