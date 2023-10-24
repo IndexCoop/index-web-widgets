@@ -65,7 +65,7 @@ export const useICColorMode = () => {
 export const getPieChartColor = (component: SetComponent, index: number) => {
   const symbol = component.symbol.toLowerCase()
   if (symbol === 'usdc') {
-    return ''
+    return '#2672C4'
   }
   if (symbol === 'weth') {
     return '#888'
