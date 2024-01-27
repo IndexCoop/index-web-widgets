@@ -67,7 +67,7 @@ const TokenAprsChartTooltip = ({ active, payload, token }: any) => {
             </Text>
           </Flex>
           {items.map(item => (
-            <Flex direction='row' justifyContent='space-between' minWidth={10}>
+            <Flex direction='row' justifyContent='space-between' minWidth={10} key={item.label}>
             <Text
               color={item.color}
               fontSize='12px'
