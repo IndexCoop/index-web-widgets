@@ -5,9 +5,13 @@ import { IndexApi } from '../utils/api/indexApi';
 
 export type GtcDsEthAprRow = {
   hour: string | null;
-  ma_apr_7d_seth2: number | null;
+  ma_apr_7d_dseth: number | null;
   ma_apr_7d_reth: number | null;
   ma_apr_7d_wsteth: number | null;
+  ma_apr_7d_oseth: number | null;
+  ma_apr_7d_sweth: number | null;
+  ma_apr_7d_sfrxeth: number | null;
+  ma_apr_7d_eeth: number | null;
   ma_apr_7d_txt: number | null;
 };
 

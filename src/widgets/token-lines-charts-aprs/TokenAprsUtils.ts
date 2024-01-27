@@ -77,9 +77,13 @@ export const mapAprsToChartData = (aprs: GtcDsEthAprRow[]): ChartDatas => {
     .map((point) => ({
       x: Number(new Date(point.hour)),
       y: point['ma_apr_7d_txt'] * 100,
-      y2: point['ma_apr_7d_seth2'] * 100,
-      y3: point['ma_apr_7d_reth'] * 100,
-      y4: point['ma_apr_7d_wsteth'] * 100,
+      oseth: point['ma_apr_7d_oseth'] * 100,
+      reth: point['ma_apr_7d_reth'] * 100,
+      wsteth: point['ma_apr_7d_wsteth'] * 100,
+      sfrxeth: point['ma_apr_7d_sfrxeth'] * 100,
+      eeth: point['ma_apr_7d_eeth'] * 100,
+      sweth: point['ma_apr_7d_sweth'] * 100,
+      dseth: point['ma_apr_7d_dseth'] * 100,
     }))
     .sort((a, b) => {
       if (a.x < b.x) {
