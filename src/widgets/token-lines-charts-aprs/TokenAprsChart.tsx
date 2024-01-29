@@ -248,6 +248,8 @@ const TokenAprsChart = ({
     ? colors.icMalachite
     : colors.icRed;
 
+  const firstDataPoint = chartData[0];
+
   return (
     <Flex
       direction='column'
@@ -309,27 +311,60 @@ const TokenAprsChart = ({
             fill={colors.icBlue}
             dot={false}
           />
-          <Line
-            type='monotone'
-            dataKey='y2'
-            stroke={colors.icGray4}
-            fill={colors.icGray4}
-            dot={false}
-          />
-          <Line
-            type='monotone'
-            dataKey='y3'
-            stroke={colors.icGray3}
-            fill={colors.icGray3}
-            dot={false}
-          />
-          <Line
-            type='monotone'
-            dataKey='y4'
-            stroke={colors.icGray2}
-            fill={colors.icGray2}
-            dot={false}
-          />
+          {firstDataPoint?.oseth && (
+            <Line
+              type='monotone'
+              dataKey='oseth'
+              stroke={colors.icGray4}
+              fill={colors.icGray4}
+              dot={false}
+            />
+          )}
+          {firstDataPoint?.reth && (
+            <Line
+              type='monotone'
+              dataKey='reth'
+              stroke={colors.icGray3}
+              fill={colors.icGray3}
+              dot={false}
+            />
+          )}
+          {firstDataPoint?.wsteth && (
+            <Line
+              type='monotone'
+              dataKey='wsteth'
+              stroke={colors.icGray2}
+              fill={colors.icGray2}
+              dot={false}
+            />
+          )}
+          {firstDataPoint?.sfrxeth && (
+            <Line
+              type='monotone'
+              dataKey='sfrxeth'
+              stroke={colors.icGray2}
+              fill={colors.icGray2}
+              dot={false}
+            />
+          )}
+          {firstDataPoint?.sweth && (
+            <Line
+              type='monotone'
+              dataKey='sweth'
+              stroke={colors.icGray3}
+              fill={colors.icGray3}
+              dot={false}
+            />
+          )}
+          {firstDataPoint?.dseth && (
+            <Line
+              type='monotone'
+              dataKey='dseth'
+              stroke={colors.icGray4}
+              fill={colors.icGray4}
+              dot={false}
+            />
+          )}
         </LineChart>
       </ResponsiveContainer>
     </Flex>
