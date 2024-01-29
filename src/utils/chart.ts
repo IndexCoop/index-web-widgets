@@ -20,10 +20,13 @@ export type ChartDatas = ChartDataPoint[];
 export interface ChartDataPoint {
   x: number;
   y: number;
-  y2?: number;
-  y3?: number;
-  y4?: number;
-  y5?: number;
+  oseth?: number;
+  reth?: number;
+  wsteth?: number;
+  sfrxeth?: number;
+  eeth?: number;
+  sweth?: number;
+  dseth?: number;
 }
 
 export interface ChartOption {

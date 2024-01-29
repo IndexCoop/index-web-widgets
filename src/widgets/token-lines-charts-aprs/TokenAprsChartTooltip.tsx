@@ -5,7 +5,21 @@ import { colors } from '../../styles/colors';
 
 const TokenAprsChartTooltip = ({ active, payload, token }: any) => {
   if (active && payload && payload.length) {
-    const { x: date, y, y2, y3, y4 } = payload[0].payload;
+    const symbol = token?.symbol.toLowerCase()
+    const data = payload[0].payload
+    const { x: date, y } = data
+
+    const items = [];
+    if (symbol === 'dseth') {
+      items.push({ label: 'RETH', value: data.reth, color: colors.icGray3 })
+      items.push({ label: 'ETHx', value: data.eeth, color: colors.icGray4 })
+      items.push({ label: 'WSTETH', value: data.wsteth, color: colors.icGray2 })
+      items.push({ label: 'swETH', value: data.sweth, color: colors.icGray3 })
+      items.push({ label: 'osETH', value: data.oseth, color: colors.icGray4 })
+      items.push({ label: 'sfrxETH', value: data.sfrxeth, color: colors.icGray2 })
+    } else if (symbol === 'gtceth') {
+      items.push({ label: 'dsETH', value: data.dseth, color: colors.icGray4 })
+    }
     return (
       <Flex
         background={colors.white}
@@ -52,60 +66,26 @@ const TokenAprsChartTooltip = ({ active, payload, token }: any) => {
               {`${Number(y).toFixed(2)}%`}
             </Text>
           </Flex>
-          <Flex direction='row' justifyContent='space-between' minWidth={10}>
+          {items.map(item => (
+            <Flex direction='row' justifyContent='space-between' minWidth={10} key={item.label}>
             <Text
-              color={colors.icGray4}
+              color={item.color}
               fontSize='12px'
               fontWeight='500'
               margin='0'
             >
-              sETH2
+              {item.label}
             </Text>
             <Text
-              color={colors.icGray4}
+              color={item.color}
               fontSize='12px'
               fontWeight='500'
               margin='0'
             >
-              {`${Number(y2).toFixed(2)}%`}
-            </Text>
-          </Flex>
-          <Flex direction='row' justifyContent='space-between' minWidth={10}>
-            <Text
-              color={colors.icGray3}
-              fontSize='12px'
-              fontWeight='500'
-              margin='0'
-            >
-              rETH
-            </Text>
-            <Text
-              color={colors.icGray3}
-              fontSize='12px'
-              fontWeight='500'
-              margin='0'
-            >
-              {`${Number(y3).toFixed(2)}%`}
+              {`${Number(item.value).toFixed(2)}%`}
             </Text>
           </Flex>
-          <Flex direction='row' justifyContent='space-between' minWidth={10}>
-            <Text
-              color={colors.icGray2}
-              fontSize='12px'
-              fontWeight='500'
-              margin='0'
-            >
-              wstETH
-            </Text>
-            <Text
-              color={colors.icGray2}
-              fontSize='12px'
-              fontWeight='500'
-              margin='0'
-            >
-              {`${Number(y4).toFixed(2)}%`}
-            </Text>
-          </Flex>
+          ))}
         </Flex>
       </Flex>
     );
