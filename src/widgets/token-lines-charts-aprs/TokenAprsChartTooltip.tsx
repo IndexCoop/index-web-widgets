@@ -12,11 +12,11 @@ const TokenAprsChartTooltip = ({ active, payload, token }: any) => {
     const items = [];
     if (symbol === 'dseth') {
       items.push({ label: 'RETH', value: data.reth, color: colors.icGray3 })
-      items.push({ label: 'ETHx', value: data.eeth, color: colors.icGray4 })
+      items.push({ label: 'ETHx', value: data.eeth, color: colors.icBlue4 })
       items.push({ label: 'WSTETH', value: data.wsteth, color: colors.icGray2 })
-      items.push({ label: 'swETH', value: data.sweth, color: colors.icGray3 })
-      items.push({ label: 'osETH', value: data.oseth, color: colors.icGray4 })
-      items.push({ label: 'sfrxETH', value: data.sfrxeth, color: colors.icGray2 })
+      items.push({ label: 'swETH', value: data.sweth, color: colors.icBlue5 })
+      items.push({ label: 'osETH', value: data.oseth, color: colors.icBlue2 })
+      items.push({ label: 'sfrxETH', value: data.sfrxeth, color: colors.icBlue3 })
     } else if (symbol === 'gtceth') {
       items.push({ label: 'dsETH', value: data.dseth, color: colors.icGray4 })
     }

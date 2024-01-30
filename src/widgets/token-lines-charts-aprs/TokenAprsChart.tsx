@@ -240,7 +240,7 @@ const TokenAprsChart = ({
     if (val === undefined || val === null) {
       return '';
     }
-    return `${parseInt(val)}%`;
+    return `${parseFloat(val).toFixed(2)}%`;
   };
 
   const aprChange = aprChanges[durationIndexSelector];
@@ -315,8 +315,8 @@ const TokenAprsChart = ({
             <Line
               type='monotone'
               dataKey='oseth'
-              stroke={colors.icGray4}
-              fill={colors.icGray4}
+              stroke={colors.icBlue2}
+              fill={colors.icBlue2}
               dot={false}
             />
           )}
@@ -342,8 +342,8 @@ const TokenAprsChart = ({
             <Line
               type='monotone'
               dataKey='sfrxeth'
-              stroke={colors.icGray2}
-              fill={colors.icGray2}
+              stroke={colors.icBlue3}
+              fill={colors.icBlue3}
               dot={false}
             />
           )}
@@ -351,8 +351,8 @@ const TokenAprsChart = ({
             <Line
               type='monotone'
               dataKey='sweth'
-              stroke={colors.icGray3}
-              fill={colors.icGray3}
+              stroke={colors.icBlue5}
+              fill={colors.icBlue5}
               dot={false}
             />
           )}
@@ -362,6 +362,15 @@ const TokenAprsChart = ({
               dataKey='dseth'
               stroke={colors.icGray4}
               fill={colors.icGray4}
+              dot={false}
+            />
+          )}
+          {firstDataPoint?.eeth && (
+            <Line
+              type='monotone'
+              dataKey='eeth'
+              stroke={colors.icBlue4}
+              fill={colors.icBlue4}
               dot={false}
             />
           )}
