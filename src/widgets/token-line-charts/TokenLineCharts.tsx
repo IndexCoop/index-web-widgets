@@ -10,7 +10,7 @@ import {
 
 import TokenPrice from './token-price/TokenPrice';
 import { IndexApi } from '../../utils/api/indexApi';
-import { CdetiNavRow } from './types';
+import { CdetiNavRow, Index2xNavRow } from './types';
 
 const TokenLineCharts = ({
   tokenSymbol,
@@ -28,6 +28,14 @@ const TokenLineCharts = ({
         const data: number[][] = nav.map((navItem) => [
           new Date(navItem.hour).getTime(),
           navItem.NAV,
+        ]);
+        setMarketData({ hourlyPrices: data.sort((a, b) => a[0] - b[0]) });
+      } else if (tokenSymbol === 'BTC2X' || tokenSymbol === 'ETH2X') {
+        const indexApi = new IndexApi();
+        const nav: Index2xNavRow[] = await indexApi.get('/2x/navs');
+        const data: number[][] = nav.map((navItem) => [
+          new Date(navItem.hour).getTime(),
+          tokenSymbol === 'BTC2X' ? navItem.btc2x_price : navItem.eth2x_price,
         ]);
         setMarketData({ hourlyPrices: data.sort((a, b) => a[0] - b[0]) });
       } else {

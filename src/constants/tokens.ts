@@ -54,6 +54,23 @@ export const BedIndex: Token = {
   defaultChain: MAINNET.chainId,
 };
 
+export const Bitcoin2xIndex: Token = {
+  name: 'Index Coop Bitcoin 2x Index',
+  symbol: 'BTC2X',
+  address: '0xD2AC55cA3Bbd2Dd1e9936eC640dCb4b745fDe759',
+  polygonAddress: undefined,
+  optimismAddress: undefined,
+  decimals: 18,
+  url: 'btc2x',
+  image: 'https://index-app.vercel.app/assets/btc2x.png',
+  coingeckoId: 'index-coop-bitcoin-2x-index',
+  tokensetsId: 'btc2x',
+  fees: undefined,
+  isDangerous: true,
+  indexTypes: [IndexType.leverage],
+  defaultChain: MAINNET.chainId,
+};
+
 export const Bitcoin2xFlexibleLeverageIndex: Token = {
   name: 'Bitcoin 2x Flexible Leverage Index',
   symbol: 'BTC2x-FLI',
@@ -146,6 +163,23 @@ export const Ethereum2xFlexibleLeverageIndex: Token = {
   fees: {
     streamingFee: '1.95%',
   },
+  isDangerous: true,
+  indexTypes: [IndexType.leverage],
+  defaultChain: MAINNET.chainId,
+};
+
+export const Ethereum2xIndex: Token = {
+  name: 'Index Coop Ethereum 2x Index',
+  symbol: 'ETH2X',
+  address: '0x65c4C0517025Ec0843C9146aF266A2C5a2D148A2',
+  polygonAddress: undefined,
+  optimismAddress: undefined,
+  decimals: 18,
+  url: 'eth2x',
+  image: 'https://index-app.vercel.app/assets/eth2x.png',
+  coingeckoId: 'index-coop-ethereum-2x-index',
+  tokensetsId: 'eth2x',
+  fees: undefined,
   isDangerous: true,
   indexTypes: [IndexType.leverage],
   defaultChain: MAINNET.chainId,
@@ -288,10 +322,12 @@ export const CoinDeskETHTrendIndex: Token = {
 
 export const ProductTokensBySymbol = {
   BED: BedIndex,
+  BTC2X: Bitcoin2xIndex,
   BTCFLI: Bitcoin2xFlexibleLeverageIndex,
   CDETI: CoinDeskETHTrendIndex,
   DPI: DefiPulseIndex,
   DSETH: DiversifiedStakedETHIndex,
+  ETH2X: Ethereum2xIndex,
   ETHFLI: Ethereum2xFlexibleLeverageIndex,
   GTCETH: GitcoinStakedETHIndex,
   IC21: ic21Index,
