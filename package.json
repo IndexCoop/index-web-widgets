@@ -1,14 +1,13 @@
 {
   "name": "index-web-widgets",
-  "version": "1.17.0",
+  "version": "1.18.0",
   "description": "",
   "main": "dist/index-web-widgets.js",
   "scripts": {
     "start": "webpack-dev-server --config ./webpack.config.js --mode development --progress --color --port 3000",
     "lint:fix": "yarn prettier --write . && yarn eslint",
     "build-deploy": "npm run build && npm run deploy",
-    "build": "webpack",
-    "deploy": "aws s3 cp ./dist/index-web-widgets.js s3://teddy-test-public/ --acl public-read"
+    "build": "webpack"
   },
   "keywords": [],
   "author": "",
