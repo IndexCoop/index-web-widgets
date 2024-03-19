@@ -132,6 +132,10 @@ const TokenAllocations = ({
     return null;
   };
 
+  const is2xToken =
+    tokenSymbol.toLowerCase() === 'eth2x' ||
+    tokenSymbol.toLowerCase() === 'btc2x';
+
   if (components === undefined || components.length === 0) {
     return (
       <Flex w={'100%'} justifyContent={'center'}>
@@ -147,41 +151,43 @@ const TokenAllocations = ({
       justifyContent='space-around'
       maxWidth={MaxWidgetWidth}
     >
-      <Box margin={['auto']}>
-        {isLargerThan400 && (
-          <Text
-            position={'relative'}
-            top={165}
-            left={125}
-            fontSize={'2xl'}
-            fontWeight={700}
-            fontFamily={'sans-serif'}
-            height={0}
-            width={130}
-            margin={0}
-          >
-            Allocations
-          </Text>
-        )}
-        {!isLargerThan400 && (
-          <Text
-            position={'relative'}
-            top={135}
-            left={85}
-            fontSize={'2xl'}
-            fontWeight={700}
-            fontFamily={'sans-serif'}
-            height={0}
-            width={130}
-            margin={0}
-          >
-            Allocations
-          </Text>
-        )}
-        <TokenAllocationsChart
-          data={components.map(mapSetComponentToPosition)}
-        />
-      </Box>
+      {!is2xToken && (
+        <Box margin={['auto']}>
+          {isLargerThan400 && (
+            <Text
+              position={'relative'}
+              top={165}
+              left={125}
+              fontSize={'2xl'}
+              fontWeight={700}
+              fontFamily={'sans-serif'}
+              height={0}
+              width={130}
+              margin={0}
+            >
+              Allocations
+            </Text>
+          )}
+          {!isLargerThan400 && (
+            <Text
+              position={'relative'}
+              top={135}
+              left={85}
+              fontSize={'2xl'}
+              fontWeight={700}
+              fontFamily={'sans-serif'}
+              height={0}
+              width={130}
+              margin={0}
+            >
+              Allocations
+            </Text>
+          )}
+          <TokenAllocationsChart
+            data={components.map(mapSetComponentToPosition)}
+          />
+        </Box>
+      )}
       <Flex
         direction='column'
         alignItems='flex-start'
