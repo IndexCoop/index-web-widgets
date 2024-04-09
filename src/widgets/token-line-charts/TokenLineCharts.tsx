@@ -24,7 +24,7 @@ const TokenLineCharts = ({
         `/historical-navs/${tokenSymbol.toLowerCase()}`
       );
       const data: number[][] = nav.map(({ time, nav }) => [time, nav]);
-      setMarketData({ hourlyPrices: data.sort((a, b) => a[0] - b[0]) });
+      setMarketData({ hourlyPrices: data });
     };
     fetchData();
   }, []);
