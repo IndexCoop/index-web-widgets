@@ -3,14 +3,11 @@ import { Box, Flex, Image, Text } from '@chakra-ui/react';
 
 import { ProductTokensBySymbol } from '../../constants/tokens';
 import { MaxPanelWidth, MaxWidgetWidth } from '../../constants/widget';
-import {
-  fetchMarketData,
-  TokenMarketDataValues,
-} from '../../providers/MarketData';
+import { TokenMarketDataValues } from '../../providers/MarketData';
 
 import TokenPrice from './token-price/TokenPrice';
 import { IndexApi } from '../../utils/api/indexApi';
-import { CdetiNavRow, Index2xNavRow } from './types';
+import { NavRow } from './types';
 
 const TokenLineCharts = ({
   tokenSymbol,
@@ -22,26 +19,12 @@ const TokenLineCharts = ({
 
   useEffect(() => {
     const fetchData = async () => {
-      if (tokenSymbol === 'CDETI') {
-        const indexApi = new IndexApi();
-        const nav: CdetiNavRow[] = await indexApi.get('/cdeti/navs');
-        const data: number[][] = nav.map((navItem) => [
-          new Date(navItem.hour).getTime(),
-          navItem.NAV,
-        ]);
-        setMarketData({ hourlyPrices: data.sort((a, b) => a[0] - b[0]) });
-      } else if (tokenSymbol === 'BTC2X' || tokenSymbol === 'ETH2X') {
-        const indexApi = new IndexApi();
-        const nav: Index2xNavRow[] = await indexApi.get('/2x/navs');
-        const data: number[][] = nav.map((navItem) => [
-          new Date(navItem.hour).getTime(),
-          tokenSymbol === 'BTC2X' ? navItem.btc2x_price : navItem.eth2x_price,
-        ]);
-        setMarketData({ hourlyPrices: data.sort((a, b) => a[0] - b[0]) });
-      } else {
-        const data = await fetchMarketData(token.coingeckoId);
-        setMarketData(data);
-      }
+      const indexApi = new IndexApi();
+      const nav: NavRow[] = await indexApi.get(
+        `/historical-navs/${tokenSymbol.toLowerCase()}`
+      );
+      const data: number[][] = nav.map(({ time, nav }) => [time, nav]);
+      setMarketData({ hourlyPrices: data });
     };
     fetchData();
   }, []);
