@@ -227,6 +227,25 @@ export const GitcoinStakedETHIndex: Token = {
   defaultChain: MAINNET.chainId,
 };
 
+export const HighYieldETHIndex: Token = {
+  name: 'Index Coop High Yield ETH Index',
+  symbol: 'hyETH',
+  image: 'https://index-app.vercel.app/assets/hyeth.png',
+  address: '0xc4506022Fb8090774E8A628d5084EED61D9B99Ee',
+  polygonAddress: undefined,
+  optimismAddress: undefined,
+  decimals: 18,
+  url: 'hyeth',
+  coingeckoId: 'high-yield-eth',
+  tokensetsId: 'hyeth',
+  fees: {
+    streamingFee: '0.95%',
+  },
+  isDangerous: true,
+  indexTypes: [IndexType.yield],
+  defaultChain: MAINNET.chainId,
+};
+
 export const IndexToken: Token = {
   name: 'Index Cooperative',
   symbol: 'INDEX',
@@ -330,6 +349,7 @@ export const ProductTokensBySymbol = {
   ETH2X: Ethereum2xIndex,
   ETHFLI: Ethereum2xFlexibleLeverageIndex,
   GTCETH: GitcoinStakedETHIndex,
+  HYETH: HighYieldETHIndex,
   IC21: ic21Index,
   ICETH: icETHIndex,
   INDEX: IndexToken,
